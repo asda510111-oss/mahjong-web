@@ -14,6 +14,7 @@ interface Props {
   isTurn: boolean
   isMe: boolean
   turnTimer: { seat: SeatIndex; thinkMs: number; baseMs: number; startAt: number } | null
+  score: number | null
 }
 
 const SEAT_AVATARS = ['🦁', '🐼', '🦊', '🐻'] as const
@@ -45,7 +46,7 @@ function CountdownDisplay({ thinkMs, baseMs, startAt }: { thinkMs: number; baseM
 }
 
 export default function TableSeat({
-  position, player, seat, publicState, isDealer, isTurn, isMe, turnTimer,
+  position, player, seat, publicState, isDealer, isTurn, isMe, turnTimer, score,
 }: Props) {
   const handCount = publicState?.handCount ?? 0
   const melds = publicState?.melds ?? []
@@ -72,6 +73,11 @@ export default function TableSeat({
             <span className="seat-wind">{SEAT_LABELS[seat]}{isDealer && ' 莊'}</span>
             {!isMe && <span className="muted"> · {handCount}張</span>}
             {!player.isConnected && <span className="muted"> · 離線</span>}
+            {score !== null && (
+              <span className={`seat-score ${score >= 0 ? 'pos' : 'neg'}`}>
+                {' '}{score >= 0 ? '+' : ''}{score}
+              </span>
+            )}
           </div>
         </div>
       </div>

@@ -25,6 +25,8 @@ interface Props {
   lastDrawn: TileId | null
   lastDiscardSeat: SeatIndex | null
   turnTimer: { seat: SeatIndex; thinkMs: number; baseMs: number; startAt: number } | null
+  gameIndex: number
+  roundScores: Array<{ seat: SeatIndex; name: string; score: number }> | null
   onLeave: () => void
   onAddBot: () => void
   onStart: () => void
@@ -37,6 +39,7 @@ const SEAT_AVATARS = ['🦁', '🐼', '🦊', '🐻']
 export default function GameRoom({
   room, myPlayerId, mySeat, myHand, discards, publicStates = [], wallRemaining,
   currentTurn, dealerSeat, isMyTurn, actionOptions, lastDrawn, lastDiscardSeat, turnTimer,
+  gameIndex, roundScores,
   onLeave, onAddBot, onStart, onDiscard, onAction,
 }: Props) {
   const isHost = room.hostId === myPlayerId
@@ -139,8 +142,14 @@ export default function GameRoom({
   const getPub = (s: SeatIndex) => publicStates.find(ps => ps.seat === s)
 
   const dealerLabel = dealerSeat !== null
-    ? `${SEAT_LABELS[dealerSeat]}莊${SEAT_LABELS[dealerSeat]}局`
+    ? `${SEAT_LABELS[dealerSeat]}莊 · ${gameIndex + 1}/4 局`
     : ''
+
+  const getScore = (seat: SeatIndex): number | null => {
+    if (!roundScores) return null
+    const entry = roundScores.find(s => s.seat === seat)
+    return entry?.score ?? null
+  }
 
   // ===== Lobby view =====
   if (!inGame) {
@@ -197,6 +206,7 @@ export default function GameRoom({
         isTurn={currentTurn === seat}
         isMe={seat === mySeat}
         turnTimer={turnTimer && turnTimer.seat === seat ? turnTimer : null}
+        score={getScore(seat)}
       />
     )
   }

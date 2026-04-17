@@ -233,6 +233,9 @@ input:focus { border-color: var(--accent); }
 .seat-text .seat-name { font-weight: 600; font-size: 0.95rem; }
 .seat-text .seat-sub { font-size: 0.78rem; opacity: 0.8; }
 .seat-wind { color: var(--accent); font-weight: 700; }
+.seat-score { font-weight: 700; font-family: 'Segoe UI', sans-serif; margin-left: 2px; }
+.seat-score.pos { color: #66bb6a; }
+.seat-score.neg { color: #ef5350; }
 
 /* 座位內部排版（依位置不同） */
 .table-seat.pos-top,
@@ -879,6 +882,28 @@ input:focus { border-color: var(--accent); }
   margin: 0 auto;
   padding: 0.75rem 2rem;
 }
+
+/* ===== 一圈結束排名 ===== */
+.round-rank {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin: 1rem 0;
+}
+.rank-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+}
+.rank-row.rank-0 { background: rgba(245, 197, 66, 0.2); border: 1px solid var(--accent); }
+.rank-medal { font-size: 1.6rem; }
+.rank-name { flex: 1; font-weight: 600; }
+.rank-score { font-weight: 800; font-size: 1.2rem; font-family: 'Segoe UI', sans-serif; }
+.rank-score.pos { color: #66bb6a; }
+.rank-score.neg { color: #ef5350; }
 
 /* ===== Melds (副子) ===== */
 .melds-row {

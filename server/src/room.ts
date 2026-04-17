@@ -55,6 +55,11 @@ export class Room {
   turnStartAt: number = 0                         // 當前回合計時起點（ms 時間戳）
   turnTimerId: NodeJS.Timeout | null = null
 
+  // 多局制（一圈 = 4 局，莊家輪流）
+  gameIndex: number = 0                           // 0-3，目前第幾局
+  roundScores: Map<string, number> = new Map()   // 整圈累計得分
+  nextGameTimer: NodeJS.Timeout | null = null
+
   constructor(code: string) { this.code = code }
 
   isFull() { return this.players.length >= 4 }
@@ -111,7 +116,19 @@ export class Room {
   }
 
   // ========= 遊戲流程 =========
+  // 開新一圈：重置累計分數 + 發第一局
   startGame() {
+    if (this.players.length !== 4) return
+    this.gameIndex = 0
+    this.roundScores.clear()
+    for (const p of this.players) this.roundScores.set(p.id, 0)
+    if (this.nextGameTimer) clearTimeout(this.nextGameTimer)
+    this.nextGameTimer = null
+    this.dealNewGame()
+  }
+
+  // 發一局（內部）：用 this.gameIndex 當莊家座位；不重置 roundScores
+  private dealNewGame() {
     if (this.players.length !== 4) return
     this.phase = 'playing'
     this.wall = shuffle(buildFullWall())
@@ -121,7 +138,6 @@ export class Room {
     this.pendingDiscard = null
     this.justDrawnBy = null
     this.justDrawnTile = null
-    // 計時重置
     this.stopTurnTimer()
     this.playerBase.clear()
     for (const p of this.players) {
@@ -137,12 +153,17 @@ export class Room {
         if (t) h[s].push(t)
       }
     }
+    this.dealerSeat = this.gameIndex as SeatIndex
+    this.currentTurnSeat = this.dealerSeat
     const dealerExtra = this.wall.shift()
-    if (dealerExtra) h[0].push(dealerExtra)
-    this.dealerSeat = 0
-    this.currentTurnSeat = 0
+    if (dealerExtra) h[this.dealerSeat].push(dealerExtra)
 
-    this.broadcast({ type: 'game_start', seed: Math.floor(Math.random() * 1_000_000) })
+    this.broadcast({
+      type: 'game_start',
+      seed: Math.floor(Math.random() * 1_000_000),
+      gameIndex: this.gameIndex,
+      dealerSeat: this.dealerSeat,
+    })
     for (const p of this.players) {
       this.hands.set(p.id, h[p.seat])
       this.sendTo(p.id, { type: 'deal', hand: h[p.seat], dealerSeat: this.dealerSeat })
@@ -526,9 +547,8 @@ export class Room {
     while (true) {
       const t = this.wall.shift()
       if (!t) {
-        this.phase = 'ended'
-        this.stopTurnTimer()
-        this.broadcast({ type: 'game_end', reason: 'draw' })
+        this.broadcast({ type: 'game_end', reason: 'draw', scores: this.buildScoresPayload() })
+        this.scheduleNextGame()
         this.broadcast({ type: 'room_update', room: this.toState() })
         return
       }
@@ -538,8 +558,8 @@ export class Room {
         // 補一張從牌尾
         const rep = this.wall.pop()
         if (!rep) {
-          this.phase = 'ended'
-          this.broadcast({ type: 'game_end', reason: 'draw' })
+          this.broadcast({ type: 'game_end', reason: 'draw', scores: this.buildScoresPayload() })
+          this.scheduleNextGame()
           return
         }
         if (getTileDef(rep).isFlower) {
@@ -685,13 +705,11 @@ export class Room {
   }
 
   private endGameWithHu(winnerSeat: SeatIndex, loserSeat: SeatIndex | undefined, winTile: TileId) {
-    this.phase = 'ended'
     this.stopTurnTimer()
     for (const pid of this.responseTimerIds.keys()) this.clearResponseTimer(pid)
     this.responseStartAt.clear()
     const winner = this.getPlayerBySeat(winnerSeat)!
     const hand = [...(this.hands.get(winner.id) ?? [])]
-    // 若是放炮胡（非自摸），hand 裡還沒有 winTile，需要補上
     const isZimo = loserSeat === undefined
     if (!isZimo && !hand.includes(winTile)) hand.push(winTile)
     const melds = this.melds.get(winner.id) ?? []
@@ -702,8 +720,17 @@ export class Room {
       winTile,
       seatWind: winnerSeat,
       isDealer: winnerSeat === this.dealerSeat,
-      consecutiveDealer: 0, // 多局連莊未實作
+      consecutiveDealer: 0,
     })
+    // 計分：底 1 + 台 tai.total
+    const pts = 1 + tai.total
+    for (const p of this.players) {
+      if (p.seat === winnerSeat) {
+        this.addScore(p.id, isZimo ? pts * 3 : pts)
+      } else if (isZimo || p.seat === loserSeat) {
+        this.addScore(p.id, -pts)
+      }
+    }
     this.broadcast({
       type: 'game_end',
       reason: 'hu',
@@ -713,8 +740,52 @@ export class Room {
       tai,
       winnerHand: hand,
       winnerMelds: melds,
+      scores: this.buildScoresPayload(),
     })
-    this.broadcast({ type: 'room_update', room: this.toState() })
+    this.scheduleNextGame()
+  }
+
+  private buildScoresPayload() {
+    return this.players.map(p => ({
+      seat: p.seat,
+      name: p.name,
+      score: this.roundScores.get(p.id) ?? 0,
+    }))
+  }
+
+  private addScore(pid: string, pts: number) {
+    this.roundScores.set(pid, (this.roundScores.get(pid) ?? 0) + pts)
+  }
+
+  // 本局結束 → 決定下一局 / 結束整圈
+  private scheduleNextGame() {
+    this.stopTurnTimer()
+    for (const pid of this.responseTimerIds.keys()) this.clearResponseTimer(pid)
+    this.responseStartAt.clear()
+    this.pendingDiscard = null
+
+    if (this.gameIndex >= 3) {
+      // 四局結束 → 整圈結束
+      this.phase = 'ended'
+      this.broadcast({
+        type: 'round_end',
+        scores: this.players.map(p => ({
+          seat: p.seat,
+          name: p.name,
+          score: this.roundScores.get(p.id) ?? 0,
+        })),
+      })
+      this.broadcast({ type: 'room_update', room: this.toState() })
+      return
+    }
+
+    // 延遲 6 秒讓玩家看胡牌 / 流局結果，再開下一局
+    if (this.nextGameTimer) clearTimeout(this.nextGameTimer)
+    this.nextGameTimer = setTimeout(() => {
+      if (this.players.length !== 4) return
+      this.gameIndex++
+      this.dealNewGame()
+    }, 6000)
   }
 
   private broadcastPublicState() {

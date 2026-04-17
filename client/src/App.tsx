@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import MainMenu from './components/MainMenu'
 import GameRoom from './components/GameRoom'
 import HuResult from './components/HuResult'
+import RoundEnd from './components/RoundEnd'
 import { gameClient, resolveServerUrl, type ConnectionStatus } from './net/ws'
 import type { RoomState, SeatIndex, ServerMessage, PublicPlayerState, ActionOptions } from './game/types'
 import type { TileId } from './game/tiles'
@@ -24,6 +25,9 @@ export default function App() {
   const [lastDrawn, setLastDrawn] = useState<TileId | null>(null)
   const [lastDiscardSeat, setLastDiscardSeat] = useState<SeatIndex | null>(null)
   const [turnTimer, setTurnTimer] = useState<null | { seat: SeatIndex; thinkMs: number; baseMs: number; startAt: number }>(null)
+  const [gameIndex, setGameIndex] = useState<number>(0)
+  const [roundScores, setRoundScores] = useState<Array<{ seat: SeatIndex; name: string; score: number }> | null>(null)
+  const [roundEnd, setRoundEnd] = useState<null | { scores: Array<{ seat: SeatIndex; name: string; score: number }> }>(null)
   const [huResult, setHuResult] = useState<null | {
     winnerSeat: SeatIndex
     winnerName: string
@@ -67,6 +71,9 @@ export default function App() {
             setActionOptions(null)
             setLastDiscardSeat(null)
             setTurnTimer(null)
+            setGameIndex(0)
+            setRoundScores(null)
+            setRoundEnd(null)
             setNotice('')
           }
           break
@@ -78,8 +85,15 @@ export default function App() {
           setDiscards(EMPTY_DISCARDS)
           setPublicStates([])
           setActionOptions(null)
-          setNotice('遊戲開始！')
+          setGameIndex(msg.gameIndex)
+          setDealerSeat(msg.dealerSeat)
+          setRoundEnd(null)
+          setNotice(`第 ${msg.gameIndex + 1} 局開始！`)
           setTimeout(() => setNotice(''), 2000)
+          break
+        case 'round_end':
+          setRoundScores(msg.scores)
+          setRoundEnd({ scores: msg.scores })
           break
         case 'deal':
           setMyHand(msg.hand)
@@ -150,6 +164,7 @@ export default function App() {
         case 'game_end':
           setCurrentTurn(null)
           setActionOptions(null)
+          if (msg.scores) setRoundScores(msg.scores)
           if (msg.reason === 'draw') {
             setNotice('流局')
           } else if (msg.winnerSeat !== undefined && msg.tai && msg.winnerHand && msg.winnerMelds && msg.winTile) {
@@ -224,6 +239,8 @@ export default function App() {
           lastDrawn={lastDrawn}
           lastDiscardSeat={lastDiscardSeat}
           turnTimer={turnTimer}
+          gameIndex={gameIndex}
+          roundScores={roundScores}
           currentTurn={currentTurn}
           dealerSeat={dealerSeat}
           isMyTurn={isMyTurn}
@@ -253,6 +270,9 @@ export default function App() {
       )}
       {huResult && (
         <HuResult {...huResult} onClose={() => setHuResult(null)} />
+      )}
+      {roundEnd && !huResult && (
+        <RoundEnd scores={roundEnd.scores} onClose={() => setRoundEnd(null)} />
       )}
       {notice && (
         <div style={{

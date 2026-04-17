@@ -56,7 +56,8 @@ export type ServerMessage =
   | { type: 'welcome'; playerId: string }
   | { type: 'room_update'; room: RoomState }
   | { type: 'error'; message: string }
-  | { type: 'game_start'; seed: number }
+  | { type: 'game_start'; seed: number; gameIndex: number; dealerSeat: SeatIndex }
+  | { type: 'round_end'; scores: Array<{ seat: SeatIndex; name: string; score: number }> }
   | { type: 'deal'; hand: TileId[]; dealerSeat: SeatIndex }
   | { type: 'turn'; seat: SeatIndex }
   | { type: 'tile_drawn'; seat: SeatIndex; tile?: TileId }
@@ -66,5 +67,5 @@ export type ServerMessage =
   | { type: 'public_state'; states: PublicPlayerState[]; wallRemaining: number }
   | { type: 'action_options'; options: ActionOptions }         // 給你動作選項
   | { type: 'action_taken'; seat: SeatIndex; action: 'hu' | 'peng' | 'gang' | 'chi' | 'pass' }
-  | { type: 'game_end'; reason: 'draw' | 'hu'; winnerSeat?: SeatIndex; loserSeat?: SeatIndex; winTile?: TileId; tai?: TaiResult; winnerHand?: TileId[]; winnerMelds?: Meld[] }
+  | { type: 'game_end'; reason: 'draw' | 'hu'; winnerSeat?: SeatIndex; loserSeat?: SeatIndex; winTile?: TileId; tai?: TaiResult; winnerHand?: TileId[]; winnerMelds?: Meld[]; scores?: Array<{ seat: SeatIndex; name: string; score: number }> }
   | { type: 'turn_timer'; seat: SeatIndex; thinkMs: number; baseMs: number; startAt: number }
