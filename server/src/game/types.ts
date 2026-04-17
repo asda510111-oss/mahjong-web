@@ -1,5 +1,5 @@
-import type { TileId } from './tiles'
-import type { Meld, TaiResult } from './rules'
+import type { TileId } from './tiles.js'
+import type { Meld, TaiResult } from './rules.js'
 
 export type SeatIndex = 0 | 1 | 2 | 3
 export const SEAT_LABELS = ['東', '南', '西', '北'] as const

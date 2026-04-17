@@ -7,8 +7,8 @@
 //   胡牌：5 組面子 + 1 對將（含已露出的副子）
 //   副子：已公開的面子（碰、槓、吃）
 
-import type { TileId } from './tiles'
-import { getTileDef } from './tiles'
+import type { TileId } from './tiles.js'
+import { getTileDef } from './tiles.js'
 
 export type MeldType = 'peng' | 'gang_exposed' | 'gang_concealed' | 'gang_added' | 'chi' | 'flower'
 
