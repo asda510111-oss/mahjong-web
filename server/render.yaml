@@ -1,0 +1,12 @@
+# Render.com 服務設定（把 repo 連上 Render 後會自動讀取）
+services:
+  - type: web
+    name: mahjong-relay
+    runtime: node
+    rootDir: server
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    plan: free
+    envVars:
+      - key: NODE_VERSION
+        value: 20
