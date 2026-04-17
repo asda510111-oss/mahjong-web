@@ -189,9 +189,16 @@ export class Room {
     if (!p) return { ok: false, error: '不在房間' }
     if (p.seat !== this.currentTurnSeat) return { ok: false, error: '不是你的回合' }
     const hand = this.hands.get(p.id) ?? []
+    if (!hand.includes(tile)) return { ok: false, error: '你沒有這張牌' }
+    this.doDiscard(p, tile)
+    return { ok: true }
+  }
+
+  // 實際執行打牌（已通過驗證，或由超時自動呼叫）
+  private doDiscard(p: ServerPlayer, tile: TileId): void {
+    const hand = this.hands.get(p.id) ?? []
     const idx = hand.indexOf(tile)
-    if (idx < 0) return { ok: false, error: '你沒有這張牌' }
-    // 人類玩家：結算本輪計時
+    if (idx < 0) return
     if (!p.isBot) this.settleTurnTimer(p.id)
     hand.splice(idx, 1)
     this.discards[p.seat].push(tile)
@@ -199,10 +206,7 @@ export class Room {
     this.justDrawnTile = null
     this.broadcast({ type: 'tile_discarded', seat: p.seat, tile })
     this.broadcastPublicState()
-
-    // 判斷其他家是否可動作
     this.evaluateDiscard(tile, p.seat)
-    return { ok: true }
   }
 
   handleAction(
