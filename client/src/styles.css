@@ -194,12 +194,12 @@ input:focus { border-color: var(--accent); }
   align-items: stretch;
   justify-content: center;
   min-height: 0;
-  /* 玩家視角：輕度傾斜模擬坐在桌邊的角度 */
-  perspective: 1600px;
-  perspective-origin: 50% 100%;
+  /* 第一人稱視角：坐在桌邊強烈前傾 */
+  perspective: 1100px;
+  perspective-origin: 50% 95%;
 }
 .table-wrapper .table-grid {
-  transform: rotateX(18deg);
+  transform: rotateX(42deg);
   transform-origin: 50% 100%;
   transform-style: preserve-3d;
 }
@@ -215,7 +215,7 @@ input:focus { border-color: var(--accent); }
 }
 /* 反向旋轉頭像與名字，維持正面朝玩家 */
 .table-seat .seat-card {
-  transform: rotateX(-18deg);
+  transform: rotateX(-42deg);
   transform-origin: center;
 }
 
