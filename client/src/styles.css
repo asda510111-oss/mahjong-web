@@ -228,9 +228,9 @@ input:focus { border-color: var(--accent); }
   transform: rotateY(-22deg);
   transform-origin: right center;
 }
-/* 對家（上方）：強烈往後傾，立體感最明顯 */
+/* 對家（上方）：大幅往後傾，接近攤平躺在桌面上 */
 .table-seat.pos-top .seat-backs {
-  transform: rotateX(30deg);
+  transform: rotateX(70deg);
   transform-origin: bottom center;
 }
 /* 對家牌背：加厚頂面，讓 3D 更明顯 */
@@ -249,7 +249,7 @@ input:focus { border-color: var(--accent); }
   transform-origin: right center;
 }
 .table-seat.pos-top .seat-melds {
-  transform: rotateX(30deg);
+  transform: rotateX(70deg);
   transform-origin: bottom center;
 }
 .table-grid {
