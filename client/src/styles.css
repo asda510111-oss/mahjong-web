@@ -275,23 +275,116 @@ input:focus { border-color: var(--accent); }
 .table-seat.pos-right { flex-direction: column; align-items: stretch; }
 
 /* 牌背 */
+/* ===== 3D 盒狀牌背 =====
+   用 pseudo-element 做頂面 + 正面兩個可見面，其他 4 面不可見省略
+   - ::before = 頂面（斜向上翻 60°）
+   - 本體 = 正面（直立）
+*/
 .tile.back {
-  background: linear-gradient(135deg, #1b7b4c, #0d4b2a);
-  border: 1px solid #0a3d22;
-  box-shadow: inset 0 2px 0 rgba(255,255,255,0.2), 0 1px 2px rgba(0,0,0,0.4);
-  border-radius: 5px;
-}
-.tile.back.compact {
-  --tile-w: 18px;
-  --tile-h: 24px;
+  --back-depth: 5px;
+  position: relative;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
   padding: 0;
 }
-/* 左右兩家牌背縮成 0.5 倍（原 24×18 → 12×9）*/
+.tile.back.compact {
+  --tile-w: 14px;
+  --tile-h: 22px;
+  --back-depth: 5px;
+  padding: 0;
+}
+/* 正面 */
+.tile.back::after {
+  content: '';
+  position: absolute;
+  left: 0; right: 0;
+  top: var(--back-depth);
+  bottom: 0;
+  background: linear-gradient(180deg, #1b7b4c 0%, #0f5a35 60%, #083e24 100%);
+  border: 1px solid #06301b;
+  border-top: none;
+  border-radius: 0 0 3px 3px;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.12),
+    0 3px 4px rgba(0,0,0,0.6);
+}
+/* 頂面（斜 60° 翻向上） */
+.tile.back::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: var(--back-depth);
+  background: linear-gradient(180deg, #6ddba3 0%, #3aa875 100%);
+  border: 1px solid #06301b;
+  border-bottom: none;
+  border-radius: 3px 3px 0 0;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.55);
+  transform: perspective(60px) rotateX(55deg);
+  transform-origin: bottom center;
+  z-index: 1;
+}
+
+/* 左右兩家：牌橫躺（頂面朝中央側） */
 .table-seat.pos-left .tile.back.compact,
 .table-seat.pos-right .tile.back.compact {
-  --tile-w: 12px;
-  --tile-h: 9px;
-  border-radius: 2px;
+  --tile-w: 22px;
+  --tile-h: 14px;
+  --back-depth: 5px;
+}
+/* 上家（左邊）：頂面朝右（靠中央） */
+.table-seat.pos-left .tile.back::after {
+  inset: 0 var(--back-depth) 0 0;
+  background: linear-gradient(90deg, #1b7b4c 0%, #0f5a35 60%, #083e24 100%);
+  border: 1px solid #06301b;
+  border-right: none;
+  border-radius: 3px 0 0 3px;
+  box-shadow:
+    inset 1px 0 0 rgba(255,255,255,0.12),
+    3px 0 4px rgba(0,0,0,0.6);
+  top: 0;
+}
+.table-seat.pos-left .tile.back::before {
+  left: auto;
+  right: 0;
+  top: 0;
+  width: var(--back-depth);
+  height: 100%;
+  background: linear-gradient(90deg, #3aa875 0%, #6ddba3 100%);
+  border: 1px solid #06301b;
+  border-left: none;
+  border-radius: 0 3px 3px 0;
+  box-shadow: inset -1px 0 0 rgba(255,255,255,0.55);
+  transform: perspective(60px) rotateY(-55deg);
+  transform-origin: left center;
+}
+/* 下家（右邊）：頂面朝左（靠中央） */
+.table-seat.pos-right .tile.back::after {
+  inset: 0 0 0 var(--back-depth);
+  background: linear-gradient(270deg, #1b7b4c 0%, #0f5a35 60%, #083e24 100%);
+  border: 1px solid #06301b;
+  border-left: none;
+  border-radius: 0 3px 3px 0;
+  box-shadow:
+    inset -1px 0 0 rgba(255,255,255,0.12),
+    -3px 0 4px rgba(0,0,0,0.6);
+  top: 0;
+}
+.table-seat.pos-right .tile.back::before {
+  left: 0;
+  top: 0;
+  width: var(--back-depth);
+  height: 100%;
+  background: linear-gradient(270deg, #3aa875 0%, #6ddba3 100%);
+  border: 1px solid #06301b;
+  border-right: none;
+  border-radius: 3px 0 0 3px;
+  box-shadow: inset 1px 0 0 rgba(255,255,255,0.55);
+  transform: perspective(60px) rotateY(55deg);
+  transform-origin: right center;
 }
 .seat-backs {
   display: flex;
