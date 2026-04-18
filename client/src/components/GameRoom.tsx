@@ -238,6 +238,8 @@ export default function GameRoom({
       </div>
 
       <div className="table-wrapper">
+        <div className="wood-edge wood-left" aria-hidden="true" />
+        <div className="wood-edge wood-right" aria-hidden="true" />
         <div className="table-grid">
           <div className="grid-top">{renderSeat('top', topSeat)}</div>
           <div className="grid-left">{renderSeat('left', leftSeat)}</div>
