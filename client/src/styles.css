@@ -283,18 +283,31 @@ input:focus { border-color: var(--accent); }
 .seat-score.neg { color: #ef5350; }
 
 /* 座位內部排版（依位置不同） */
-/* 全部座位統一：頭像在手牌左上方 */
-.table-seat.pos-top,
-.table-seat.pos-bottom,
-.table-seat.pos-left,
-.table-seat.pos-right {
-  flex-direction: column;
-  align-items: flex-start;
+/* 各家頭像放在「該家視角的手牌左上方」—— 換算到螢幕座標：
+   - 自家（bottom，面向上）：top-left of area
+   - 下家（right，面向左）：top-left of area
+   - 對家（top，面向下）：bottom-right of area（180°）
+   - 上家（left，面向右）：bottom-right of area（90°）
+*/
+.table-seat {
   flex-wrap: nowrap;
   gap: 0.25rem;
 }
-.table-seat .seat-card {
-  align-self: flex-start;
+.table-seat.pos-bottom {
+  flex-direction: column;
+  align-items: flex-start;
+}
+.table-seat.pos-right {
+  flex-direction: column;
+  align-items: flex-start;
+}
+.table-seat.pos-top {
+  flex-direction: column-reverse;
+  align-items: flex-end;
+}
+.table-seat.pos-left {
+  flex-direction: column-reverse;
+  align-items: flex-end;
 }
 
 /* 牌背 */
