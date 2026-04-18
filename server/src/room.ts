@@ -339,20 +339,10 @@ export class Room {
   private responseStartAt: Map<string, number> = new Map()
 
   private startResponseTimer(p: ServerPlayer) {
+    // 倒數計時暫停中：不啟動、不廣播、不自動 pass
     this.clearResponseTimer(p.id)
-    const base = this.playerBase.get(p.id) ?? 0
-    const startAt = Date.now()
-    this.responseStartAt.set(p.id, startAt)
-    this.sendTo(p.id, {
-      type: 'turn_timer',
-      seat: p.seat,
-      thinkMs: THINK_MS,
-      baseMs: base * 1000,
-      startAt,
-    })
-    const totalMs = THINK_MS + base * 1000
-    const id = setTimeout(() => this.handleResponseTimeout(p.id), totalMs + 100)
-    this.responseTimerIds.set(p.id, id)
+    void this.handleResponseTimeout
+    return
   }
 
   private clearResponseTimer(pid: string) {
@@ -623,21 +613,12 @@ export class Room {
   }
 
   // ========= 計時器 =========
-  private startTurnTimer(seat: SeatIndex) {
+  // 倒數計時暫停中：保留框架但不啟動、不廣播、不自動出牌
+  private startTurnTimer(_seat: SeatIndex) {
     this.stopTurnTimer()
-    const p = this.getPlayerBySeat(seat)
-    if (!p || p.isBot) return
-    const base = this.playerBase.get(p.id) ?? 0
-    this.turnStartAt = Date.now()
-    const totalMs = THINK_MS + base * 1000
-    this.broadcast({
-      type: 'turn_timer',
-      seat,
-      thinkMs: THINK_MS,
-      baseMs: base * 1000,
-      startAt: this.turnStartAt,
-    })
-    this.turnTimerId = setTimeout(() => this.handleTurnTimeout(seat), totalMs + 100)
+    // 保留 handleTurnTimeout 參考，之後要重新開啟計時時直接改這裡
+    void this.handleTurnTimeout
+    return
   }
 
   private stopTurnTimer() {
