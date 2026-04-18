@@ -217,15 +217,16 @@ input:focus { border-color: var(--accent); }
   transform-origin: center;
 }
 
-/* ===== 各家牌牆：直立牌沿對角線延伸 =====
-   上家（左）：整條從左下往右上延伸 */
+/* ===== 各家牌牆：直立牌橫向並排後旋轉成對角線 =====
+   上家（左）：整排逆時針旋轉，從左下延伸到右上 */
 .table-seat.pos-left .seat-backs {
-  transform: rotate(-18deg) rotateY(-15deg);
+  transform: rotate(-55deg);
   transform-origin: bottom left;
+  /* 因為旋轉後會超出原本 grid 區域，讓 overflow 可見 */
 }
-/* 下家（右）：鏡像，從右下往左上延伸 */
+/* 下家（右）：鏡像 */
 .table-seat.pos-right .seat-backs {
-  transform: rotate(18deg) rotateY(15deg);
+  transform: rotate(55deg);
   transform-origin: bottom right;
 }
 /* 對家（上方）：從玩家視角看，牌向前傾倒 60° */
@@ -241,11 +242,11 @@ input:focus { border-color: var(--accent); }
 }
 /* 副子也跟著該家的牌牆一起傾 */
 .table-seat.pos-left .seat-melds {
-  transform: rotate(-18deg) rotateY(-15deg);
+  transform: rotate(-55deg);
   transform-origin: bottom left;
 }
 .table-seat.pos-right .seat-melds {
-  transform: rotate(18deg) rotateY(15deg);
+  transform: rotate(55deg);
   transform-origin: bottom right;
 }
 .table-seat.pos-top .seat-melds {
@@ -442,7 +443,8 @@ input:focus { border-color: var(--accent); }
 }
 .table-seat.pos-left .seat-backs,
 .table-seat.pos-right .seat-backs {
-  flex-direction: column;
+  /* 直立牌橫向並排，整排再旋轉成對角線 */
+  flex-direction: row;
   flex-wrap: nowrap;
   max-height: none;
   align-content: flex-start;
