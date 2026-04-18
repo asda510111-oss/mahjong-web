@@ -592,8 +592,7 @@ input:focus { border-color: var(--accent); }
   right: 0;
   bottom: 0;
   padding: 0.5rem;
-  background: rgba(0, 0, 0, 0.75);
-  backdrop-filter: blur(6px);
+  background: transparent;
   border-top: 2px solid var(--accent-dark);
   z-index: 50;
   overflow-x: auto;
