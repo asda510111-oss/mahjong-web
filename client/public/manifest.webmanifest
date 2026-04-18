@@ -1,0 +1,20 @@
+{
+  "name": "台灣麻將 Online",
+  "short_name": "台麻",
+  "description": "4 人連線台灣麻將，支援好友房 + 自動配對 + AI 補位",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "landscape",
+  "background_color": "#0b5d3b",
+  "theme_color": "#0b5d3b",
+  "lang": "zh-TW",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

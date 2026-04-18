@@ -19,7 +19,10 @@ html, body, #root {
   padding: 0;
   min-height: 100%;
   width: 100%;
-  background: radial-gradient(ellipse at center, var(--felt) 0%, var(--bg-dark) 100%);
+  background:
+    radial-gradient(ellipse at center, var(--felt) 0%, var(--bg-dark) 100%),
+    repeating-linear-gradient(45deg, rgba(0,0,0,0.02) 0 2px, transparent 2px 4px);
+  background-blend-mode: multiply;
   color: var(--text);
   -webkit-tap-highlight-color: transparent;
   touch-action: manipulation;
@@ -117,16 +120,23 @@ input:focus { border-color: var(--accent); }
 .lobby-seat.empty { opacity: 0.5; }
 .avatar {
   font-size: 2rem;
-  background: rgba(255, 255, 255, 0.12);
+  background: radial-gradient(circle at 35% 30%, rgba(255,255,255,0.25), rgba(255,255,255,0.05));
   border-radius: 50%;
-  width: 48px;
-  height: 48px;
+  width: 52px;
+  height: 52px;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+  border: 2.5px solid var(--accent-dark);
+  box-shadow:
+    0 0 0 2px rgba(0,0,0,0.35),
+    inset 0 2px 4px rgba(255,255,255,0.15),
+    0 2px 4px rgba(0,0,0,0.5);
+  overflow: hidden;
 }
-.avatar.big { font-size: 2.2rem; width: 56px; height: 56px; }
+.avatar img, .avatar svg { width: 100%; height: 100%; display: block; }
+.avatar.big { font-size: 2.2rem; width: 60px; height: 60px; }
 
 /* 回合倒數顯示（貼在頭像右下）*/
 .avatar { position: relative; }
@@ -166,7 +176,8 @@ input:focus { border-color: var(--accent); }
 }
 .turn-timer.base {
   background: linear-gradient(135deg, #ffffff, #dcdcdc);
-  color: #fff;
+  color: #1a1a1a;
+  text-shadow: none;
   animation: timer-urgent 0.7s ease-in-out infinite;
 }
 @keyframes timer-urgent {
@@ -202,20 +213,35 @@ input:focus { border-color: var(--accent); }
 .grid-bottom { grid-area: bottom; }
 
 .table-seat {
-  background: rgba(0, 0, 0, 0.25);
-  border-radius: 12px;
-  padding: 0.6rem;
+  background: linear-gradient(180deg, rgba(20,60,40,0.55), rgba(0,0,0,0.5));
+  border-radius: 14px;
+  padding: 0.55rem;
   display: flex;
   gap: 0.5rem;
+  border: 2px solid rgba(201, 149, 42, 0.55);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.08),
+    0 3px 8px rgba(0,0,0,0.35);
 }
 .table-seat.turn {
-  outline: 3px solid var(--accent);
-  box-shadow: 0 0 14px rgba(245, 197, 66, 0.55);
-  background: rgba(0, 0, 0, 0.35);
+  border-color: var(--accent);
+  box-shadow:
+    0 0 0 2px rgba(245,197,66,0.4),
+    0 0 18px rgba(245, 197, 66, 0.6),
+    inset 0 1px 0 rgba(255,255,255,0.12);
+  background: linear-gradient(180deg, rgba(40,80,50,0.6), rgba(0,0,0,0.55));
 }
 .table-seat.me {
-  border: 2px dashed rgba(77, 171, 247, 0.75);
-  background: rgba(13, 71, 161, 0.12);
+  border-color: #4dabf7;
+  box-shadow:
+    0 0 0 2px rgba(77,171,247,0.35),
+    inset 0 1px 0 rgba(255,255,255,0.1);
+}
+.table-seat.me.turn {
+  border-color: var(--accent);
+  box-shadow:
+    0 0 0 2px rgba(245,197,66,0.4),
+    0 0 18px rgba(245,197,66,0.6);
 }
 .table-seat.empty {
   justify-content: center;
@@ -572,6 +598,38 @@ input:focus { border-color: var(--accent); }
   z-index: 50;
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
+}
+/* 倒數計時：放在手牌最右邊（剛摸牌的右側），顯示思考秒+基礎秒兩個數字 */
+.hand-timer-box {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255, 255, 255, 0.95);
+  border: 2px solid rgba(255, 255, 255, 0.9);
+  border-radius: 10px;
+  padding: 6px 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+  z-index: 2;
+}
+.turn-timer-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex-shrink: 0;
+  align-self: center;
+}
+.turn-timer-stack .turn-timer {
+  position: static;
+  min-width: 28px;
+  height: 22px;
+  font-size: 0.85rem;
+  padding: 0 6px;
+}
+.turn-timer-stack .turn-timer.dim {
+  opacity: 0.35;
+  animation: none;
+  filter: saturate(0.5);
 }
 .hand-fixed .hand {
   flex-wrap: nowrap;

@@ -3,12 +3,17 @@ import Tile from './Tile'
 import TableSeat from './TableSeat'
 import CenterArea from './CenterArea'
 import ActionBar from './ActionBar'
+import CountdownDisplay from './CountdownDisplay'
 import type { RoomState, SeatIndex, PublicPlayerState, ActionOptions } from '../game/types'
 import { SEAT_LABELS } from '../game/types'
 import type { TileId } from '../game/tiles'
 import { sortHand } from '../game/tiles'
 import { getTingTiles } from '../game/rules'
 import type { DiscardMap } from '../App'
+import catAvatar from '../assets/avatars/cat.svg'
+import pandaAvatar from '../assets/avatars/panda.svg'
+import foxAvatar from '../assets/avatars/fox.svg'
+import bearAvatar from '../assets/avatars/bear.svg'
 
 interface Props {
   room: RoomState
@@ -34,7 +39,7 @@ interface Props {
   onAction: (action: 'pass' | 'hu' | 'peng' | 'gang' | 'chi', chiIndex?: number) => void
 }
 
-const SEAT_AVATARS = ['🦁', '🐼', '🦊', '🐻']
+const SEAT_AVATARS = [catAvatar, pandaAvatar, foxAvatar, bearAvatar]
 
 export default function GameRoom({
   room, myPlayerId, mySeat, myHand, discards, publicStates = [], wallRemaining,
@@ -173,7 +178,7 @@ export default function GameRoom({
             const p = getPlayer(seat)
             return (
               <div key={seat} className={`lobby-seat ${!p ? 'empty' : ''}`}>
-                <div className="avatar big">{p ? SEAT_AVATARS[seat] : '❓'}</div>
+                <div className="avatar big">{p ? <img src={SEAT_AVATARS[seat]} alt="" /> : '❓'}</div>
                 <div>
                   <div className="seat-name">{p ? p.name : '等待加入...'}</div>
                   <div className="seat-sub">{SEAT_LABELS[seat]}{p?.isBot && ' 🤖'}</div>
@@ -205,7 +210,6 @@ export default function GameRoom({
         isDealer={dealerSeat === seat}
         isTurn={currentTurn === seat}
         isMe={seat === mySeat}
-        turnTimer={turnTimer && turnTimer.seat === seat ? turnTimer : null}
         score={getScore(seat)}
       />
     )
@@ -314,6 +318,15 @@ export default function GameRoom({
           )}
           {sortedHand.length === 0 && !drawnTile && <span className="muted">（尚未發牌）</span>}
         </div>
+        {turnTimer && mySeat !== null && turnTimer.seat === mySeat && (
+          <div className="hand-timer-box">
+            <CountdownDisplay
+              thinkMs={turnTimer.thinkMs}
+              baseMs={turnTimer.baseMs}
+              startAt={turnTimer.startAt}
+            />
+          </div>
+        )}
       </div>
     </div>
   )

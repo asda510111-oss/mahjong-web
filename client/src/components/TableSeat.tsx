@@ -1,7 +1,10 @@
-import { useEffect, useState } from 'react'
 import Tile from './Tile'
 import type { PublicPlayerState, PlayerInfo, SeatIndex } from '../game/types'
 import { SEAT_LABELS } from '../game/types'
+import catAvatar from '../assets/avatars/cat.svg'
+import pandaAvatar from '../assets/avatars/panda.svg'
+import foxAvatar from '../assets/avatars/fox.svg'
+import bearAvatar from '../assets/avatars/bear.svg'
 
 type Position = 'top' | 'left' | 'right' | 'bottom'
 
@@ -13,40 +16,14 @@ interface Props {
   isDealer: boolean
   isTurn: boolean
   isMe: boolean
-  turnTimer: { seat: SeatIndex; thinkMs: number; baseMs: number; startAt: number } | null
   score: number | null
 }
 
-const SEAT_AVATARS = ['🦁', '🐼', '🦊', '🐻'] as const
-
-// 倒數元件：先扣思考時間（綠），再扣基礎時間（紅）
-function CountdownDisplay({ thinkMs, baseMs, startAt }: { thinkMs: number; baseMs: number; startAt: number }) {
-  const [, setTick] = useState(0)
-  useEffect(() => {
-    const id = setInterval(() => setTick(t => t + 1), 200)
-    return () => clearInterval(id)
-  }, [])
-  const elapsed = Math.max(0, Date.now() - startAt)
-  let remain: number
-  let phase: 'think' | 'base'
-  if (elapsed < thinkMs) {
-    remain = (thinkMs - elapsed) / 1000
-    phase = 'think'
-  } else {
-    const baseElapsed = elapsed - thinkMs
-    remain = Math.max(0, (baseMs - baseElapsed) / 1000)
-    phase = 'base'
-  }
-  const display = Math.ceil(remain)
-  return (
-    <div className={`turn-timer ${phase}`}>
-      {display}
-    </div>
-  )
-}
+const SEAT_AVATARS = [catAvatar, pandaAvatar, foxAvatar, bearAvatar] as const
+const SEAT_AVATAR_ALT = ['貓', '熊貓', '狐狸', '熊'] as const
 
 export default function TableSeat({
-  position, player, seat, publicState, isDealer, isTurn, isMe, turnTimer, score,
+  position, player, seat, publicState, isDealer, isTurn, isMe, score,
 }: Props) {
   const handCount = publicState?.handCount ?? 0
   const melds = publicState?.melds ?? []
@@ -55,16 +32,7 @@ export default function TableSeat({
   return (
     <div className={`table-seat pos-${position} ${isTurn ? 'turn' : ''} ${isMe ? 'me' : ''}`}>
       <div className="seat-card">
-        <div className="avatar">
-          {avatar}
-          {isTurn && turnTimer && (
-            <CountdownDisplay
-              thinkMs={turnTimer.thinkMs}
-              baseMs={turnTimer.baseMs}
-              startAt={turnTimer.startAt}
-            />
-          )}
-        </div>
+        <div className="avatar"><img src={avatar} alt={SEAT_AVATAR_ALT[seat]} /></div>
         <div className="seat-text">
           <div className="seat-name">
             {player.name}{player.isBot && ' 🤖'}
