@@ -283,10 +283,19 @@ input:focus { border-color: var(--accent); }
 .seat-score.neg { color: #ef5350; }
 
 /* 座位內部排版（依位置不同） */
+/* 全部座位統一：頭像在手牌左上方 */
 .table-seat.pos-top,
-.table-seat.pos-bottom { flex-direction: row; flex-wrap: wrap; align-items: center; }
+.table-seat.pos-bottom,
 .table-seat.pos-left,
-.table-seat.pos-right { flex-direction: column; align-items: stretch; }
+.table-seat.pos-right {
+  flex-direction: column;
+  align-items: flex-start;
+  flex-wrap: nowrap;
+  gap: 0.25rem;
+}
+.table-seat .seat-card {
+  align-self: flex-start;
+}
 
 /* 牌背 */
 /* ===== 3D 盒狀牌背 =====
