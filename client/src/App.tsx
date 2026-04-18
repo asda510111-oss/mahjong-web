@@ -7,6 +7,7 @@ import { gameClient, resolveServerUrl, type ConnectionStatus } from './net/ws'
 import type { RoomState, SeatIndex, ServerMessage, PublicPlayerState, ActionOptions } from './game/types'
 import type { TileId } from './game/tiles'
 import type { Meld, TaiResult } from './game/rules'
+import { playSound, unlockAudio } from './utils/sounds'
 
 export type DiscardMap = Record<number, TileId[]>
 const EMPTY_DISCARDS: DiscardMap = { 0: [], 1: [], 2: [], 3: [] }
@@ -47,6 +48,15 @@ export default function App() {
   useEffect(() => { roomRef.current = room }, [room])
 
   useEffect(() => {
+    // iOS Safari 需要使用者互動後才能播放音效：第一次點擊/觸控時解鎖
+    const unlock = () => {
+      unlockAudio()
+      window.removeEventListener('pointerdown', unlock)
+      window.removeEventListener('touchstart', unlock)
+    }
+    window.addEventListener('pointerdown', unlock, { once: true })
+    window.addEventListener('touchstart', unlock, { once: true })
+
     const offStatus = gameClient.onStatusChange(setStatus)
     gameClient.connect(resolveServerUrl()).catch((e) => {
       console.error(e)
@@ -159,6 +169,10 @@ export default function App() {
             const actionLabel: Record<string, string> = { hu: '胡', peng: '碰', gang: '槓', chi: '吃' }
             setNotice(`${['東','南','西','北'][msg.seat]}家 ${actionLabel[msg.action]}！`)
             setTimeout(() => setNotice(''), 1500)
+            // 播放對應音效
+            if (msg.action === 'chi' || msg.action === 'peng' || msg.action === 'gang' || msg.action === 'hu') {
+              playSound(msg.action)
+            }
           }
           break
         case 'game_end':
