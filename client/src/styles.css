@@ -203,19 +203,50 @@ input:focus { border-color: var(--accent); }
   transform-origin: 50% 100%;
   transform-style: preserve-3d;
 }
-/* 讓 3D 空間延伸到 seat-card，才能做 counter-rotate */
+/* 讓 3D 空間延伸到手牌層 */
 .table-grid .grid-top,
 .table-grid .grid-left,
 .table-grid .grid-right,
 .table-grid .grid-bottom,
 .table-grid .grid-center,
-.table-grid .table-seat {
+.table-grid .table-seat,
+.seat-backs {
   transform-style: preserve-3d;
 }
-/* 反向旋轉頭像與名字，讓它們始終正面朝向玩家、不被桌面透視影響 */
+/* 反向旋轉頭像與名字，維持正面朝玩家 */
 .table-seat .seat-card {
   transform: rotateX(-18deg);
   transform-origin: center;
+}
+
+/* ===== 各家牌牆往中央匯聚（梯形 3D 視角）===== */
+/* 上家（左邊）：整片牌牆往右傾（遠邊退到螢幕左外側） */
+.table-seat.pos-left .seat-backs {
+  transform: rotateY(-22deg);
+  transform-origin: right center;
+}
+/* 下家（右邊）：鏡像 */
+.table-seat.pos-right .seat-backs {
+  transform: rotateY(22deg);
+  transform-origin: left center;
+}
+/* 對家（上方）：再往後傾一點，強化景深 */
+.table-seat.pos-top .seat-backs {
+  transform: rotateX(14deg);
+  transform-origin: bottom center;
+}
+/* 副子也跟著該家的牌牆一起傾 */
+.table-seat.pos-left .seat-melds {
+  transform: rotateY(-22deg);
+  transform-origin: right center;
+}
+.table-seat.pos-right .seat-melds {
+  transform: rotateY(22deg);
+  transform-origin: left center;
+}
+.table-seat.pos-top .seat-melds {
+  transform: rotateX(14deg);
+  transform-origin: bottom center;
 }
 .table-grid {
   display: grid;
