@@ -593,7 +593,7 @@ input:focus { border-color: var(--accent); }
   bottom: 0;
   padding: 0.5rem;
   background: transparent;
-  border-top: 2px solid var(--accent-dark);
+  border-top: none;
   z-index: 50;
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
@@ -642,6 +642,22 @@ input:focus { border-color: var(--accent); }
   /* 手牌放大（不影響桌上其他牌） */
   --tile-w: 45px;
   --tile-h: 60px;
+}
+
+/* 輪到我時，手牌柔和脈動（僅未選取的牌；選取中的牌保持原樣避免抖動） */
+.hand-fixed.my-turn .hand .tile:not(.selected) {
+  animation: hand-pulse 0.7s ease-in-out infinite;
+}
+@keyframes hand-pulse {
+  0%, 100% {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.35);
+  }
+  50% {
+    box-shadow:
+      0 2px 4px rgba(0, 0, 0, 0.35),
+      0 0 12px rgba(245, 197, 66, 1),
+      0 0 20px rgba(245, 197, 66, 0.75);
+  }
 }
 .hand-hint {
   text-align: center;

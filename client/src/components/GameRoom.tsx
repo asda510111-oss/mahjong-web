@@ -284,7 +284,7 @@ export default function GameRoom({
       )}
 
       {/* 固定底部手牌 */}
-      <div className="hand-fixed" style={isMyTurn ? { boxShadow: '0 -4px 16px rgba(245,197,66,0.4)' } : undefined}>
+      <div className={`hand-fixed ${isMyTurn ? 'my-turn' : ''}`}>
         <div className="hand-hint">
           {mySeat !== null && `你是 ${SEAT_LABELS[mySeat]}家`}
           {' · '}
