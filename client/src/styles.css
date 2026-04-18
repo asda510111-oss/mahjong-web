@@ -220,15 +220,15 @@ input:focus { border-color: var(--accent); }
 }
 
 /* ===== 各家牌牆往中央匯聚（梯形 3D 視角）===== */
-/* 上家（左邊）：整片牌牆往右傾（遠邊退到螢幕左外側） */
+/* 上家（左邊 AI-3）：整片牌牆傾斜，外緣（左）近、內緣（右）遠 */
 .table-seat.pos-left .seat-backs {
-  transform: rotateY(-22deg);
-  transform-origin: right center;
-}
-/* 下家（右邊）：鏡像 */
-.table-seat.pos-right .seat-backs {
   transform: rotateY(22deg);
   transform-origin: left center;
+}
+/* 下家（右邊 AI-1）：鏡像 */
+.table-seat.pos-right .seat-backs {
+  transform: rotateY(-22deg);
+  transform-origin: right center;
 }
 /* 對家（上方）：再往後傾一點，強化景深 */
 .table-seat.pos-top .seat-backs {
@@ -237,12 +237,12 @@ input:focus { border-color: var(--accent); }
 }
 /* 副子也跟著該家的牌牆一起傾 */
 .table-seat.pos-left .seat-melds {
-  transform: rotateY(-22deg);
-  transform-origin: right center;
-}
-.table-seat.pos-right .seat-melds {
   transform: rotateY(22deg);
   transform-origin: left center;
+}
+.table-seat.pos-right .seat-melds {
+  transform: rotateY(-22deg);
+  transform-origin: right center;
 }
 .table-seat.pos-top .seat-melds {
   transform: rotateX(14deg);
@@ -407,34 +407,8 @@ input:focus { border-color: var(--accent); }
   --tile-h: 20px;
   --back-depth: 9px;
 }
-/* 上家（左邊）：頂面朝右（靠中央） */
+/* 上家（左邊 AI-3）：頂面朝「左」（面向該家自己） */
 .table-seat.pos-left .tile.back::after {
-  inset: 0;
-  right: var(--back-depth);
-  top: 0;
-  background: linear-gradient(90deg, #1b8550 0%, #0f5a35 55%, #072f1b 100%);
-  border-right: none;
-  border-radius: 4px 0 0 4px;
-  box-shadow:
-    inset 1px 0 0 rgba(255,255,255,0.08),
-    inset -1px 0 0 rgba(0,0,0,0.4),
-    3px 0 5px rgba(0,0,0,0.65);
-}
-.table-seat.pos-left .tile.back::before {
-  left: auto;
-  right: 0;
-  top: 0;
-  width: calc(var(--back-depth) + 1px);
-  height: 100%;
-  background: linear-gradient(90deg, #2a9860 0%, #4fbd82 30%, #86e5b0 100%);
-  border: 1.5px solid #041c10;
-  border-radius: 0 4px 4px 0;
-  box-shadow:
-    inset -2px 0 0 rgba(255,255,255,0.55),
-    inset 1px 0 0 rgba(0,0,0,0.5);
-}
-/* 下家（右邊）：頂面朝左（靠中央） */
-.table-seat.pos-right .tile.back::after {
   inset: 0;
   left: var(--back-depth);
   top: 0;
@@ -446,7 +420,7 @@ input:focus { border-color: var(--accent); }
     inset 1px 0 0 rgba(0,0,0,0.4),
     -3px 0 5px rgba(0,0,0,0.65);
 }
-.table-seat.pos-right .tile.back::before {
+.table-seat.pos-left .tile.back::before {
   left: 0;
   top: 0;
   width: calc(var(--back-depth) + 1px);
@@ -457,6 +431,32 @@ input:focus { border-color: var(--accent); }
   box-shadow:
     inset 2px 0 0 rgba(255,255,255,0.55),
     inset -1px 0 0 rgba(0,0,0,0.5);
+}
+/* 下家（右邊 AI-1）：頂面朝「右」（面向該家自己） */
+.table-seat.pos-right .tile.back::after {
+  inset: 0;
+  right: var(--back-depth);
+  top: 0;
+  background: linear-gradient(90deg, #1b8550 0%, #0f5a35 55%, #072f1b 100%);
+  border-right: none;
+  border-radius: 4px 0 0 4px;
+  box-shadow:
+    inset 1px 0 0 rgba(255,255,255,0.08),
+    inset -1px 0 0 rgba(0,0,0,0.4),
+    3px 0 5px rgba(0,0,0,0.65);
+}
+.table-seat.pos-right .tile.back::before {
+  left: auto;
+  right: 0;
+  top: 0;
+  width: calc(var(--back-depth) + 1px);
+  height: 100%;
+  background: linear-gradient(90deg, #2a9860 0%, #4fbd82 30%, #86e5b0 100%);
+  border: 1.5px solid #041c10;
+  border-radius: 0 4px 4px 0;
+  box-shadow:
+    inset -2px 0 0 rgba(255,255,255,0.55),
+    inset 1px 0 0 rgba(0,0,0,0.5);
 }
 .seat-backs {
   display: flex;
