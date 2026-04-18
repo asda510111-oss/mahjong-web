@@ -219,13 +219,24 @@ input:focus { border-color: var(--accent); }
 
 /* ===== 各家牌牆：直立牌橫向並排後旋轉成對角線 =====
    對角角度參考桌邊透視，~35° */
+/* 左右家 seat-backs 用絕對定位鎖在相同垂直位置（避免 flex-direction 差異造成高度不一致） */
+.table-seat.pos-left,
+.table-seat.pos-right {
+  position: relative;
+}
+.table-seat.pos-left .seat-backs,
+.table-seat.pos-right .seat-backs {
+  position: absolute;
+  bottom: 40px;
+}
 .table-seat.pos-left .seat-backs {
-  /* 完整 -90°：垂直對齊，與該家手牌方向一致 */
-  transform: translate(120px, 120px) rotate(-90deg);
+  left: 0;
+  transform: translate(120px, 0) rotate(-90deg);
   transform-origin: bottom left;
 }
 .table-seat.pos-right .seat-backs {
-  transform: translate(-120px, 120px) rotate(90deg);
+  right: 0;
+  transform: translate(-120px, 0) rotate(90deg);
   transform-origin: bottom right;
 }
 /* 對家（上方）：從玩家視角看，牌向前傾倒 60°，並往上移、牌與牌之間不留間隙 */
