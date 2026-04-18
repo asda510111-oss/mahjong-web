@@ -220,11 +220,12 @@ input:focus { border-color: var(--accent); }
 /* ===== 各家牌牆：直立牌橫向並排後旋轉成對角線 =====
    對角角度參考桌邊透視，~35° */
 .table-seat.pos-left .seat-backs {
-  transform: translate(120px, 120px) rotate(-89deg);
+  /* 完整 -90°：垂直對齊，與該家手牌方向一致 */
+  transform: translate(120px, 120px) rotate(-90deg);
   transform-origin: bottom left;
 }
 .table-seat.pos-right .seat-backs {
-  transform: translate(-120px, 120px) rotate(89deg);
+  transform: translate(-120px, 120px) rotate(90deg);
   transform-origin: bottom right;
 }
 /* 對家（上方）：從玩家視角看，牌向前傾倒 60° */
@@ -240,11 +241,11 @@ input:focus { border-color: var(--accent); }
 }
 /* 副子也跟著該家的牌牆一起傾 */
 .table-seat.pos-left .seat-melds {
-  transform: translate(120px, 120px) rotate(-89deg);
+  transform: translate(120px, 120px) rotate(-90deg);
   transform-origin: bottom left;
 }
 .table-seat.pos-right .seat-melds {
-  transform: translate(-120px, 120px) rotate(89deg);
+  transform: translate(-120px, 120px) rotate(90deg);
   transform-origin: bottom right;
 }
 .table-seat.pos-top .seat-melds {
