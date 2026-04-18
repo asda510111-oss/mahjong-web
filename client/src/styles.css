@@ -414,63 +414,17 @@ input:focus { border-color: var(--accent); }
   z-index: 1;
 }
 
-/* 左右兩家：牌橫躺（頂面朝中央側）*/
-.table-seat.pos-left .tile.back.compact,
-.table-seat.pos-right .tile.back.compact {
-  --tile-w: 30px;
-  --tile-h: 20px;
+/* 上家（左邊 AI-3）：牌立著直向擺放，頂面在上 */
+.table-seat.pos-left .tile.back.compact {
+  --tile-w: 16px;
+  --tile-h: 26px;
   --back-depth: 9px;
 }
-/* 上家（左邊 AI-3）：頂面朝「左」（面向該家自己） */
-.table-seat.pos-left .tile.back::after {
-  inset: 0;
-  left: var(--back-depth);
-  top: 0;
-  background: linear-gradient(270deg, #1b8550 0%, #0f5a35 55%, #072f1b 100%);
-  border-left: none;
-  border-radius: 0 4px 4px 0;
-  box-shadow:
-    inset -1px 0 0 rgba(255,255,255,0.08),
-    inset 1px 0 0 rgba(0,0,0,0.4),
-    -3px 0 5px rgba(0,0,0,0.65);
-}
-.table-seat.pos-left .tile.back::before {
-  left: 0;
-  top: 0;
-  width: calc(var(--back-depth) + 1px);
-  height: 100%;
-  background: linear-gradient(270deg, #2a9860 0%, #4fbd82 30%, #86e5b0 100%);
-  border: 1.5px solid #041c10;
-  border-radius: 4px 0 0 4px;
-  box-shadow:
-    inset 2px 0 0 rgba(255,255,255,0.55),
-    inset -1px 0 0 rgba(0,0,0,0.5);
-}
-/* 下家（右邊 AI-1）：頂面朝「右」（面向該家自己） */
-.table-seat.pos-right .tile.back::after {
-  inset: 0;
-  right: var(--back-depth);
-  top: 0;
-  background: linear-gradient(90deg, #1b8550 0%, #0f5a35 55%, #072f1b 100%);
-  border-right: none;
-  border-radius: 4px 0 0 4px;
-  box-shadow:
-    inset 1px 0 0 rgba(255,255,255,0.08),
-    inset -1px 0 0 rgba(0,0,0,0.4),
-    3px 0 5px rgba(0,0,0,0.65);
-}
-.table-seat.pos-right .tile.back::before {
-  left: auto;
-  right: 0;
-  top: 0;
-  width: calc(var(--back-depth) + 1px);
-  height: 100%;
-  background: linear-gradient(90deg, #2a9860 0%, #4fbd82 30%, #86e5b0 100%);
-  border: 1.5px solid #041c10;
-  border-radius: 0 4px 4px 0;
-  box-shadow:
-    inset -2px 0 0 rgba(255,255,255,0.55),
-    inset 1px 0 0 rgba(0,0,0,0.5);
+/* 下家（右邊 AI-1）：同樣立著 */
+.table-seat.pos-right .tile.back.compact {
+  --tile-w: 16px;
+  --tile-h: 26px;
+  --back-depth: 9px;
 }
 .seat-backs {
   display: flex;
