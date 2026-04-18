@@ -386,6 +386,7 @@ input:focus { border-color: var(--accent); }
   left: 0; right: 0;
   top: var(--back-depth);
   bottom: 0;
+  box-sizing: border-box;
   background: linear-gradient(180deg, #1b8550 0%, #0f5a35 55%, #072f1b 100%);
   border: 1.5px solid #041c10;
   border-top: none;
@@ -400,9 +401,10 @@ input:focus { border-color: var(--accent); }
   content: '';
   position: absolute;
   left: 0;
+  right: 0;
   top: 0;
-  width: 100%;
   height: calc(var(--back-depth) + 1px);
+  box-sizing: border-box;
   background: linear-gradient(180deg, #86e5b0 0%, #4fbd82 70%, #2a9860 100%);
   border: 1.5px solid #041c10;
   border-radius: 4px 4px 0 0;
