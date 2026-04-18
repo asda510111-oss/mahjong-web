@@ -194,14 +194,28 @@ input:focus { border-color: var(--accent); }
   align-items: stretch;
   justify-content: center;
   min-height: 0;
-  /* 玩家視角：從自家這一側往前看桌面，近處大、遠處小 */
-  perspective: 900px;
-  perspective-origin: 50% 110%;
+  /* 玩家視角：輕度傾斜模擬坐在桌邊的角度 */
+  perspective: 1600px;
+  perspective-origin: 50% 100%;
 }
 .table-wrapper .table-grid {
-  transform: rotateX(32deg);
+  transform: rotateX(18deg);
   transform-origin: 50% 100%;
   transform-style: preserve-3d;
+}
+/* 讓 3D 空間延伸到 seat-card，才能做 counter-rotate */
+.table-grid .grid-top,
+.table-grid .grid-left,
+.table-grid .grid-right,
+.table-grid .grid-bottom,
+.table-grid .grid-center,
+.table-grid .table-seat {
+  transform-style: preserve-3d;
+}
+/* 反向旋轉頭像與名字，讓它們始終正面朝向玩家、不被桌面透視影響 */
+.table-seat .seat-card {
+  transform: rotateX(-18deg);
+  transform-origin: center;
 }
 .table-grid {
   display: grid;
