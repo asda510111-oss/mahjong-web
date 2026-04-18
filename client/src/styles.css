@@ -388,10 +388,10 @@ input:focus { border-color: var(--accent); }
   align-items: center;
   justify-content: center;
   text-align: center;
-  padding: 0.3rem;
+  padding: 0.15rem;
   background: rgba(0,0,0,0.35);
-  border-radius: 10px;
-  min-width: 80px;
+  border-radius: 6px;
+  min-width: 40px;
 }
 .cd .tile {
   --tile-w: 44px;
@@ -434,19 +434,19 @@ input:focus { border-color: var(--accent); }
   transform: translate(-50%, -50%) rotate(-90deg) scale(1.12);
 }
 .center-round {
-  font-size: 0.9rem;
+  font-size: 0.45rem;
   font-weight: 700;
   color: var(--accent);
-  letter-spacing: 0.1em;
+  letter-spacing: 0.05em;
 }
 .center-wall-num {
-  font-size: 1.8rem;
+  font-size: 0.9rem;
   font-weight: 800;
   color: var(--text);
   line-height: 1.1;
 }
 .center-wall-label {
-  font-size: 0.7rem;
+  font-size: 0.35rem;
   opacity: 0.7;
 }
 
@@ -513,9 +513,9 @@ input:focus { border-color: var(--accent); }
   .cd-top, .cd-bot { max-width: 140px; }
   /* 左右家橫向版：5×31 + 4×1 = 159px */
   .cd-left, .cd-right { max-height: 163px; }
-  .center-wall-num { font-size: 1.1rem; }
-  .center-round { font-size: 0.7rem; }
-  .center-wall-label { font-size: 0.6rem; }
+  .center-wall-num { font-size: 0.55rem; }
+  .center-round { font-size: 0.35rem; }
+  .center-wall-label { font-size: 0.3rem; }
 
   /* 手牌：變小 + 橫向可捲 + 不換行 */
   .hand-fixed { padding: 0.15rem 0.1rem; }
@@ -582,8 +582,8 @@ input:focus { border-color: var(--accent); }
   .seat-text .seat-sub { font-size: 0.72rem; }
   .seat-discards .tile { --tile-w: 22px; --tile-h: 30px; }
   .center-area { min-height: 70px; padding: 0.5rem; }
-  .center-wall-num { font-size: 1.8rem; }
-  .center-round { font-size: 1rem; }
+  .center-wall-num { font-size: 0.9rem; }
+  .center-round { font-size: 0.5rem; }
   .lobby-seats { grid-template-columns: 1fr; }
 }
 
