@@ -521,7 +521,7 @@ input:focus { border-color: var(--accent); }
   .hand-hint { font-size: 0.62rem; padding: 0; }
   .hand-fixed .hand { flex-wrap: nowrap; gap: 1px; justify-content: center; padding: 0.1rem; }
   .tile { --tile-w: 28px; --tile-h: 40px; }
-  .hand-fixed .hand .tile { --tile-w: 22px; --tile-h: 32px; }
+  .hand-fixed .hand .tile { --tile-w: 30px; --tile-h: 42px; }
 
   .action-bar { bottom: 70px; padding: 0.3rem; gap: 0.3rem; }
   .act-btn { padding: 0.35rem 0.75rem; font-size: 0.85rem; border-radius: 8px; }
@@ -530,7 +530,7 @@ input:focus { border-color: var(--accent); }
 /* ===== 超窄橫向（螢幕高度更小時再縮）===== */
 @media (orientation: landscape) and (max-height: 420px) {
   .tile { --tile-w: 24px; --tile-h: 34px; }
-  .hand-fixed .hand .tile { --tile-w: 19px; --tile-h: 27px; }
+  .hand-fixed .hand .tile { --tile-w: 26px; --tile-h: 36px; }
   .table-grid { grid-template-columns: 110px 1fr 110px; }
   .avatar { width: 24px; height: 24px; font-size: 0.95rem; }
   .hand-fixed { padding: 0.1rem 0.1rem; }
@@ -640,9 +640,9 @@ input:focus { border-color: var(--accent); }
 }
 .hand-fixed .hand .tile {
   flex-shrink: 0;
-  /* 手牌縮小 0.8 倍（不影響桌上其他牌） */
-  --tile-w: 35px;
-  --tile-h: 48px;
+  /* 手牌放大（不影響桌上其他牌） */
+  --tile-w: 46px;
+  --tile-h: 62px;
 }
 .hand-hint {
   text-align: center;
@@ -1121,7 +1121,7 @@ input:focus { border-color: var(--accent); }
 /* ===== Mobile ===== */
 @media (max-width: 600px) {
   .tile { --tile-w: 42px; --tile-h: 56px; }
-  .hand-fixed .hand .tile { --tile-w: 34px; --tile-h: 45px; }
+  .hand-fixed .hand .tile { --tile-w: 44px; --tile-h: 58px; }
   .seats { grid-template-columns: 1fr; }
   .seat { padding: 0.5rem; min-height: 2.5rem; }
   .room-header .code { font-size: 1.2rem; }
