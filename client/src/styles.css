@@ -217,16 +217,16 @@ input:focus { border-color: var(--accent); }
   transform-origin: center;
 }
 
-/* ===== 各家牌牆：牌背朝中央牌桌 =====
-   上家（左）：整片往右側翻（右邊的面向中央），牌背朝向螢幕右方 */
+/* ===== 各家牌牆：直立牌沿對角線延伸 =====
+   上家（左）：整條從左下往右上延伸 */
 .table-seat.pos-left .seat-backs {
-  transform: rotateY(-35deg);
-  transform-origin: right center;
+  transform: rotate(-18deg) rotateY(-15deg);
+  transform-origin: bottom left;
 }
-/* 下家（右）：鏡像，牌背朝向螢幕左方 */
+/* 下家（右）：鏡像，從右下往左上延伸 */
 .table-seat.pos-right .seat-backs {
-  transform: rotateY(35deg);
-  transform-origin: left center;
+  transform: rotate(18deg) rotateY(15deg);
+  transform-origin: bottom right;
 }
 /* 對家（上方）：從玩家視角看，牌向前傾倒 60° */
 .table-seat.pos-top .seat-backs {
@@ -241,12 +241,12 @@ input:focus { border-color: var(--accent); }
 }
 /* 副子也跟著該家的牌牆一起傾 */
 .table-seat.pos-left .seat-melds {
-  transform: rotateY(-35deg);
-  transform-origin: right center;
+  transform: rotate(-18deg) rotateY(-15deg);
+  transform-origin: bottom left;
 }
 .table-seat.pos-right .seat-melds {
-  transform: rotateY(35deg);
-  transform-origin: left center;
+  transform: rotate(18deg) rotateY(15deg);
+  transform-origin: bottom right;
 }
 .table-seat.pos-top .seat-melds {
   transform: rotateX(-60deg);
