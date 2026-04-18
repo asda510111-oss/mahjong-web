@@ -228,6 +228,9 @@ input:focus { border-color: var(--accent); }
 .table-seat.pos-right .seat-backs {
   position: absolute;
   bottom: 40px;
+  /* 限制最大長度：旋轉後不會超過對家手牌的位置 */
+  max-width: 240px;
+  overflow: hidden;
 }
 .table-seat.pos-left .seat-backs {
   left: 0;
@@ -427,17 +430,17 @@ input:focus { border-color: var(--accent); }
   z-index: 1;
 }
 
-/* 上家（左邊 AI-3）：牌立著直向擺放，頂面在上 */
+/* 上家（左邊 AI-3）：牌立著直向擺放，頂面在上，尺寸縮小讓整排不高過對家 */
 .table-seat.pos-left .tile.back.compact {
-  --tile-w: 16px;
-  --tile-h: 26px;
-  --back-depth: 9px;
+  --tile-w: 12px;
+  --tile-h: 20px;
+  --back-depth: 7px;
 }
 /* 下家（右邊 AI-1）：同樣立著 */
 .table-seat.pos-right .tile.back.compact {
-  --tile-w: 16px;
-  --tile-h: 26px;
-  --back-depth: 9px;
+  --tile-w: 12px;
+  --tile-h: 20px;
+  --back-depth: 7px;
 }
 .seat-backs {
   display: flex;
