@@ -232,16 +232,14 @@ input:focus { border-color: var(--accent); }
   background: linear-gradient(180deg, rgba(40,80,50,0.6), rgba(0,0,0,0.55));
 }
 .table-seat.me {
-  border-color: #4dabf7;
-  box-shadow:
-    0 0 0 2px rgba(77,171,247,0.35),
-    inset 0 1px 0 rgba(255,255,255,0.1);
+  border-color: transparent;
+  background: transparent;
+  box-shadow: none;
 }
 .table-seat.me.turn {
-  border-color: var(--accent);
-  box-shadow:
-    0 0 0 2px rgba(245,197,66,0.4),
-    0 0 18px rgba(245,197,66,0.6);
+  border-color: transparent;
+  background: transparent;
+  box-shadow: none;
 }
 .table-seat.empty {
   justify-content: center;
