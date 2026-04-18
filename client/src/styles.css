@@ -238,12 +238,13 @@ input:focus { border-color: var(--accent); }
 }
 .table-seat.pos-left .seat-backs {
   left: 0;
-  transform: translate(200px, 0) rotate(-90deg);
+  /* 再往下 152px（= 半個手牌總長 304px ÷ 2） */
+  transform: translate(200px, 152px) rotate(-90deg);
   transform-origin: bottom left;
 }
 .table-seat.pos-right .seat-backs {
   right: 0;
-  transform: translate(-200px, 0) rotate(90deg);
+  transform: translate(-200px, 152px) rotate(90deg);
   transform-origin: bottom right;
 }
 /* 對家（上方）：從玩家視角看，牌向前傾倒 60°，並往上移、牌與牌之間不留間隙 */
