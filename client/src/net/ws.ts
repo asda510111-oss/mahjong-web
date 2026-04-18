@@ -93,7 +93,8 @@ export type ConnectionStatus = 'disconnected' | 'connecting' | 'connected'
 // - 開發：ws://<host>:8080
 // - 生產：wss://<same-host>/ws  (由 Netlify/Render 反向代理設定；實際部署再調)
 export function resolveServerUrl(): string {
-  const envUrl = import.meta.env.VITE_WS_URL as string | undefined
+  // 優先使用環境變數（部署時設定 VITE_SERVER_URL 或舊的 VITE_WS_URL 都接受）
+  const envUrl = (import.meta.env.VITE_SERVER_URL || import.meta.env.VITE_WS_URL) as string | undefined
   if (envUrl) return envUrl
   const { hostname, protocol } = window.location
   if (hostname === 'localhost' || hostname === '127.0.0.1') {
