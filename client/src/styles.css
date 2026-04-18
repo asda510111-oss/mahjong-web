@@ -228,10 +228,11 @@ input:focus { border-color: var(--accent); }
   transform: translate(-120px, 120px) rotate(90deg);
   transform-origin: bottom right;
 }
-/* 對家（上方）：從玩家視角看，牌向前傾倒 60° */
+/* 對家（上方）：從玩家視角看，牌向前傾倒 60°，並往上移、牌與牌之間不留間隙 */
 .table-seat.pos-top .seat-backs {
-  transform: rotateX(-60deg);
+  transform: translateY(-80px) rotateX(-60deg);
   transform-origin: bottom center;
+  gap: 0;
 }
 /* 對家牌背：加厚頂面，讓 3D 更明顯 */
 .table-seat.pos-top .tile.back.compact {
@@ -249,8 +250,9 @@ input:focus { border-color: var(--accent); }
   transform-origin: bottom right;
 }
 .table-seat.pos-top .seat-melds {
-  transform: rotateX(-60deg);
+  transform: translateY(-80px) rotateX(-60deg);
   transform-origin: bottom center;
+  gap: 0;
 }
 .table-grid {
   display: grid;
