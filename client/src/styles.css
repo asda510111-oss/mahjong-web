@@ -226,8 +226,8 @@ input:focus { border-color: var(--accent); }
 .table-seat.pos-left .seat-backs,
 .table-seat.pos-right .seat-backs {
   position: absolute;
-  /* 相對 .table-wrapper 的下方固定位置 */
-  bottom: 80px;
+  /* 手牌中心對齊 table-wrapper 垂直中線 */
+  top: 50%;
   /* 牌與牌之間不留間隙 */
   gap: 0;
   max-width: 320px;
@@ -236,13 +236,13 @@ input:focus { border-color: var(--accent); }
 }
 .table-seat.pos-left .seat-backs {
   left: 200px;
-  transform: rotate(-90deg);
-  transform-origin: bottom left;
+  transform: translateY(-50%) rotate(-90deg);
+  transform-origin: center;
 }
 .table-seat.pos-right .seat-backs {
   right: 200px;
-  transform: rotate(90deg);
-  transform-origin: bottom right;
+  transform: translateY(-50%) rotate(90deg);
+  transform-origin: center;
 }
 /* 對家（上方）：從玩家視角看，牌向前傾倒 60°，並往上移、牌與牌之間不留間隙 */
 .table-seat.pos-top .seat-backs {
