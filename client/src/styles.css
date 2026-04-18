@@ -339,6 +339,12 @@ input:focus { border-color: var(--accent); }
 .table-seat.pos-top {
   flex-direction: column-reverse;
   align-items: flex-end;
+  width: 100%;
+}
+/* 對家手牌水平置中（頭像保持在右下） */
+.table-seat.pos-top .seat-backs,
+.table-seat.pos-top .seat-melds {
+  align-self: center;
 }
 
 /* 牌背 */
