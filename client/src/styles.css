@@ -693,9 +693,9 @@ input:focus { border-color: var(--accent); }
 .ting-label {
   background: var(--accent);
   color: #1a1a1a;
-  padding: 2px 10px;
+  padding: 2px 11px;
   border-radius: 6px;
-  font-size: 0.85rem;
+  font-size: 0.94rem;
   flex-shrink: 0;
 }
 .ting-tiles {
@@ -710,14 +710,14 @@ input:focus { border-color: var(--accent); }
   gap: 2px;
 }
 .ting-tile .tile {
-  --tile-w: 24px;
-  --tile-h: 32px;
+  --tile-w: 26px;
+  --tile-h: 35px;
   padding: 1px;
   border-radius: 4px;
   pointer-events: none;
 }
 .ting-count {
-  font-size: 0.72rem;
+  font-size: 0.8rem;
   font-weight: 800;
   color: #fff;
   line-height: 1;
@@ -742,8 +742,8 @@ input:focus { border-color: var(--accent); }
 
 @media (orientation: landscape) and (max-height: 500px) {
   .ting-preview { bottom: 54px; padding: 0.2rem 0.5rem; }
-  .ting-tile .tile { --tile-w: 18px; --tile-h: 24px; }
-  .ting-label { padding: 1px 6px; font-size: 0.72rem; }
+  .ting-tile .tile { --tile-w: 20px; --tile-h: 26px; }
+  .ting-label { padding: 1px 7px; font-size: 0.79rem; }
 }
 
 /* ===== Action buttons ===== */
