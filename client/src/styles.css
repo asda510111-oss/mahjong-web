@@ -194,13 +194,13 @@ input:focus { border-color: var(--accent); }
   align-items: stretch;
   justify-content: center;
   min-height: 0;
-  /* 俯瞰牌桌：加透視讓桌面略微往後傾斜 */
-  perspective: 1400px;
-  perspective-origin: 50% 90%;
+  /* 玩家視角：從自家這一側往前看桌面，近處大、遠處小 */
+  perspective: 900px;
+  perspective-origin: 50% 110%;
 }
 .table-wrapper .table-grid {
-  transform: rotateX(12deg);
-  transform-origin: 50% 90%;
+  transform: rotateX(32deg);
+  transform-origin: 50% 100%;
   transform-style: preserve-3d;
 }
 .table-grid {
