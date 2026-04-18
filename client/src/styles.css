@@ -287,32 +287,41 @@ input:focus { border-color: var(--accent); }
 .table-wrapper {
   position: relative;
 }
+/* ===== 以木頭桌緣的十字中線做定位基準 =====
+   水平中線 = table-wrapper 垂直 50%
+   垂直中線 = table-wrapper 水平 50%
+*/
 .table-seat.pos-left .seat-backs,
 .table-seat.pos-right .seat-backs {
   position: absolute;
-  /* 從 table-wrapper 底邊算起的固定位置，每局都一樣 */
-  bottom: 60px;
-  /* 牌與牌之間不留間隙 */
+  /* 手牌中心對齊水平中線（十字線的橫軸） */
+  top: 50%;
   gap: 0;
   max-width: 320px;
   overflow: hidden;
   z-index: 2;
 }
 .table-seat.pos-left .seat-backs {
-  left: 200px;
-  transform: rotate(-90deg);
-  transform-origin: bottom left;
+  /* 距左邊木框一段偏移，中心在水平中線上 */
+  left: 40px;
+  transform: translateY(-50%) rotate(-90deg);
+  transform-origin: center;
 }
 .table-seat.pos-right .seat-backs {
-  right: 200px;
-  transform: rotate(90deg);
-  transform-origin: bottom right;
+  right: 40px;
+  transform: translateY(-50%) rotate(90deg);
+  transform-origin: center;
 }
 /* 對家（上方）：從玩家視角看，牌向前傾倒 60°，並往上移、牌與牌之間不留間隙 */
 .table-seat.pos-top .seat-backs {
-  transform: translateY(-140px) rotateX(-60deg);
+  /* 對家手牌：中心對齊垂直中線（左右）、吸在上木框下方 */
+  position: absolute;
+  top: 28px; /* 略低於上木框 22px 的高度 */
+  left: 50%;
+  transform: translateX(-50%) rotateX(-60deg);
   transform-origin: bottom center;
   gap: 0;
+  z-index: 2;
 }
 /* 對家牌背：加厚頂面，讓 3D 更明顯 */
 .table-seat.pos-top .tile.back.compact {
