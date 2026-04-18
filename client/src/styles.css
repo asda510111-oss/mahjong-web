@@ -219,32 +219,29 @@ input:focus { border-color: var(--accent); }
 
 /* ===== 各家牌牆：直立牌橫向並排後旋轉成對角線 =====
    對角角度參考桌邊透視，~35° */
-/* 左右家 seat-backs 相對 grid 欄位定位（讓兩側用同一個高度基準） */
-.table-grid .grid-left,
-.table-grid .grid-right {
+/* 左右家 seat-backs 直接固定在 table-wrapper，不受 grid 欄位高度變動影響 */
+.table-wrapper {
   position: relative;
 }
 .table-seat.pos-left .seat-backs,
 .table-seat.pos-right .seat-backs {
   position: absolute;
-  /* 從 grid 欄位頂端算，同一高度 */
-  top: 75%;
+  /* 相對 .table-wrapper 的下方固定位置 */
+  bottom: 80px;
   /* 牌與牌之間不留間隙 */
   gap: 0;
-  /* 限制最大長度：旋轉後不會超過對家手牌的位置 */
   max-width: 320px;
   overflow: hidden;
   z-index: 2;
 }
 .table-seat.pos-left .seat-backs {
-  left: 0;
-  /* 再往下 152px（= 半個手牌總長 304px ÷ 2） */
-  transform: translate(200px, 152px) rotate(-90deg);
+  left: 200px;
+  transform: rotate(-90deg);
   transform-origin: bottom left;
 }
 .table-seat.pos-right .seat-backs {
-  right: 0;
-  transform: translate(-200px, 152px) rotate(90deg);
+  right: 200px;
+  transform: rotate(90deg);
   transform-origin: bottom right;
 }
 /* 對家（上方）：從玩家視角看，牌向前傾倒 60°，並往上移、牌與牌之間不留間隙 */
