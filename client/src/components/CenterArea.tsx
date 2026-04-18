@@ -65,8 +65,16 @@ export default function CenterArea({
       </div>
       <div className="cd-info">
         <div className="center-round">{dealerLabel}</div>
-        <div className="center-wall-num">{wallRemaining}</div>
-        <div className="center-wall-label">剩餘</div>
+        <div className="wall-frame">
+          <div className="wall wall-top" />
+          <div className="wall wall-left" />
+          <div className="wall-center">
+            <div className="center-wall-num">{wallRemaining}</div>
+            <div className="center-wall-label">剩餘</div>
+          </div>
+          <div className="wall wall-right" />
+          <div className="wall wall-bottom" />
+        </div>
       </div>
       <div className="cd cd-right">
         {rightDiscards.map((t, i) => (

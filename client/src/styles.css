@@ -1,7 +1,7 @@
 :root {
-  --bg: #0b5d3b;
-  --bg-dark: #074028;
-  --felt: #0e7048;
+  --bg: #7a1a1a;
+  --bg-dark: #3d0808;
+  --felt: #931e1e;
   --tile-bg: #faf4e6;
   --tile-border: #d9cda8;
   --tile-shadow: rgba(0, 0, 0, 0.3);
@@ -17,7 +17,7 @@
 html, body, #root {
   margin: 0;
   padding: 0;
-  min-height: 100%;
+  height: 100%;
   width: 100%;
   background:
     radial-gradient(ellipse at center, var(--felt) 0%, var(--bg-dark) 100%),
@@ -26,9 +26,11 @@ html, body, #root {
   color: var(--text);
   -webkit-tap-highlight-color: transparent;
   touch-action: manipulation;
+  /* 鎖住整個畫面不可上下滑動 */
+  overflow: hidden;
+  overscroll-behavior: none;
 }
-body { overflow-x: hidden; }
-#root { min-height: 100vh; }
+#root { height: 100vh; height: 100dvh; overflow: hidden; }
 
 button {
   font-family: inherit;
@@ -446,6 +448,61 @@ input:focus { border-color: var(--accent); }
   font-size: 0.35rem;
   opacity: 0.7;
 }
+
+/* ===== 中央牌牆視覺 ===== */
+.wall-frame {
+  display: grid;
+  grid-template-columns: auto auto auto;
+  grid-template-rows: auto auto auto;
+  grid-template-areas:
+    ".       top      ."
+    "left    center   right"
+    ".       bottom   .";
+  gap: 3px;
+  align-items: center;
+  justify-items: center;
+}
+.wall-center {
+  grid-area: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 4px 10px;
+}
+/* 牌背條紋：用 repeating-linear-gradient 模擬多張面朝下的牌並排 */
+.wall {
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.18), rgba(0,0,0,0.18)),
+    repeating-linear-gradient(
+      90deg,
+      #1b7b4c 0, #1b7b4c 11px,
+      #0a3d22 11px, #0a3d22 12px
+    );
+  border: 1.5px solid #0a3d22;
+  border-radius: 3px;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.25),
+    0 2px 3px rgba(0,0,0,0.45);
+}
+.wall-top, .wall-bottom {
+  grid-area: top;
+  width: 96px;
+  height: 14px;
+}
+.wall-bottom { grid-area: bottom; }
+.wall-left, .wall-right {
+  grid-area: left;
+  width: 14px;
+  height: 60px;
+  background:
+    linear-gradient(90deg, rgba(255,255,255,0.18), rgba(0,0,0,0.18)),
+    repeating-linear-gradient(
+      0deg,
+      #1b7b4c 0, #1b7b4c 11px,
+      #0a3d22 11px, #0a3d22 12px
+    );
+}
+.wall-right { grid-area: right; }
 
 /* ===== 直向手機：提示橫向 ===== */
 .rotate-hint {
