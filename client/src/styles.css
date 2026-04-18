@@ -228,7 +228,7 @@ input:focus { border-color: var(--accent); }
 .table-seat.pos-right .seat-backs {
   position: absolute;
   /* 從 grid 欄位頂端算，同一高度 */
-  top: 55%;
+  top: 75%;
   /* 牌與牌之間不留間隙 */
   gap: 0;
   /* 限制最大長度：旋轉後不會超過對家手牌的位置 */
