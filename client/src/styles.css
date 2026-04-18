@@ -346,37 +346,38 @@ input:focus { border-color: var(--accent); }
 }
 .cd-top {
   grid-area: top;
-  justify-content: flex-start;
+  /* 對家：水平置中靠下（往中央資訊區靠攏） */
+  justify-content: center;
   align-content: flex-end;
-  /* 對家：每列 7 張：7×44 + 6×2 = 320px */
+  /* 每列 7 張：7×44 + 6×2 = 320px */
   max-width: 320px;
   margin: 0 auto;
 }
 .cd-bot {
   grid-area: bot;
-  justify-content: flex-start;
+  /* 自家：水平置中靠上（往中央資訊區靠攏） */
+  justify-content: center;
   align-content: flex-start;
-  /* 自家：每列 7 張：7×44 + 6×2 = 320px */
   max-width: 320px;
   margin: 0 auto;
 }
 .cd-left {
   grid-area: left;
   flex-direction: column;
-  justify-content: flex-start;
+  /* 上家：垂直置中靠右（往中央靠攏） */
+  justify-content: center;
   align-content: flex-end;
   flex-wrap: wrap;
-  /* 上家：每列最多 5 張（橫躺 tile-slot-side 高 44px）：5×44 + 4×2 = 228px */
   max-height: 320px;
   margin: auto 0 auto auto;
 }
 .cd-right {
   grid-area: right;
   flex-direction: column;
-  justify-content: flex-start;
+  /* 下家：垂直置中靠左（往中央靠攏） */
+  justify-content: center;
   align-content: flex-start;
   flex-wrap: wrap;
-  /* 下家：每列最多 5 張 */
   max-height: 320px;
   margin: auto auto auto 0;
 }
@@ -520,7 +521,7 @@ input:focus { border-color: var(--accent); }
   .hand-hint { font-size: 0.62rem; padding: 0; }
   .hand-fixed .hand { flex-wrap: nowrap; gap: 1px; justify-content: center; padding: 0.1rem; }
   .tile { --tile-w: 28px; --tile-h: 40px; }
-  .hand-fixed .hand .tile { --tile-w: 32px; --tile-h: 45px; }
+  .hand-fixed .hand .tile { --tile-w: 29px; --tile-h: 40px; }
 
   .action-bar { bottom: 70px; padding: 0.3rem; gap: 0.3rem; }
   .act-btn { padding: 0.35rem 0.75rem; font-size: 0.85rem; border-radius: 8px; }
@@ -529,7 +530,7 @@ input:focus { border-color: var(--accent); }
 /* ===== 超窄橫向（螢幕高度更小時再縮）===== */
 @media (orientation: landscape) and (max-height: 420px) {
   .tile { --tile-w: 24px; --tile-h: 34px; }
-  .hand-fixed .hand .tile { --tile-w: 28px; --tile-h: 39px; }
+  .hand-fixed .hand .tile { --tile-w: 25px; --tile-h: 35px; }
   .table-grid { grid-template-columns: auto 1fr auto; }
   .avatar { width: 24px; height: 24px; font-size: 0.95rem; }
   .hand-fixed { padding: 0.1rem 0.1rem; }
@@ -640,8 +641,8 @@ input:focus { border-color: var(--accent); }
 .hand-fixed .hand .tile {
   flex-shrink: 0;
   /* 手牌放大（不影響桌上其他牌） */
-  --tile-w: 50px;
-  --tile-h: 67px;
+  --tile-w: 45px;
+  --tile-h: 60px;
 }
 .hand-hint {
   text-align: center;
@@ -1120,7 +1121,7 @@ input:focus { border-color: var(--accent); }
 /* ===== Mobile ===== */
 @media (max-width: 600px) {
   .tile { --tile-w: 42px; --tile-h: 56px; }
-  .hand-fixed .hand .tile { --tile-w: 48px; --tile-h: 63px; }
+  .hand-fixed .hand .tile { --tile-w: 43px; --tile-h: 57px; }
   .seats { grid-template-columns: 1fr; }
   .seat { padding: 0.5rem; min-height: 2.5rem; }
   .room-header .code { font-size: 1.2rem; }
