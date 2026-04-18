@@ -461,21 +461,22 @@ input:focus { border-color: var(--accent); }
 .seat-backs {
   display: flex;
   gap: 2px;
-  flex-wrap: wrap;
+  /* 永遠一列：不換行 */
+  flex-wrap: nowrap;
   align-content: flex-start;
-  flex: 1;
+  flex: 0 0 auto;
   min-width: 0;
 }
 .table-seat.pos-top .seat-backs,
 .table-seat.pos-bottom .seat-backs {
   justify-content: flex-start;
-  max-width: 460px;
+  max-width: none;
 }
 .table-seat.pos-left .seat-backs,
 .table-seat.pos-right .seat-backs {
   flex-direction: column;
-  flex-wrap: wrap;
-  max-height: 300px;
+  flex-wrap: nowrap;
+  max-height: none;
   align-content: flex-start;
 }
 
@@ -483,7 +484,7 @@ input:focus { border-color: var(--accent); }
 .seat-melds {
   display: flex;
   gap: 3px;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   align-content: flex-start;
 }
 /* 副子尺寸：跟牌背 compact 一致，視覺統一 */
@@ -803,6 +804,7 @@ input:focus { border-color: var(--accent); }
   .table-seat.pos-left .seat-backs,
   .table-seat.pos-right .seat-backs {
     flex-direction: row;
+    flex-wrap: nowrap;
     max-height: none;
   }
   .tile.back.compact {
