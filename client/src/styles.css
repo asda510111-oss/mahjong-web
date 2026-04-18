@@ -197,7 +197,7 @@ input:focus { border-color: var(--accent); }
   display: grid;
   width: 100%;
   max-width: 1100px;
-  grid-template-columns: 220px 1fr 220px;
+  grid-template-columns: auto 1fr auto;
   grid-template-rows: minmax(110px, auto) 1fr minmax(90px, auto);
   grid-template-areas:
     "top    top    top"
@@ -485,7 +485,7 @@ input:focus { border-color: var(--accent); }
   .room-header .code { font-size: 1rem; }
 
   .table-grid {
-    grid-template-columns: 130px 1fr 130px;
+    grid-template-columns: auto 1fr auto;
     grid-template-rows: minmax(64px, auto) 1fr minmax(54px, auto);
     min-height: auto;
     gap: 0.25rem;
@@ -530,7 +530,7 @@ input:focus { border-color: var(--accent); }
 @media (orientation: landscape) and (max-height: 420px) {
   .tile { --tile-w: 24px; --tile-h: 34px; }
   .hand-fixed .hand .tile { --tile-w: 28px; --tile-h: 39px; }
-  .table-grid { grid-template-columns: 110px 1fr 110px; }
+  .table-grid { grid-template-columns: auto 1fr auto; }
   .avatar { width: 24px; height: 24px; font-size: 0.95rem; }
   .hand-fixed { padding: 0.1rem 0.1rem; }
   .room { padding-bottom: 62px; }
