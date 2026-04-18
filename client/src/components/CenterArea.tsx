@@ -68,11 +68,6 @@ export default function CenterArea({
         <div className="center-wall-num">{wallRemaining}</div>
         <div className="center-wall-label">剩餘</div>
       </div>
-      {/* 四面牌牆：貼在中央區四個邊，靠近各家 */}
-      <div className="wall wall-top" />
-      <div className="wall wall-bottom" />
-      <div className="wall wall-left" />
-      <div className="wall wall-right" />
       <div className="cd cd-right">
         {rightDiscards.map((t, i) => (
           <SidewaysTile key={`${t}-${i}`} id={t}

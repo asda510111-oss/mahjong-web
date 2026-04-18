@@ -625,48 +625,6 @@ input:focus { border-color: var(--accent); }
   opacity: 0.7;
 }
 
-/* ===== 中央四面牌牆視覺（靠近各家）===== */
-/* 牌背條紋：用 repeating-linear-gradient 模擬多張面朝下的牌並排 */
-.wall {
-  position: absolute;
-  pointer-events: none;
-  z-index: 1;
-  border: 1.5px solid #0a3d22;
-  border-radius: 3px;
-  box-shadow:
-    inset 0 1px 0 rgba(255,255,255,0.25),
-    0 2px 4px rgba(0,0,0,0.5);
-}
-.wall-top, .wall-bottom {
-  left: 50%;
-  transform: translateX(-50%);
-  width: 220px;
-  height: 16px;
-  background:
-    linear-gradient(180deg, rgba(255,255,255,0.2), rgba(0,0,0,0.25)),
-    repeating-linear-gradient(
-      90deg,
-      #1b7b4c 0, #1b7b4c 12px,
-      #0a3d22 12px, #0a3d22 13px
-    );
-}
-.wall-top { top: 2px; }
-.wall-bottom { bottom: 2px; }
-.wall-left, .wall-right {
-  top: 50%;
-  transform: translateY(-50%);
-  width: 16px;
-  height: 180px;
-  background:
-    linear-gradient(90deg, rgba(255,255,255,0.2), rgba(0,0,0,0.25)),
-    repeating-linear-gradient(
-      0deg,
-      #1b7b4c 0, #1b7b4c 12px,
-      #0a3d22 12px, #0a3d22 13px
-    );
-}
-.wall-left { left: 2px; }
-.wall-right { right: 2px; }
 .center-cross { position: relative; }
 
 /* ===== 直向手機：提示橫向 ===== */
