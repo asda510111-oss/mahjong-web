@@ -419,6 +419,26 @@ input:focus { border-color: var(--accent); }
   flex-wrap: wrap;
   align-content: flex-start;
 }
+/* 副子尺寸：跟牌背 compact 一致，視覺統一 */
+.seat-melds .tile {
+  --tile-w: 20px;
+  --tile-h: 30px;
+}
+/* 左右兩家：副子沿座位方向排列（垂直堆疊，與手牌背平行） */
+.table-seat.pos-left .seat-melds,
+.table-seat.pos-right .seat-melds {
+  flex-direction: column;
+  flex-wrap: nowrap;
+}
+.table-seat.pos-left .seat-melds .tile,
+.table-seat.pos-right .seat-melds .tile {
+  --tile-w: 30px;
+  --tile-h: 20px;
+}
+.table-seat.pos-left .seat-melds .meld-group,
+.table-seat.pos-right .seat-melds .meld-group {
+  flex-direction: column;
+}
 
 /* 棄牌堆已移到中央田字區 (.cd)，座位內不再需要 .seat-discards */
 
@@ -651,7 +671,9 @@ input:focus { border-color: var(--accent); }
     --tile-h: 16px;
     --back-depth: 7px;
   }
-  .seat-melds .tile { --tile-w: 16px; --tile-h: 22px; }
+  .seat-melds .tile { --tile-w: 16px; --tile-h: 24px; }
+  .table-seat.pos-left .seat-melds .tile,
+  .table-seat.pos-right .seat-melds .tile { --tile-w: 24px; --tile-h: 16px; }
 
   .center-cross { min-height: 120px; padding: 3px; gap: 1px; grid-template-rows: auto 223px auto; }
   .cd .tile { --tile-w: 31px; --tile-h: 42px; }
@@ -1141,12 +1163,12 @@ input:focus { border-color: var(--accent); }
 .meld-group {
   display: flex;
   gap: 1px;
-  padding: 2px;
-  background: rgba(255, 255, 255, 0.08);
-  border-radius: 4px;
-  border: 1px solid rgba(245, 197, 66, 0.3);
+  padding: 0;
+  background: transparent;
+  border-radius: 0;
+  border: none;
 }
-.meld-group.flower { border-color: rgba(255, 150, 220, 0.4); }
+.meld-group.flower { opacity: 0.95; }
 .room-header {
   display: flex;
   justify-content: space-between;
