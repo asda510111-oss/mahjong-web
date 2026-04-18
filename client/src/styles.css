@@ -194,6 +194,14 @@ input:focus { border-color: var(--accent); }
   align-items: stretch;
   justify-content: center;
   min-height: 0;
+  /* 俯瞰牌桌：加透視讓桌面略微往後傾斜 */
+  perspective: 1400px;
+  perspective-origin: 50% 90%;
+}
+.table-wrapper .table-grid {
+  transform: rotateX(12deg);
+  transform-origin: 50% 90%;
+  transform-style: preserve-3d;
 }
 .table-grid {
   display: grid;
@@ -215,23 +223,20 @@ input:focus { border-color: var(--accent); }
 .grid-bottom { grid-area: bottom; }
 
 .table-seat {
-  background: linear-gradient(180deg, rgba(20,60,40,0.55), rgba(0,0,0,0.5));
-  border-radius: 14px;
-  padding: 0.55rem;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  border-radius: 0;
+  padding: 0.35rem;
   display: flex;
   gap: 0.5rem;
-  border: 2px solid rgba(201, 149, 42, 0.55);
-  box-shadow:
-    inset 0 1px 0 rgba(255,255,255,0.08),
-    0 3px 8px rgba(0,0,0,0.35);
 }
 .table-seat.turn {
-  border-color: var(--accent);
-  box-shadow:
-    0 0 0 2px rgba(245,197,66,0.4),
-    0 0 18px rgba(245, 197, 66, 0.6),
-    inset 0 1px 0 rgba(255,255,255,0.12);
-  background: linear-gradient(180deg, rgba(40,80,50,0.6), rgba(0,0,0,0.55));
+  /* 輪到該家時的高亮：改用柔和光暈，不畫框 */
+  background: transparent;
+  border: none;
+  box-shadow: 0 0 18px rgba(245, 197, 66, 0.55);
+  border-radius: 14px;
 }
 .table-seat.me {
   border-color: transparent;
@@ -449,60 +454,49 @@ input:focus { border-color: var(--accent); }
   opacity: 0.7;
 }
 
-/* ===== 中央牌牆視覺 ===== */
-.wall-frame {
-  display: grid;
-  grid-template-columns: auto auto auto;
-  grid-template-rows: auto auto auto;
-  grid-template-areas:
-    ".       top      ."
-    "left    center   right"
-    ".       bottom   .";
-  gap: 3px;
-  align-items: center;
-  justify-items: center;
-}
-.wall-center {
-  grid-area: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 4px 10px;
-}
+/* ===== 中央四面牌牆視覺（靠近各家）===== */
 /* 牌背條紋：用 repeating-linear-gradient 模擬多張面朝下的牌並排 */
 .wall {
-  background:
-    linear-gradient(180deg, rgba(255,255,255,0.18), rgba(0,0,0,0.18)),
-    repeating-linear-gradient(
-      90deg,
-      #1b7b4c 0, #1b7b4c 11px,
-      #0a3d22 11px, #0a3d22 12px
-    );
+  position: absolute;
+  pointer-events: none;
+  z-index: 1;
   border: 1.5px solid #0a3d22;
   border-radius: 3px;
   box-shadow:
     inset 0 1px 0 rgba(255,255,255,0.25),
-    0 2px 3px rgba(0,0,0,0.45);
+    0 2px 4px rgba(0,0,0,0.5);
 }
 .wall-top, .wall-bottom {
-  grid-area: top;
-  width: 96px;
-  height: 14px;
-}
-.wall-bottom { grid-area: bottom; }
-.wall-left, .wall-right {
-  grid-area: left;
-  width: 14px;
-  height: 60px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 220px;
+  height: 16px;
   background:
-    linear-gradient(90deg, rgba(255,255,255,0.18), rgba(0,0,0,0.18)),
+    linear-gradient(180deg, rgba(255,255,255,0.2), rgba(0,0,0,0.25)),
     repeating-linear-gradient(
-      0deg,
-      #1b7b4c 0, #1b7b4c 11px,
-      #0a3d22 11px, #0a3d22 12px
+      90deg,
+      #1b7b4c 0, #1b7b4c 12px,
+      #0a3d22 12px, #0a3d22 13px
     );
 }
-.wall-right { grid-area: right; }
+.wall-top { top: 2px; }
+.wall-bottom { bottom: 2px; }
+.wall-left, .wall-right {
+  top: 50%;
+  transform: translateY(-50%);
+  width: 16px;
+  height: 180px;
+  background:
+    linear-gradient(90deg, rgba(255,255,255,0.2), rgba(0,0,0,0.25)),
+    repeating-linear-gradient(
+      0deg,
+      #1b7b4c 0, #1b7b4c 12px,
+      #0a3d22 12px, #0a3d22 13px
+    );
+}
+.wall-left { left: 2px; }
+.wall-right { right: 2px; }
+.center-cross { position: relative; }
 
 /* ===== 直向手機：提示橫向 ===== */
 .rotate-hint {
