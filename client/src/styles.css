@@ -331,18 +331,13 @@ input:focus { border-color: var(--accent); }
 */
 .table-seat.pos-left .seat-backs,
 .table-seat.pos-right .seat-backs {
+  display: none !important;
   position: absolute;
-  /* 手牌中心對齊水平中線（十字線的橫軸） */
   top: 50%;
   gap: 0;
   max-width: 320px;
   overflow: hidden;
   z-index: 2;
-  /* 綠框標示區塊 */
-  border: 3px solid #2ecc71;
-  border-radius: 4px;
-  background: rgba(46, 204, 113, 0.08);
-  padding: 4px;
 }
 .table-seat.pos-left .seat-backs {
   /* 距左邊木框一段偏移，中心在水平中線上 */
