@@ -338,6 +338,11 @@ input:focus { border-color: var(--accent); }
   max-width: 320px;
   overflow: hidden;
   z-index: 2;
+  /* 綠框標示區塊 */
+  border: 3px solid #2ecc71;
+  border-radius: 4px;
+  background: rgba(46, 204, 113, 0.08);
+  padding: 4px;
 }
 .table-seat.pos-left .seat-backs {
   /* 距左邊木框一段偏移，中心在水平中線上 */
