@@ -713,7 +713,7 @@ input:focus { border-color: var(--accent); }
 }
 
 /* ===== 自家副子區（吃/碰/槓/花）：一排由左至右 ===== */
-.table-wrapper { --my-melds-x: -300px; --my-melds-y: 220px; }
+.table-wrapper { --my-melds-x: -300px; --my-melds-y: -180px; } /* 下移 400px（8×50） */
 .my-melds {
   position: absolute;
   left: calc(50% + var(--my-melds-x));
