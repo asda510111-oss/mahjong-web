@@ -614,6 +614,11 @@ input:focus { border-color: var(--accent); }
   gap: 2px;
   min-width: 0;
   min-height: 0;
+  /* 固定外框：黑色粗線條 */
+  border: 3px solid #000;
+  border-radius: 4px;
+  background: rgba(0, 0, 0, 0.15);
+  box-sizing: content-box;
 }
 /* 固定格位：每張棄牌的位置由索引決定，後續加入的牌絕不會擠動既有的 */
 /* 容器：7 欄 × 3 列固定網格，滿 21 張 */
