@@ -716,7 +716,7 @@ input:focus { border-color: var(--accent); }
 /* 自家棄牌區位置變數，修改這兩個即可同時移動黑框＋棄牌 */
 .table-wrapper {
   /* 以黑框左上角為錨點：X 正=右、Y 正=上（與刻度一致） */
-  --cd-bot-x: -144px; /* 右移 3px（0.1×31） */
+  --cd-bot-x: -113px; /* 再右移 31px（1×31） */
   --cd-bot-y: 130px; /* 下移 21px（0.5×42） */
 }
 .cd-bot {
