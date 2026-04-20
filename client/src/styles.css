@@ -725,7 +725,7 @@ input:focus { border-color: var(--accent); }
   left: calc(50% + var(--cd-bot-x));
   top: calc(50% - var(--cd-bot-y));
   display: grid;
-  grid-template-columns: repeat(8, 31px);
+  grid-template-columns: repeat(6, 31px);
   grid-template-rows: repeat(3, 42px);
   grid-auto-flow: row;
   gap: 2px;
