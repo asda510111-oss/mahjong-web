@@ -64,9 +64,9 @@ body.in-game .cd-info {
   width: 180px !important;
   height: 180px !important;
 }
-body.in-game .center-round { font-size: 36px !important; }
-body.in-game .center-wall-num { font-size: 36px !important; }
-body.in-game .center-wall-label { font-size: 36px !important; }
+body.in-game .center-round { font-size: 29px !important; }
+body.in-game .center-wall-num { font-size: 29px !important; }
+body.in-game .center-wall-label { font-size: 29px !important; }
 
 button {
   font-family: inherit;
@@ -763,19 +763,19 @@ input:focus { border-color: var(--accent); }
   transform: translate(-50%, -50%) rotate(-90deg) scale(1.12);
 }
 .center-round {
-  font-size: 36px;
+  font-size: 29px;
   font-weight: 700;
   color: var(--accent);
   letter-spacing: 0.05em;
 }
 .center-wall-num {
-  font-size: 36px;
+  font-size: 29px;
   font-weight: 800;
   color: var(--text);
   line-height: 1.1;
 }
 .center-wall-label {
-  font-size: 36px;
+  font-size: 29px;
   opacity: 0.7;
 }
 
