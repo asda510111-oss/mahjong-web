@@ -706,8 +706,8 @@ input:focus { border-color: var(--accent); }
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 120px;
-  height: 120px;
+  width: 360px;
+  height: 360px;
   z-index: 2;
 }
 .cd .tile {
@@ -751,19 +751,19 @@ input:focus { border-color: var(--accent); }
   transform: translate(-50%, -50%) rotate(-90deg) scale(1.12);
 }
 .center-round {
-  font-size: 14px;
+  font-size: 42px;
   font-weight: 700;
   color: var(--accent);
   letter-spacing: 0.05em;
 }
 .center-wall-num {
-  font-size: 36px;
+  font-size: 108px;
   font-weight: 800;
   color: var(--text);
   line-height: 1.1;
 }
 .center-wall-label {
-  font-size: 12px;
+  font-size: 36px;
   opacity: 0.7;
 }
 
