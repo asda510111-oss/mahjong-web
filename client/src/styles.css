@@ -30,6 +30,23 @@ html, body, #root {
 body { overflow-x: hidden; }
 #root { min-height: 100vh; min-height: 100dvh; }
 
+/* 遊玩中鎖定畫面，不可上下滑動 */
+html:has(body.in-game),
+body.in-game {
+  overflow: hidden;
+  overscroll-behavior: none;
+  height: 100vh;
+  height: 100dvh;
+  position: fixed;
+  width: 100%;
+  inset: 0;
+}
+body.in-game #root {
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+}
+
 button {
   font-family: inherit;
   font-size: 1rem;
@@ -575,9 +592,9 @@ input:focus { border-color: var(--accent); }
   display: grid;
   width: 100%;
   height: 100%;
-  grid-template-columns: auto 1fr auto;
-  /* 中間列高度 = 5 張橫躺牌：5×44 + 4×2 = 228px，再加一點 padding */
-  grid-template-rows: auto 320px auto;
+  /* 改成內容自適應，讓四家棄牌緊貼中央資訊區，聚在四家手牌的正中間 */
+  grid-template-columns: auto auto auto;
+  grid-template-rows: auto auto auto;
   grid-template-areas:
     ".    top    ."
     "left info  right"
@@ -586,6 +603,9 @@ input:focus { border-color: var(--accent); }
   padding: 6px;
   background: transparent;
   border-radius: 14px;
+  justify-content: center;
+  align-content: center;
+  place-items: center;
   min-height: 260px;
 }
 .cd {
@@ -595,43 +615,63 @@ input:focus { border-color: var(--accent); }
   min-width: 0;
   min-height: 0;
 }
+/* 固定格位：每張棄牌的位置由索引決定，後續加入的牌絕不會擠動既有的 */
+/* 容器：7 欄 × 3 列固定網格，滿 21 張 */
 .cd-top {
   grid-area: top;
-  /* 對家：水平置中靠下（往中央資訊區靠攏） */
-  justify-content: center;
-  align-content: flex-end;
-  /* 每列 7 張：7×44 + 6×2 = 320px */
-  max-width: 320px;
+  display: grid;
+  grid-template-columns: repeat(7, 44px);
+  grid-template-rows: repeat(3, 60px);
+  /* 第 1 張落在最靠近中央（最底一列最左格），由 grid-auto-flow: dense + 顯式座標控制 */
+  grid-auto-flow: row;
+  direction: ltr;
+  gap: 2px;
+  width: 320px;   /* 7×44 + 6×2 */
+  height: 184px;  /* 3×60 + 2×2 */
   margin: 0 auto;
+  align-self: end; /* 整塊靠近中央資訊區 */
 }
 .cd-bot {
   grid-area: bot;
-  /* 自家：水平置中靠上（往中央資訊區靠攏） */
-  justify-content: center;
-  align-content: flex-start;
-  max-width: 320px;
+  display: grid;
+  grid-template-columns: repeat(7, 44px);
+  grid-template-rows: repeat(3, 60px);
+  grid-auto-flow: row;
+  gap: 2px;
+  width: 320px;
+  height: 184px;
   margin: 0 auto;
+  align-self: start;
 }
 .cd-left {
   grid-area: left;
-  flex-direction: column;
-  /* 上家：垂直置中靠右（往中央靠攏） */
-  justify-content: center;
-  align-content: flex-end;
-  flex-wrap: wrap;
-  max-height: 320px;
+  display: grid;
+  grid-template-columns: repeat(3, 60px);
+  grid-template-rows: repeat(7, 44px);
+  grid-auto-flow: column;
+  /* 從右至左、每欄從上至下 */
+  direction: rtl;
+  gap: 2px;
+  width: 184px;
+  height: 320px;
   margin: auto 0 auto auto;
+  justify-self: end;
 }
+/* 還原子元素方向，避免 tile 內文也被 RTL 影響 */
+.cd-left > * { direction: ltr; }
 .cd-right {
   grid-area: right;
-  flex-direction: column;
-  /* 下家：垂直置中靠左（往中央靠攏） */
-  justify-content: center;
-  align-content: flex-start;
-  flex-wrap: wrap;
-  max-height: 320px;
+  display: grid;
+  grid-template-columns: repeat(3, 60px);
+  grid-template-rows: repeat(7, 44px);
+  grid-auto-flow: column;
+  gap: 2px;
+  width: 184px;
+  height: 320px;
   margin: auto auto auto 0;
+  justify-self: start;
 }
+
 .cd-info {
   grid-area: info;
   display: flex;

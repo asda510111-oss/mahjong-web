@@ -442,9 +442,18 @@ export class Room {
     this.advanceToNextDraw(pending.bySeat)
   }
 
+  private removeLastDiscard(fromSeat: SeatIndex, tile: TileId) {
+    const pile = this.discards[fromSeat]
+    if (pile.length && pile[pile.length - 1] === tile) {
+      pile.pop()
+    }
+  }
+
   private applyPeng(pid: string, tile: TileId, fromSeat: SeatIndex) {
     const p = this.getPlayer(pid)!
     const hand = this.hands.get(pid)!
+    // 從被碰者的棄牌堆移除最後一張（該被吃/碰/槓的牌），讓後續棄牌自然遞補其位置
+    this.removeLastDiscard(fromSeat, tile)
     // 移除手牌中 2 張
     for (let i = 0; i < 2; i++) {
       const idx = hand.indexOf(tile)
@@ -466,6 +475,7 @@ export class Room {
   private applyGangExposed(pid: string, tile: TileId, fromSeat: SeatIndex) {
     const p = this.getPlayer(pid)!
     const hand = this.hands.get(pid)!
+    this.removeLastDiscard(fromSeat, tile)
     for (let i = 0; i < 3; i++) {
       const idx = hand.indexOf(tile)
       if (idx >= 0) hand.splice(idx, 1)
@@ -487,6 +497,7 @@ export class Room {
   private applyChi(pid: string, tile: TileId, fromSeat: SeatIndex, chiIndex: number) {
     const p = this.getPlayer(pid)!
     const hand = this.hands.get(pid)!
+    this.removeLastDiscard(fromSeat, tile)
     const opts = canChi(hand, tile)
     const chosen = opts[chiIndex] ?? opts[0]
     // chosen 是三張 id，其中一張是 tile（從棄牌來）

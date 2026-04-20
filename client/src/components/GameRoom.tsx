@@ -59,6 +59,11 @@ export default function GameRoom({
     if (!isMyTurn) setSelectedKey(null)
   }, [isMyTurn])
 
+  useEffect(() => {
+    document.body.classList.add('in-game')
+    return () => { document.body.classList.remove('in-game') }
+  }, [])
+
   const handleTileClick = (tile: TileId, key: string) => {
     if (!isMyTurn) return
     if (selectedKey === key) {
