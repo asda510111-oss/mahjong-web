@@ -660,7 +660,7 @@ input:focus { border-color: var(--accent); }
   position: absolute;
   left: 50%;
   top: 50%;
-  transform: translate(-50%, 110px);
+  transform: translate(-50%, 70px);
   display: grid;
   grid-template-columns: repeat(8, 44px);
   /* 固定 3 列高度讓黑框範圍清楚 */
