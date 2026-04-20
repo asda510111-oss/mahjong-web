@@ -730,6 +730,13 @@ input:focus { border-color: var(--accent); }
   line-height: 1;
   padding: 2px 4px;
 }
+.wind-corner.dealer {
+  background: #f5c842;
+  color: #000;
+  border-radius: 4px;
+  padding: 2px 6px;
+  box-shadow: 0 0 8px rgba(245, 200, 66, 0.8);
+}
 .wind-corner.wind-bl { bottom: 28px;  left: 28px; }
 .wind-corner.wind-br { bottom: 28px; right: 28px; transform: rotate(-90deg); }
 .wind-corner.wind-tr { top: 28px;    right: 28px; transform: rotate(-180deg); }
