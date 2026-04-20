@@ -712,6 +712,29 @@ input:focus { border-color: var(--accent); }
   width: 1px;
 }
 
+/* ===== 自家副子區（吃/碰/槓/花）：一排由左至右 ===== */
+.table-wrapper { --my-melds-x: -300px; --my-melds-y: 220px; }
+.my-melds {
+  position: absolute;
+  left: calc(50% + var(--my-melds-x));
+  top: calc(50% - var(--my-melds-y));
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  gap: 8px;
+  z-index: 3;
+}
+.my-melds .meld-group {
+  display: flex;
+  gap: 1px;
+}
+.my-melds .tile {
+  --tile-w: 31px;
+  --tile-h: 42px;
+  border-radius: 3px;
+  padding: 1px;
+}
+
 /* ===== 自家棄牌區 ===== */
 /* 自家棄牌區位置變數，修改這兩個即可同時移動黑框＋棄牌 */
 .table-wrapper {

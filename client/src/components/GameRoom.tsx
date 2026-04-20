@@ -288,6 +288,16 @@ export default function GameRoom({
           <div className="axis axis-x" />
           <div className="axis axis-y" />
         </div>
+        {/* 自家吃/碰/槓/花 副子區：一排由左至右 */}
+        <div className="my-melds">
+          {(myPub?.melds ?? []).map((m, mi) => (
+            <div key={mi} className={`meld-group ${m.type === 'flower' ? 'flower' : ''}`}>
+              {m.tiles.map((t, ti) => (
+                <Tile key={`${t}-${ti}`} id={t} disabled />
+              ))}
+            </div>
+          ))}
+        </div>
         {/* 中央資訊覆蓋層：牌桌兩條對角線交點 */}
         <div className="table-center-info">
           <div className="center-round">{dealerLabel}</div>
