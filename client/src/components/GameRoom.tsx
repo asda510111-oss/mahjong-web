@@ -64,6 +64,24 @@ export default function GameRoom({
     return () => { document.body.classList.remove('in-game') }
   }, [])
 
+  // 整體遊戲畫面自適應：以 1280×760 為設計尺寸，等比縮放至視窗
+  useEffect(() => {
+    const DESIGN_W = 1280
+    const DESIGN_H = 760
+    const update = () => {
+      const s = Math.min(window.innerWidth / DESIGN_W, window.innerHeight / DESIGN_H)
+      document.documentElement.style.setProperty('--game-scale', String(s))
+    }
+    update()
+    window.addEventListener('resize', update)
+    window.addEventListener('orientationchange', update)
+    return () => {
+      window.removeEventListener('resize', update)
+      window.removeEventListener('orientationchange', update)
+      document.documentElement.style.removeProperty('--game-scale')
+    }
+  }, [])
+
   const handleTileClick = (tile: TileId, key: string) => {
     if (!isMyTurn) return
     if (selectedKey === key) {
