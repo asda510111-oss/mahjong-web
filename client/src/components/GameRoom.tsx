@@ -170,7 +170,7 @@ export default function GameRoom({
   const getPub = (s: SeatIndex) => publicStates.find(ps => ps.seat === s)
 
   const dealerLabel = dealerSeat !== null
-    ? `${SEAT_LABELS[dealerSeat]}莊 · ${gameIndex + 1}/4 局`
+    ? `${SEAT_LABELS[dealerSeat]}${gameIndex + 1}局`
     : ''
 
   const getScore = (seat: SeatIndex): number | null => {
