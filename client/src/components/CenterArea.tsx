@@ -19,13 +19,15 @@ interface Props {
 
 export default function CenterArea({
   botDiscards = [],
+  topDiscards = [],
   highlightTile = null,
   glowSeat = null,
   bottomSeat,
+  topSeat,
 }: Partial<Props>) {
   const isHi = (t: TileId) => !!highlightTile && t === highlightTile
-  const isGlow = (idx: number, len: number) =>
-    glowSeat !== null && glowSeat === bottomSeat && idx === len - 1
+  const isGlow = (seat: SeatIndex | undefined, idx: number, len: number) =>
+    glowSeat !== null && glowSeat === seat && idx === len - 1
 
   return (
     <div className="center-cross">
@@ -36,7 +38,18 @@ export default function CenterArea({
             id={t}
             disabled
             highlight={isHi(t)}
-            glow={isGlow(i, botDiscards.length)}
+            glow={isGlow(bottomSeat, i, botDiscards.length)}
+          />
+        ))}
+      </div>
+      <div className="cd-top">
+        {topDiscards.map((t, i) => (
+          <Tile
+            key={`${t}-${i}`}
+            id={t}
+            disabled
+            highlight={isHi(t)}
+            glow={isGlow(topSeat, i, topDiscards.length)}
           />
         ))}
       </div>
