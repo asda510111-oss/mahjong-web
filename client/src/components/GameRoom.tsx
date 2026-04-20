@@ -261,6 +261,21 @@ export default function GameRoom({
       </div>
 
       <div className="table-wrapper">
+        {/* 除錯用座標刻度尺（以 table-wrapper 中心為 0,0） */}
+        <div className="debug-ruler" aria-hidden="true">
+          <div className="ruler ruler-x">
+            {Array.from({ length: 13 }, (_, i) => (i - 6) * 100).map(v => (
+              <span key={`x${v}`} className="tick" style={{ left: `calc(50% + ${v}px)` }}>{v}</span>
+            ))}
+          </div>
+          <div className="ruler ruler-y">
+            {Array.from({ length: 9 }, (_, i) => (i - 4) * 100).map(v => (
+              <span key={`y${v}`} className="tick" style={{ top: `calc(50% + ${v}px)` }}>{v}</span>
+            ))}
+          </div>
+          <div className="axis axis-x" />
+          <div className="axis axis-y" />
+        </div>
         {/* 中央資訊覆蓋層：牌桌兩條對角線交點 */}
         <div className="table-center-info">
           <div className="center-round">{dealerLabel}</div>

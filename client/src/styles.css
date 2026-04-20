@@ -654,6 +654,54 @@ input:focus { border-color: var(--accent); }
 .wind-corner.wind-br { bottom: 40px !important; right: 40px !important; top: auto !important; left: auto !important;  transform: rotate(-90deg)  !important; }
 .wind-corner.wind-tr { top: 40px !important;    right: 40px !important; bottom: auto !important; left: auto !important; transform: rotate(-180deg) !important; }
 .wind-corner.wind-tl { top: 40px !important;     left: 40px !important; bottom: auto !important; right: auto !important; transform: rotate(-270deg) !important; }
+/* ===== 除錯用座標刻度 ===== */
+.debug-ruler {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 50;
+  font-family: 'Segoe UI', monospace;
+  color: #ffd84a;
+  font-size: 10px;
+  font-weight: 700;
+  text-shadow: 0 0 3px #000, 0 0 3px #000;
+}
+.debug-ruler .ruler-x {
+  position: absolute;
+  left: 0; right: 0;
+  top: -18px;
+  height: 16px;
+}
+.debug-ruler .ruler-x .tick {
+  position: absolute;
+  transform: translateX(-50%);
+}
+.debug-ruler .ruler-y {
+  position: absolute;
+  top: 0; bottom: 0;
+  left: -30px;
+  width: 28px;
+}
+.debug-ruler .ruler-y .tick {
+  position: absolute;
+  right: 0;
+  transform: translateY(-50%);
+}
+.debug-ruler .axis {
+  position: absolute;
+  background: rgba(255, 216, 74, 0.35);
+}
+.debug-ruler .axis-x {
+  left: 0; right: 0;
+  top: 50%;
+  height: 1px;
+}
+.debug-ruler .axis-y {
+  top: 0; bottom: 0;
+  left: 50%;
+  width: 1px;
+}
+
 /* ===== 自家棄牌區 ===== */
 /* 自家棄牌區位置變數，修改這兩個即可同時移動黑框＋棄牌 */
 .table-wrapper {
