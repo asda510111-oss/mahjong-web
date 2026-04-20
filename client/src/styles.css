@@ -715,15 +715,15 @@ input:focus { border-color: var(--accent); }
 /* ===== 自家棄牌區 ===== */
 /* 自家棄牌區位置變數，修改這兩個即可同時移動黑框＋棄牌 */
 .table-wrapper {
-  --cd-bot-x: -15px;
-  --cd-bot-y: -5px; /* 刻度 Y=5（正上），CSS translate 方向為正下，所以填 -5 */
+  /* 以黑框左上角為錨點：X 正=右、Y 正=上（與刻度一致） */
+  --cd-bot-x: -150px;
+  --cd-bot-y: 50px;
 }
 .cd-bot {
-  /* 棄牌格子 + 黑框為同一 div，transform 一併移動 */
+  /* 棄牌格子 + 黑框為同一 div，左上角錨在 (wrapper中心 + X, wrapper中心 − Y) */
   position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(calc(-50% + var(--cd-bot-x)), var(--cd-bot-y));
+  left: calc(50% + var(--cd-bot-x));
+  top: calc(50% - var(--cd-bot-y));
   display: grid;
   grid-template-columns: repeat(8, 44px);
   grid-template-rows: repeat(3, 60px);
