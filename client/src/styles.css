@@ -370,14 +370,14 @@ input:focus { border-color: var(--accent); }
   padding: 4px;
 }
 .table-seat.pos-left .seat-backs {
-  /* 再往左 222px（6×37 棄牌寬） */
-  left: -182px;
+  /* 再往左 222px（6×37） */
+  left: -404px;
   transform: translateY(-50%) rotate(-90deg);
   transform-origin: center;
 }
 .table-seat.pos-right .seat-backs {
   /* 再往右 222px（6×37） */
-  right: -182px;
+  right: -404px;
   transform: translateY(-50%) rotate(90deg);
   transform-origin: center;
 }
