@@ -675,7 +675,12 @@ input:focus { border-color: var(--accent); }
 .debug-ruler .ruler-x .tick {
   position: absolute;
   transform: translateX(-50%);
+  border-left: 1px solid rgba(255, 216, 74, 0.8);
+  padding-left: 1px;
+  height: 16px;
+  display: inline-block;
 }
+.debug-ruler .ruler-x .tick.minor { height: 6px; border-left-color: rgba(255, 216, 74, 0.4); }
 .debug-ruler .ruler-y {
   position: absolute;
   top: 0; bottom: 0;
@@ -686,7 +691,12 @@ input:focus { border-color: var(--accent); }
   position: absolute;
   right: 0;
   transform: translateY(-50%);
+  border-top: 1px solid rgba(255, 216, 74, 0.8);
+  padding-top: 1px;
+  width: 28px;
+  text-align: right;
 }
+.debug-ruler .ruler-y .tick.minor { width: 10px; border-top-color: rgba(255, 216, 74, 0.4); }
 .debug-ruler .axis {
   position: absolute;
   background: rgba(255, 216, 74, 0.35);

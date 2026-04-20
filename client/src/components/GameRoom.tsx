@@ -264,13 +264,25 @@ export default function GameRoom({
         {/* 除錯用座標刻度尺（以 table-wrapper 中心為 0,0） */}
         <div className="debug-ruler" aria-hidden="true">
           <div className="ruler ruler-x">
-            {Array.from({ length: 13 }, (_, i) => (i - 6) * 100).map(v => (
-              <span key={`x${v}`} className="tick" style={{ left: `calc(50% + ${v}px)` }}>{v}</span>
+            {Array.from({ length: 121 }, (_, i) => (i - 60) * 10).map(v => (
+              <span
+                key={`x${v}`}
+                className={`tick ${v % 50 === 0 ? 'major' : 'minor'}`}
+                style={{ left: `calc(50% + ${v}px)` }}
+              >
+                {v % 50 === 0 ? v : ''}
+              </span>
             ))}
           </div>
           <div className="ruler ruler-y">
-            {Array.from({ length: 9 }, (_, i) => (i - 4) * 100).map(v => (
-              <span key={`y${v}`} className="tick" style={{ top: `calc(50% + ${v}px)` }}>{v}</span>
+            {Array.from({ length: 81 }, (_, i) => (i - 40) * 10).map(v => (
+              <span
+                key={`y${v}`}
+                className={`tick ${v % 50 === 0 ? 'major' : 'minor'}`}
+                style={{ top: `calc(50% + ${v}px)` }}
+              >
+                {v % 50 === 0 ? v : ''}
+              </span>
             ))}
           </div>
           <div className="axis axis-x" />
