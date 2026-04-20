@@ -720,7 +720,7 @@ input:focus { border-color: var(--accent); }
   --cd-bot-y: 130px;
   /* 對家：以黑框「右下角」為錨點（與自家鏡像）；初值鏡像於自家 */
   --cd-top-x: 110px;  /* 原鏡像值 */
-  --cd-top-y: 38px;   /* 原 -130，上移 168px（4×42） */
+  --cd-top-y: 248px;  /* 再上移 210px（5×42） */
 }
 .cd-bot {
   /* 棄牌格子 + 黑框為同一 div，左上角錨在 (wrapper中心 + X, wrapper中心 − Y) */
