@@ -724,7 +724,7 @@ input:focus { border-color: var(--accent); }
 }
 .wind-corner {
   position: absolute;
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 800;
   color: var(--accent);
   background: #000;
