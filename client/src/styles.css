@@ -78,10 +78,20 @@ body.in-game .table-seat.pos-right .seat-backs {
   max-height: none !important;
   overflow: visible !important;
 }
-body.in-game .table-seat.pos-right .tile.back.compact {
-  --tile-w: 136px !important;
-  --tile-h: 180px !important;
-  --back-depth: 56px !important;
+body.in-game .table-seat.pos-right .tile.back.compact,
+body.in-game .table-seat.pos-left .tile.back.compact {
+  --tile-w: 68px !important;
+  --tile-h: 90px !important;
+  --back-depth: 28px !important;
+}
+body.in-game .table-seat.pos-left .seat-backs {
+  display: flex !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  z-index: 10 !important;
+  max-width: none !important;
+  max-height: none !important;
+  overflow: visible !important;
 }
 
 button {
