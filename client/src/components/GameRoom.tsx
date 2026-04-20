@@ -288,9 +288,12 @@ export default function GameRoom({
           <div className="axis axis-x" />
           <div className="axis axis-y" />
         </div>
-        {/* 自家吃/碰/槓/花 副子區：一排由左至右 */}
+        {/* 自家吃/碰/槓/花 副子區：花補到最左，其餘依序排列 */}
         <div className="my-melds">
-          {(myPub?.melds ?? []).map((m, mi) => (
+          {[
+            ...(myPub?.melds ?? []).filter(m => m.type === 'flower'),
+            ...(myPub?.melds ?? []).filter(m => m.type !== 'flower'),
+          ].map((m, mi) => (
             <div key={mi} className={`meld-group ${m.type === 'flower' ? 'flower' : ''}`}>
               {m.tiles.map((t, ti) => (
                 <Tile key={`${t}-${ti}`} id={t} disabled />
