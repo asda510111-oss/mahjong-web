@@ -355,11 +355,11 @@ input:focus { border-color: var(--accent); }
   transform: translateY(-50%) rotate(90deg);
   transform-origin: center;
 }
-/* 對家（上方）：從玩家視角看，牌向前傾倒 60°，並往上移、牌與牌之間不留間隙 */
+/* 對家手牌隱藏（整塊 seat-backs 不顯示） */
 .table-seat.pos-top .seat-backs {
-  /* 對家手牌：中心對齊垂直中線（左右）、吸在上木框下方 */
+  display: none !important;
   position: absolute;
-  top: -242px; /* 原 28，再往上 270px（3×90 手牌高） */
+  top: -242px;
   left: 50%;
   transform: translateX(-50%) rotateX(-60deg);
   transform-origin: bottom center;
