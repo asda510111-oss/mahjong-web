@@ -725,8 +725,8 @@ input:focus { border-color: var(--accent); }
   --cd-right-x: 116px;  /* 再右移 93px（2.5×37） */
   --cd-right-y: 105px;  /* 下移 25px（0.5×50） */
   /* 上家：以黑框「左上角」為錨點，樣式同自家；初始位置同自家 */
-  --cd-left-x: -255px; /* 右移 111px（3×37） */
-  --cd-left-y: 230px;  /* 上移 100px（2×50） */
+  --cd-left-x: -144px; /* 再右移 111px（3×37） */
+  --cd-left-y: 330px;  /* 再上移 100px（2×50） */
 }
 .cd-bot {
   /* 棄牌格子 + 黑框為同一 div，左上角錨在 (wrapper中心 + X, wrapper中心 − Y) */
