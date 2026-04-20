@@ -725,8 +725,8 @@ input:focus { border-color: var(--accent); }
   left: calc(50% + var(--cd-bot-x));
   top: calc(50% - var(--cd-bot-y));
   display: grid;
-  grid-template-columns: repeat(8, 44px);
-  grid-template-rows: repeat(3, 60px);
+  grid-template-columns: repeat(8, 31px);
+  grid-template-rows: repeat(3, 42px);
   grid-auto-flow: row;
   gap: 2px;
   z-index: 3;
@@ -736,9 +736,9 @@ input:focus { border-color: var(--accent); }
   padding: 4px;
 }
 .cd-bot .tile {
-  --tile-w: 44px;
-  --tile-h: 60px;
-  border-radius: 4px;
+  --tile-w: 31px;
+  --tile-h: 42px;
+  border-radius: 3px;
   padding: 1px;
 }
 .center-round {
