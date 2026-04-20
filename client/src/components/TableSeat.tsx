@@ -52,9 +52,24 @@ export default function TableSeat({
 
       {!isMe && handCount > 0 && (
         <div className="seat-backs">
-          {Array.from({ length: handCount }).map((_, i) => (
-            <div key={i} className="tile back compact" />
-          ))}
+          {position === 'top'
+            ? (() => {
+                // 對家：固定 17 格位，從右至左填入（左側因吃碰槓先減少）
+                const MAX = 17
+                return Array.from({ length: MAX }).map((_, i) => {
+                  const visible = i >= MAX - handCount
+                  return (
+                    <div
+                      key={i}
+                      className="tile back compact"
+                      style={{ visibility: visible ? 'visible' : 'hidden' }}
+                    />
+                  )
+                })
+              })()
+            : Array.from({ length: handCount }).map((_, i) => (
+                <div key={i} className="tile back compact" />
+              ))}
         </div>
       )}
 
