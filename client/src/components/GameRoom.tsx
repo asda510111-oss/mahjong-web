@@ -261,6 +261,12 @@ export default function GameRoom({
       </div>
 
       <div className="table-wrapper">
+        {/* 中央資訊覆蓋層：牌桌兩條對角線交點 */}
+        <div className="table-center-info">
+          <div className="center-round">{dealerLabel}</div>
+          <div className="center-wall-num">{wallRemaining}</div>
+          <div className="center-wall-label">剩餘</div>
+        </div>
         <div className="wood-edge wood-left" aria-hidden="true" />
         <div className="wood-edge wood-right" aria-hidden="true" />
         <div className="table-grid">
