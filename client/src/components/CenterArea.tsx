@@ -1,3 +1,4 @@
+import Tile from './Tile'
 import type { TileId } from '../game/tiles'
 import type { SeatIndex } from '../game/types'
 
@@ -16,7 +17,29 @@ interface Props {
   bottomSeat?: SeatIndex
 }
 
-// 四家棄牌堆已移除，等待重建
-export default function CenterArea(_props: Partial<Props>) {
-  return <div className="center-cross" />
+export default function CenterArea({
+  botDiscards = [],
+  highlightTile = null,
+  glowSeat = null,
+  bottomSeat,
+}: Partial<Props>) {
+  const isHi = (t: TileId) => !!highlightTile && t === highlightTile
+  const isGlow = (idx: number, len: number) =>
+    glowSeat !== null && glowSeat === bottomSeat && idx === len - 1
+
+  return (
+    <div className="center-cross">
+      <div className="cd-bot">
+        {botDiscards.map((t, i) => (
+          <Tile
+            key={`${t}-${i}`}
+            id={t}
+            disabled
+            highlight={isHi(t)}
+            glow={isGlow(i, botDiscards.length)}
+          />
+        ))}
+      </div>
+    </div>
+  )
 }

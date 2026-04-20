@@ -654,7 +654,26 @@ input:focus { border-color: var(--accent); }
 .wind-corner.wind-br { bottom: 40px !important; right: 40px !important; top: auto !important; left: auto !important;  transform: rotate(-90deg)  !important; }
 .wind-corner.wind-tr { top: 40px !important;    right: 40px !important; bottom: auto !important; left: auto !important; transform: rotate(-180deg) !important; }
 .wind-corner.wind-tl { top: 40px !important;     left: 40px !important; bottom: auto !important; right: auto !important; transform: rotate(-270deg) !important; }
-/* 四家棄牌區相關樣式（.cd、tile-slot-side 等）已移除，等待重建 */
+/* ===== 自家棄牌區 ===== */
+.cd-bot {
+  /* 位於牌桌中央資訊區下方，固定 8 欄，由左至右、由上至下 */
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, 110px);
+  display: grid;
+  grid-template-columns: repeat(8, 44px);
+  grid-auto-rows: 60px;
+  grid-auto-flow: row;
+  gap: 2px;
+  z-index: 3;
+}
+.cd-bot .tile {
+  --tile-w: 44px;
+  --tile-h: 60px;
+  border-radius: 4px;
+  padding: 1px;
+}
 .center-round {
   font-size: 23px;
   font-weight: 700;
