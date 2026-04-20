@@ -59,6 +59,15 @@ body.in-game .room:not(.lobby) {
   top: 0;
 }
 
+/* in-game 強制覆蓋手機 media query 的字體縮小，保持設計尺寸 */
+body.in-game .cd-info {
+  width: 360px !important;
+  height: 360px !important;
+}
+body.in-game .center-round { font-size: 42px !important; }
+body.in-game .center-wall-num { font-size: 108px !important; }
+body.in-game .center-wall-label { font-size: 36px !important; }
+
 button {
   font-family: inherit;
   font-size: 1rem;
