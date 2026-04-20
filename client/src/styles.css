@@ -675,8 +675,8 @@ input:focus { border-color: var(--accent); }
   height: calc(3 * var(--ct-h) + 2 * var(--ct-gap));
   margin: 0 auto;
   align-self: start;
-  /* 移至自家風位（東=左下角）方向：往下並略偏左 */
-  transform: translate(-40px, 60px);
+  /* 落在中央資訊區下方正中（藍框位置） */
+  transform: translate(0, 120px);
 }
 .cd-left {
   grid-area: left;
