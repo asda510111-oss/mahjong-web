@@ -717,7 +717,7 @@ input:focus { border-color: var(--accent); }
 .table-wrapper {
   /* 以黑框左上角為錨點：X 正=右、Y 正=上（與刻度一致） */
   --cd-bot-x: -144px; /* 右移 3px（0.1×31） */
-  --cd-bot-y: 151px; /* 再上移 21px（0.5×42） */
+  --cd-bot-y: 130px; /* 下移 21px（0.5×42） */
 }
 .cd-bot {
   /* 棄牌格子 + 黑框為同一 div，左上角錨在 (wrapper中心 + X, wrapper中心 − Y) */
