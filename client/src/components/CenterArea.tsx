@@ -21,11 +21,13 @@ export default function CenterArea({
   botDiscards = [],
   topDiscards = [],
   rightDiscards = [],
+  leftDiscards = [],
   highlightTile = null,
   glowSeat = null,
   bottomSeat,
   topSeat,
   rightSeat,
+  leftSeat,
 }: Partial<Props>) {
   const isHi = (t: TileId) => !!highlightTile && t === highlightTile
   const isGlow = (seat: SeatIndex | undefined, idx: number, len: number) =>
@@ -63,6 +65,17 @@ export default function CenterArea({
             disabled
             highlight={isHi(t)}
             glow={isGlow(rightSeat, i, rightDiscards.length)}
+          />
+        ))}
+      </div>
+      <div className="cd-left">
+        {leftDiscards.map((t, i) => (
+          <Tile
+            key={`${t}-${i}`}
+            id={t}
+            disabled
+            highlight={isHi(t)}
+            glow={isGlow(leftSeat, i, leftDiscards.length)}
           />
         ))}
       </div>
