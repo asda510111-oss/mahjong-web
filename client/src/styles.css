@@ -722,6 +722,18 @@ input:focus { border-color: var(--accent); }
   pointer-events: none;
   z-index: 5;
 }
+.wind-corner {
+  position: absolute;
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--accent);
+  line-height: 1;
+  padding: 2px 4px;
+}
+.wind-corner.wind-bl { bottom: 4px;  left: 4px; }
+.wind-corner.wind-br { bottom: 4px; right: 4px; }
+.wind-corner.wind-tr { top: 4px;    right: 4px; }
+.wind-corner.wind-tl { top: 4px;     left: 4px; }
 .cd .tile {
   --tile-w: var(--ct-w);
   --tile-h: var(--ct-h);

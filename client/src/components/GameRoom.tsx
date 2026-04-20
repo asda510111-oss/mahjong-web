@@ -265,6 +265,10 @@ export default function GameRoom({
         <div className="table-center-info">
           <div className="center-round">{dealerLabel}</div>
           <div className="center-wall-num">{`餘${String(wallRemaining).padStart(2, '0')}`}</div>
+          <span className="wind-corner wind-bl">東</span>
+          <span className="wind-corner wind-br">南</span>
+          <span className="wind-corner wind-tr">西</span>
+          <span className="wind-corner wind-tl">北</span>
         </div>
         <div className="wood-edge wood-left" aria-hidden="true" />
         <div className="wood-edge wood-right" aria-hidden="true" />
