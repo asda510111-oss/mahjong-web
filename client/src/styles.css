@@ -655,20 +655,23 @@ input:focus { border-color: var(--accent); }
 .wind-corner.wind-tr { top: 40px !important;    right: 40px !important; bottom: auto !important; left: auto !important; transform: rotate(-180deg) !important; }
 .wind-corner.wind-tl { top: 40px !important;     left: 40px !important; bottom: auto !important; right: auto !important; transform: rotate(-270deg) !important; }
 /* ===== 自家棄牌區 ===== */
+/* 自家棄牌區位置變數，修改這兩個即可同時移動黑框＋棄牌 */
+.table-wrapper {
+  --cd-bot-x: 0px;
+  --cd-bot-y: 70px;
+}
 .cd-bot {
-  /* 位於牌桌中央資訊區下方，固定 8 欄，由左至右、由上至下 */
+  /* 棄牌格子 + 黑框為同一 div，transform 一併移動 */
   position: absolute;
   left: 50%;
   top: 50%;
-  transform: translate(-50%, 70px);
+  transform: translate(calc(-50% + var(--cd-bot-x)), var(--cd-bot-y));
   display: grid;
   grid-template-columns: repeat(8, 44px);
-  /* 固定 3 列高度讓黑框範圍清楚 */
   grid-template-rows: repeat(3, 60px);
   grid-auto-flow: row;
   gap: 2px;
   z-index: 3;
-  /* 觀察用黑框 */
   border: 3px solid #000;
   border-radius: 4px;
   background: rgba(0, 0, 0, 0.15);
