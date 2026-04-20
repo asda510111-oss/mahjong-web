@@ -673,8 +673,8 @@ input:focus { border-color: var(--accent); }
   height: calc(3 * var(--ct-h) + 2 * var(--ct-gap));
   margin: 0 auto;
   align-self: start;
-  /* 往下移動，避免蓋住中央資訊區與四角風位 */
-  transform: translateY(100px);
+  /* 往下貼近四角風位下緣（風位在中央 180 容器 bottom:40，下緣約 wrapper_center + 50） */
+  transform: translateY(60px);
 }
 .cd-left {
   grid-area: left;
