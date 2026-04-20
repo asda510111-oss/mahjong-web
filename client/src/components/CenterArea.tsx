@@ -46,43 +46,7 @@ export default function CenterArea({
   const isGlow = (seat: SeatIndex | undefined, idx: number, len: number) =>
     glowSeat !== null && glowSeat === seat && idx === len - 1
 
-  return (
-    <div className="center-cross">
-      <div className="cd cd-top">
-        {topDiscards.map((t, i) => (
-          <Tile key={`${t}-${i}`} id={t} disabled
-            highlight={isHi(t)}
-            glow={isGlow(topSeat, i, topDiscards.length)} />
-        ))}
-      </div>
-      <div className="cd cd-left">
-        {leftDiscards.map((t, i) => (
-          <SidewaysTile key={`${t}-${i}`} id={t}
-            highlight={isHi(t)}
-            glow={isGlow(leftSeat, i, leftDiscards.length)}
-            direction="left" />
-        ))}
-      </div>
-      <div className="cd-info">
-        <div className="center-round">{dealerLabel}</div>
-        <div className="center-wall-num">{wallRemaining}</div>
-        <div className="center-wall-label">剩餘</div>
-      </div>
-      <div className="cd cd-right">
-        {rightDiscards.map((t, i) => (
-          <SidewaysTile key={`${t}-${i}`} id={t}
-            highlight={isHi(t)}
-            glow={isGlow(rightSeat, i, rightDiscards.length)}
-            direction="right" />
-        ))}
-      </div>
-      <div className="cd cd-bot">
-        {botDiscards.map((t, i) => (
-          <Tile key={`${t}-${i}`} id={t} disabled
-            highlight={isHi(t)}
-            glow={isGlow(bottomSeat, i, botDiscards.length)} />
-        ))}
-      </div>
-    </div>
-  )
+  // 四家棄牌堆已移除，等待重建
+  void isHi; void isGlow
+  return <div className="center-cross" />
 }

@@ -608,111 +608,8 @@ input:focus { border-color: var(--accent); }
 
 /* 棄牌堆已移到中央田字區 (.cd)，座位內不再需要 .seat-discards */
 
-/* ===== 中央田字棄牌區 ===== */
-.center-cross {
-  display: grid;
-  width: 100%;
-  height: 100%;
-  /* 改成內容自適應，讓四家棄牌緊貼中央資訊區，聚在四家手牌的正中間 */
-  grid-template-columns: auto auto auto;
-  grid-template-rows: auto auto auto;
-  grid-template-areas:
-    ".    top    ."
-    "left info  right"
-    ".    bot    .";
-  gap: 2px;
-  padding: 6px;
-  background: transparent;
-  border-radius: 14px;
-  justify-content: center;
-  align-content: center;
-  place-items: center;
-  min-height: 260px;
-}
-.cd {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 2px;
-  min-width: 0;
-  min-height: 0;
-  /* 固定外框：黑色粗線條 */
-  border: 3px solid #000;
-  border-radius: 4px;
-  background: rgba(0, 0, 0, 0.15);
-  box-sizing: content-box;
-}
-/* 固定格位：每張棄牌的位置由索引決定，後續加入的牌絕不會擠動既有的 */
-/* 容器：7 欄 × 3 列固定網格，滿 21 張 */
-/* 固定尺寸：整體畫面由外層 scale 自適應，這裡保留邏輯像素 */
-.center-cross {
-  --ct-w: 44px;
-  --ct-h: 60px;
-  --ct-gap: 2px;
-}
-.cd-top {
-  grid-area: top;
-  display: grid;
-  grid-template-columns: repeat(7, var(--ct-w));
-  grid-template-rows: repeat(3, var(--ct-h));
-  grid-auto-flow: row;
-  direction: ltr;
-  gap: var(--ct-gap);
-  width: calc(7 * var(--ct-w) + 6 * var(--ct-gap));
-  height: calc(3 * var(--ct-h) + 2 * var(--ct-gap));
-  margin: 0 auto;
-  align-self: end;
-  /* 移至對家風位（西=右上角）方向 */
-  transform: translate(40px, -60px);
-}
-.cd-bot {
-  grid-area: bot;
-  display: grid;
-  grid-template-columns: repeat(7, var(--ct-w));
-  grid-template-rows: repeat(3, var(--ct-h));
-  grid-auto-flow: row;
-  gap: var(--ct-gap);
-  width: calc(7 * var(--ct-w) + 6 * var(--ct-gap));
-  height: calc(3 * var(--ct-h) + 2 * var(--ct-gap));
-  margin: 0 auto;
-  align-self: start;
-  /* 落在中央資訊區下方正中（藍框位置） */
-  transform: translate(0, 120px);
-}
-.cd-left {
-  grid-area: left;
-  display: grid;
-  grid-template-columns: repeat(3, var(--ct-h));
-  grid-template-rows: repeat(7, var(--ct-w));
-  grid-auto-flow: column;
-  direction: rtl;
-  gap: var(--ct-gap);
-  width: calc(3 * var(--ct-h) + 2 * var(--ct-gap));
-  height: calc(7 * var(--ct-w) + 6 * var(--ct-gap));
-  margin: auto 0 auto auto;
-  justify-self: end;
-  /* 移至上家風位（北=左上角）方向 */
-  transform: translate(-60px, -40px);
-}
-.cd-left > * { direction: ltr; }
-.cd-right {
-  grid-area: right;
-  display: grid;
-  grid-template-columns: repeat(3, var(--ct-h));
-  grid-template-rows: repeat(7, var(--ct-w));
-  grid-auto-flow: column;
-  gap: var(--ct-gap);
-  width: calc(3 * var(--ct-h) + 2 * var(--ct-gap));
-  height: calc(7 * var(--ct-w) + 6 * var(--ct-gap));
-  margin: auto auto auto 0;
-  justify-self: start;
-  /* 移至下家風位（南=右下角）方向 */
-  transform: translate(60px, 40px);
-}
-
-.cd-info {
-  /* 由 .table-center-info 覆蓋層取代，原位置隱藏 */
-  display: none !important;
-}
+/* ===== 中央棄牌區（已移除，等待重建） ===== */
+.center-cross { display: block; width: 100%; height: 100%; }
 
 /* 中央資訊覆蓋層：牌桌兩對角線交點（固定鎖定） */
 .table-center-info {
@@ -757,46 +654,7 @@ input:focus { border-color: var(--accent); }
 .wind-corner.wind-br { bottom: 40px !important; right: 40px !important; top: auto !important; left: auto !important;  transform: rotate(-90deg)  !important; }
 .wind-corner.wind-tr { top: 40px !important;    right: 40px !important; bottom: auto !important; left: auto !important; transform: rotate(-180deg) !important; }
 .wind-corner.wind-tl { top: 40px !important;     left: 40px !important; bottom: auto !important; right: auto !important; transform: rotate(-270deg) !important; }
-.cd .tile {
-  --tile-w: var(--ct-w);
-  --tile-h: var(--ct-h);
-  border-radius: 4px;
-  padding: 1px;
-}
-
-/* ===== 棄牌方向：面對各自玩家 =====
-   自己(cd-bot)：正常（不轉）
-   對家(cd-top)：180° 顛倒
-   上家(cd-left)：90° 順時針（牌頂朝右 = 玩家那側）
-   下家(cd-right)：90° 逆時針
-*/
-.cd-top .tile { transform: rotate(180deg); }
-.cd-top .tile.highlight { transform: rotate(180deg) scale(1.12); }
-
-/* 左右家：旋轉 90°，slot 尺寸與 tile 對調 */
-.tile-slot-side {
-  position: relative;
-  width: var(--ct-h);   /* 旋轉後寬 = tile 原本高 */
-  height: var(--ct-w);  /* 旋轉後高 = tile 原本寬 */
-  flex-shrink: 0;
-}
-.tile-slot-side .tile {
-  position: absolute;
-  top: 50%; left: 50%;
-  margin: 0;
-}
-.tile-slot-left .tile {
-  transform: translate(-50%, -50%) rotate(90deg);
-}
-.tile-slot-right .tile {
-  transform: translate(-50%, -50%) rotate(-90deg);
-}
-.tile-slot-left .tile.highlight {
-  transform: translate(-50%, -50%) rotate(90deg) scale(1.12);
-}
-.tile-slot-right .tile.highlight {
-  transform: translate(-50%, -50%) rotate(-90deg) scale(1.12);
-}
+/* 四家棄牌區相關樣式（.cd、tile-slot-side 等）已移除，等待重建 */
 .center-round {
   font-size: 23px;
   font-weight: 700;
@@ -875,13 +733,7 @@ input:focus { border-color: var(--accent); }
   .table-seat.pos-left .seat-melds .tile,
   .table-seat.pos-right .seat-melds .tile { --tile-w: 24px; --tile-h: 16px; }
 
-  .center-cross { min-height: 120px; padding: 3px; gap: 1px; grid-template-rows: auto 223px auto; }
-  .cd .tile { --tile-w: 31px; --tile-h: 42px; }
-  .tile-slot-side { width: 42px; height: 31px; }
-  /* 上下家橫向版：8×16 + 7×1 = 135px */
-  .cd-top, .cd-bot { max-width: 223px; }
-  /* 左右家橫向版：5×31 + 4×1 = 159px */
-  .cd-left, .cd-right { max-height: 223px; }
+  .center-cross { min-height: 120px; padding: 3px; gap: 1px; }
   .center-wall-num { font-size: 0.55rem; }
   .center-round { font-size: 0.35rem; }
   .center-wall-label { font-size: 0.3rem; }
