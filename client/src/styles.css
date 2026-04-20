@@ -737,14 +737,20 @@ input:focus { border-color: var(--accent); }
   color: var(--accent);
   background: #000;
   border-radius: 4px;
-  padding: 2px 6px;
+  padding: 0;
   line-height: 1;
+  /* 正方形底色 */
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
 }
 .wind-corner.dealer {
   background: #f5c842;
   color: #000;
   border-radius: 4px;
-  padding: 2px 6px;
   box-shadow: 0 0 8px rgba(245, 200, 66, 0.8);
 }
 .wind-corner.wind-bl { bottom: 40px !important;  left: 40px !important; top: auto !important; right: auto !important; }
