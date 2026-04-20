@@ -159,6 +159,12 @@ export default function App() {
         case 'public_state':
           setPublicStates(msg.states)
           setWallRemaining(msg.wallRemaining)
+          // 以伺服器為準同步棄牌堆（吃/碰/槓會 pop 掉被取走的那張）
+          setDiscards(() => {
+            const next: DiscardMap = { 0: [], 1: [], 2: [], 3: [] }
+            for (const s of msg.states) next[s.seat] = [...(s.discards ?? [])]
+            return next
+          })
           break
         case 'action_options':
           setActionOptions(msg.options)
