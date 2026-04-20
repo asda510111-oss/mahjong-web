@@ -715,8 +715,8 @@ input:focus { border-color: var(--accent); }
 /* ===== 自家棄牌區 ===== */
 /* 自家棄牌區位置變數，修改這兩個即可同時移動黑框＋棄牌 */
 .table-wrapper {
-  --cd-bot-x: 0px;
-  --cd-bot-y: 70px;
+  --cd-bot-x: -15px;
+  --cd-bot-y: -5px; /* 刻度 Y=5（正上），CSS translate 方向為正下，所以填 -5 */
 }
 .cd-bot {
   /* 棄牌格子 + 黑框為同一 div，transform 一併移動 */

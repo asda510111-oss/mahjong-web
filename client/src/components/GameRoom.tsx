@@ -279,7 +279,7 @@ export default function GameRoom({
               <span
                 key={`y${v}`}
                 className={`tick ${v % 50 === 0 ? 'major' : 'minor'}`}
-                style={{ top: `calc(50% + ${v}px)` }}
+                style={{ top: `calc(50% - ${v}px)` }}
               >
                 {v % 50 === 0 ? v : ''}
               </span>
