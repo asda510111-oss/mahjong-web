@@ -723,6 +723,14 @@ input:focus { border-color: var(--accent); }
   flex-wrap: nowrap;
   gap: 8px;
   z-index: 3;
+  /* 藍框（組合物件，框與副子一起移動） */
+  border: 3px solid #2a7bff;
+  border-radius: 4px;
+  background: rgba(42, 123, 255, 0.08);
+  padding: 4px;
+  min-width: 60px;
+  min-height: 52px;
+  align-items: center;
 }
 .my-melds .meld-group {
   display: flex;
