@@ -545,15 +545,16 @@ input:focus { border-color: var(--accent); }
 
 /* 上家（左邊 AI-3）：牌立著直向擺放 */
 .table-seat.pos-left .tile.back.compact {
-  --tile-w: 19px;
-  --tile-h: 32px;
-  --back-depth: 11px;
+  /* 上家手牌放大 2 倍 */
+  --tile-w: 38px;
+  --tile-h: 64px;
+  --back-depth: 22px;
 }
 /* 下家（右邊 AI-1）：同樣立著 */
 .table-seat.pos-right .tile.back.compact {
-  --tile-w: 19px;
-  --tile-h: 32px;
-  --back-depth: 11px;
+  --tile-w: 38px;
+  --tile-h: 64px;
+  --back-depth: 22px;
 }
 .seat-backs {
   display: flex;
@@ -1072,9 +1073,9 @@ input:focus { border-color: var(--accent); }
 }
 .hand-fixed .hand .tile {
   flex-shrink: 0;
-  /* 手牌放大（不影響桌上其他牌） */
-  --tile-w: 45px;
-  --tile-h: 60px;
+  /* 手牌放大 1.5 倍 */
+  --tile-w: 68px;
+  --tile-h: 90px;
 }
 
 /* 輪到我時，手牌柔和脈動（僅未選取的牌；選取中的牌保持原樣避免抖動） */
