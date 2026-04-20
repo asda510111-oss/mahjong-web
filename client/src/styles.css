@@ -361,11 +361,11 @@ input:focus { border-color: var(--accent); }
   gap: 0;
   z-index: 2;
 }
-/* 對家牌背：加厚頂面，讓 3D 更明顯 */
+/* 對家牌背：與自家手牌同尺寸 */
 .table-seat.pos-top .tile.back.compact {
-  --tile-w: 22px;
-  --tile-h: 34px;
-  --back-depth: 12px;
+  --tile-w: 68px;
+  --tile-h: 90px;
+  --back-depth: 28px;
 }
 /* 副子也跟著該家的牌牆一起傾 */
 .table-seat.pos-left .seat-melds {
@@ -545,16 +545,16 @@ input:focus { border-color: var(--accent); }
 
 /* 上家（左邊 AI-3）：牌立著直向擺放 */
 .table-seat.pos-left .tile.back.compact {
-  /* 上家手牌放大 2 倍 */
-  --tile-w: 38px;
-  --tile-h: 64px;
-  --back-depth: 22px;
+  /* 與自家手牌同尺寸 */
+  --tile-w: 68px;
+  --tile-h: 90px;
+  --back-depth: 28px;
 }
 /* 下家（右邊 AI-1）：同樣立著 */
 .table-seat.pos-right .tile.back.compact {
-  --tile-w: 38px;
-  --tile-h: 64px;
-  --back-depth: 22px;
+  --tile-w: 68px;
+  --tile-h: 90px;
+  --back-depth: 28px;
 }
 .seat-backs {
   display: flex;
