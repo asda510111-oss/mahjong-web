@@ -719,7 +719,7 @@ input:focus { border-color: var(--accent); }
   --cd-bot-x: -110px;
   --cd-bot-y: 130px;
   /* 對家：以黑框「右下角」為錨點（與自家鏡像）；初值鏡像於自家 */
-  --cd-top-x: 110px;  /* 原鏡像值 */
+  --cd-top-x: 101px;  /* 左移 9px（0.3×31） */
   --cd-top-y: 332px;  /* 再上移 84px（2×42） */
 }
 .cd-bot {
