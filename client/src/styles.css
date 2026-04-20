@@ -717,7 +717,7 @@ input:focus { border-color: var(--accent); }
 .table-wrapper {
   /* 自家：以黑框「左上角」為錨點；X 正=右、Y 正=上（與刻度一致） */
   --cd-bot-x: -125px; /* 再左移 15px（0.4×37） */
-  --cd-bot-y: 130px;
+  --cd-bot-y: 115px;  /* 下移 15px（0.3×50） */
   /* 對家：以黑框「右下角」為錨點（與自家鏡像） */
   --cd-top-x: 123px;  /* 再右移 22px（0.6×37） */
   --cd-top-y: 357px;  /* 再上移 25px（0.5×50） */
