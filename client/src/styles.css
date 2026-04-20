@@ -721,6 +721,9 @@ input:focus { border-color: var(--accent); }
   /* 對家：以黑框「右下角」為錨點（與自家鏡像） */
   --cd-top-x: 123px;  /* 再右移 22px（0.6×37） */
   --cd-top-y: 332px;  /* 再上移 84px（2×42） */
+  /* 下家：以黑框「左上角」為錨點，樣式同自家；初始位置同自家，待調整 */
+  --cd-right-x: -125px;
+  --cd-right-y: 130px;
 }
 .cd-bot {
   /* 棄牌格子 + 黑框為同一 div，左上角錨在 (wrapper中心 + X, wrapper中心 − Y) */
@@ -766,6 +769,29 @@ input:focus { border-color: var(--accent); }
   transform-origin: center;
 }
 .cd-top .tile {
+  --tile-w: 37px;
+  --tile-h: 50px;
+  border-radius: 3px;
+  padding: 1px;
+}
+
+/* ===== 下家棄牌區：樣式與自家相同 ===== */
+.cd-right {
+  position: absolute;
+  left: calc(50% + var(--cd-right-x));
+  top: calc(50% - var(--cd-right-y));
+  display: grid;
+  grid-template-columns: repeat(6, 37px);
+  grid-template-rows: repeat(3, 50px);
+  grid-auto-flow: row;
+  gap: 2px;
+  z-index: 3;
+  border: 3px solid #000;
+  border-radius: 4px;
+  background: rgba(0, 0, 0, 0.15);
+  padding: 4px;
+}
+.cd-right .tile {
   --tile-w: 37px;
   --tile-h: 50px;
   border-radius: 3px;

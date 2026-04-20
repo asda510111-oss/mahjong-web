@@ -20,10 +20,12 @@ interface Props {
 export default function CenterArea({
   botDiscards = [],
   topDiscards = [],
+  rightDiscards = [],
   highlightTile = null,
   glowSeat = null,
   bottomSeat,
   topSeat,
+  rightSeat,
 }: Partial<Props>) {
   const isHi = (t: TileId) => !!highlightTile && t === highlightTile
   const isGlow = (seat: SeatIndex | undefined, idx: number, len: number) =>
@@ -50,6 +52,17 @@ export default function CenterArea({
             disabled
             highlight={isHi(t)}
             glow={isGlow(topSeat, i, topDiscards.length)}
+          />
+        ))}
+      </div>
+      <div className="cd-right">
+        {rightDiscards.map((t, i) => (
+          <Tile
+            key={`${t}-${i}`}
+            id={t}
+            disabled
+            highlight={isHi(t)}
+            glow={isGlow(rightSeat, i, rightDiscards.length)}
           />
         ))}
       </div>
