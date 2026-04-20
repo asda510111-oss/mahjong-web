@@ -68,6 +68,22 @@ body.in-game .center-round { font-size: 23px !important; }
 body.in-game .center-wall-num { font-size: 23px !important; }
 body.in-game .center-wall-label { font-size: 23px !important; }
 
+/* 下家牌背強制顯示（不被手機 media query 壓縮） */
+body.in-game .table-seat.pos-right .seat-backs {
+  display: flex !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  z-index: 10 !important;
+  max-width: none !important;
+  max-height: none !important;
+  overflow: visible !important;
+}
+body.in-game .table-seat.pos-right .tile.back.compact {
+  --tile-w: 136px !important;
+  --tile-h: 180px !important;
+  --back-depth: 56px !important;
+}
+
 button {
   font-family: inherit;
   font-size: 1rem;
@@ -331,13 +347,17 @@ input:focus { border-color: var(--accent); }
 */
 .table-seat.pos-left .seat-backs,
 .table-seat.pos-right .seat-backs {
-  display: none !important;
   position: absolute;
   top: 50%;
   gap: 0;
   max-width: 320px;
   overflow: hidden;
   z-index: 2;
+  /* 綠框標示牌背區塊 */
+  border: 3px solid #2ecc71;
+  border-radius: 4px;
+  background: rgba(46, 204, 113, 0.08);
+  padding: 4px;
 }
 .table-seat.pos-left .seat-backs {
   /* 距左邊木框一段偏移，中心在水平中線上 */
@@ -350,9 +370,8 @@ input:focus { border-color: var(--accent); }
   transform: translateY(-50%) rotate(90deg);
   transform-origin: center;
 }
-/* 對家手牌隱藏（整塊 seat-backs 不顯示） */
+/* 對家牌背 */
 .table-seat.pos-top .seat-backs {
-  display: none !important;
   position: absolute;
   top: -242px;
   left: 50%;
