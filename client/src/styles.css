@@ -723,7 +723,7 @@ input:focus { border-color: var(--accent); }
   --cd-top-y: 332px;  /* 再上移 84px（2×42） */
   /* 下家：以黑框「左上角」為錨點，樣式同自家；初始位置同自家，待調整 */
   --cd-right-x: 116px;  /* 再右移 93px（2.5×37） */
-  --cd-right-y: 130px;
+  --cd-right-y: 105px;  /* 下移 25px（0.5×50） */
 }
 .cd-bot {
   /* 棄牌格子 + 黑框為同一 div，左上角錨在 (wrapper中心 + X, wrapper中心 − Y) */
