@@ -715,9 +715,12 @@ input:focus { border-color: var(--accent); }
 /* ===== 自家棄牌區 ===== */
 /* 自家棄牌區位置變數，修改這兩個即可同時移動黑框＋棄牌 */
 .table-wrapper {
-  /* 以黑框左上角為錨點：X 正=右、Y 正=上（與刻度一致） */
-  --cd-bot-x: -110px; /* 再右移 3px（0.1×31） */
-  --cd-bot-y: 130px; /* 下移 21px（0.5×42） */
+  /* 自家：以黑框「左上角」為錨點；X 正=右、Y 正=上（與刻度一致） */
+  --cd-bot-x: -110px;
+  --cd-bot-y: 130px;
+  /* 對家：以黑框「右下角」為錨點（與自家鏡像）；初值鏡像於自家 */
+  --cd-top-x: 110px;  /* 原鏡像值 */
+  --cd-top-y: 38px;   /* 原 -130，上移 168px（4×42） */
 }
 .cd-bot {
   /* 棄牌格子 + 黑框為同一 div，左上角錨在 (wrapper中心 + X, wrapper中心 − Y) */
@@ -745,9 +748,9 @@ input:focus { border-color: var(--accent); }
 /* ===== 對家棄牌區：與自家鏡像位置＋順序（共用 --cd-bot-x/y） ===== */
 .cd-top {
   position: absolute;
-  /* 右下邊鏡像對應 cd-bot 的左上邊 */
-  right: calc(50% + var(--cd-bot-x));
-  bottom: calc(50% - var(--cd-bot-y));
+  /* 以右下角為錨點，使用刻度座標：X 正=右、Y 正=上 */
+  right: calc(50% - var(--cd-top-x));
+  bottom: calc(50% + var(--cd-top-y));
   display: grid;
   grid-template-columns: repeat(6, 31px);
   grid-template-rows: repeat(3, 42px);
