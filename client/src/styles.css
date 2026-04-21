@@ -323,7 +323,7 @@ input:focus { border-color: var(--accent); }
   border-radius: 3px;
 }
 .wood-left {
-  left: 0; /* 左移 148px（4×37）回原位 */
+  left: 148px; /* 右移 148px（4×37） */
   transform: rotate(19deg); /* 順時針 19° */
   transform-origin: top left;
 }
