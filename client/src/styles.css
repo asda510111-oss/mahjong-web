@@ -730,7 +730,8 @@ input:focus { border-color: var(--accent); }
 .turn-light-bar.bar-right {
   right: 6px; top: 40px; bottom: 40px; width: 8px;
   background: linear-gradient(180deg, rgba(245,200,66,0.2), #f5c842 50%, rgba(245,200,66,0.2));
-  transform: translateY(-35px) scaleY(0.65);
+  /* 左移 37px、下移 50px（原 translateY(-35) → +50 = 15） */
+  transform: translate(-37px, 15px) scaleY(0.65);
   transform-origin: center;
 }
 @keyframes turn-light-flash {
