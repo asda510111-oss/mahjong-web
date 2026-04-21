@@ -401,8 +401,8 @@ input:focus { border-color: var(--accent); }
 /* 對家牌背 */
 .table-seat.pos-top .seat-backs {
   position: absolute;
-  top: -592px; /* 再上移 100px（2×50） */
-  left: 50%;
+  top: -592px;
+  left: calc(50% - 37px); /* 左移 37px（1×37） */
   transform: translateX(-50%) rotateX(-60deg);
   transform-origin: bottom center;
   gap: 0;
