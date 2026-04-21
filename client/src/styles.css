@@ -698,25 +698,25 @@ input:focus { border-color: var(--accent); }
   border-radius: 4px;
   box-shadow: 0 0 8px rgba(245, 200, 66, 0.8);
 }
-/* 金色閃爍長條：表示輪到自家，自家風 → 下家風方向 */
-.wind-flash-bar {
+/* 回合光條（turn-light-bar）：輪到自家時，自家風 → 下家風方向顯示金色閃爍光條 */
+.turn-light-bar {
   position: absolute;
   background: linear-gradient(90deg, rgba(245,200,66,0.2), #f5c842 50%, rgba(245,200,66,0.2));
   border-radius: 3px;
   box-shadow: 0 0 12px #f5c842, 0 0 20px rgba(245,200,66,0.6);
-  animation: wind-flash 0.6s ease-in-out infinite;
+  animation: turn-light-flash 0.6s ease-in-out infinite;
   z-index: 6;
   pointer-events: none;
 }
-.wind-flash-bar.bar-bottom { bottom: 6px; left: 40px; right: 40px; height: 6px; }
-.wind-flash-bar.bar-top    { top: 6px;    left: 40px; right: 40px; height: 6px; }
-.wind-flash-bar.bar-left   { left: 6px;   top: 40px;  bottom: 40px; width: 6px;
+.turn-light-bar.bar-bottom { bottom: 6px; left: 40px; right: 40px; height: 6px; }
+.turn-light-bar.bar-top    { top: 6px;    left: 40px; right: 40px; height: 6px; }
+.turn-light-bar.bar-left   { left: 6px;   top: 40px;  bottom: 40px; width: 6px;
   background: linear-gradient(180deg, rgba(245,200,66,0.2), #f5c842 50%, rgba(245,200,66,0.2));
 }
-.wind-flash-bar.bar-right  { right: 6px;  top: 40px;  bottom: 40px; width: 6px;
+.turn-light-bar.bar-right  { right: 6px;  top: 40px;  bottom: 40px; width: 6px;
   background: linear-gradient(180deg, rgba(245,200,66,0.2), #f5c842 50%, rgba(245,200,66,0.2));
 }
-@keyframes wind-flash {
+@keyframes turn-light-flash {
   0%, 100% { opacity: 0.4; }
   50%      { opacity: 1;   }
 }
