@@ -1425,16 +1425,15 @@ input:focus { border-color: var(--accent); }
 }
 .chi-picker-option {
   display: flex;
-  gap: 2px;
-  padding: 6px;
+  gap: 3px;
+  padding: 9px;
   background: rgba(0, 0, 0, 0.7);
-  border: 2px solid var(--accent);
-  border-radius: 10px;
+  border: 3px solid var(--accent);
+  border-radius: 15px;
   cursor: pointer;
-  transform: scale(1.5);
-  transform-origin: center;
-  margin: 1rem 1.5rem; /* 避免重疊 */
 }
+/* 放大 1.5 倍用實際尺寸（避免 transform 造成佈局空間不變而重疊） */
+.chi-picker-tile .tile { --tile-w: 60px; --tile-h: 81px; } /* 原 40×54 × 1.5 */
 .chi-picker-option:hover { filter: brightness(1.15); transform: translateY(-2px); }
 .chi-picker-tile .tile { --tile-w: 40px; --tile-h: 54px; }
 .chi-picker-tile.from-discard .tile {
