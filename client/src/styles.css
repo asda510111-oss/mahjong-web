@@ -723,8 +723,8 @@ input:focus { border-color: var(--accent); }
 .turn-light-bar.bar-left {
   left: 6px; top: 40px; bottom: 40px; width: 8px;
   background: linear-gradient(180deg, rgba(245,200,66,0.2), #f5c842 50%, rgba(245,200,66,0.2));
-  /* 再右移 9px、上移 20px */
-  transform: translate(46px, -5px) scaleY(0.65);
+  /* 再左移 4px */
+  transform: translate(42px, -5px) scaleY(0.65);
   transform-origin: center;
 }
 .turn-light-bar.bar-right {
