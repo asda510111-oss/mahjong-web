@@ -355,6 +355,30 @@ input:focus { border-color: var(--accent); }
    水平中線 = table-wrapper 垂直 50%
    垂直中線 = table-wrapper 水平 50%
 */
+/* ===== 上家牌背重建（73° 斜立） =====
+   - 直立牌縱向堆疊（flex-direction: column）
+   - 整體旋轉 -17°（90° - 73°），與圖中黑框角度一致
+   - 定錨：左側木框外，垂直中央
+*/
+.table-wrapper { --left-backs-x: -300px; --left-backs-y: 0px; }
+.table-seat.pos-left .seat-backs {
+  position: absolute;
+  left: calc(50% + var(--left-backs-x));
+  top: calc(50% - var(--left-backs-y));
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  gap: 0;
+  padding: 4px;
+  border: 3px solid #2ecc71;
+  border-radius: 4px;
+  background: rgba(46, 204, 113, 0.08);
+  z-index: 2;
+  transform: rotate(-17deg);
+  transform-origin: top left;
+}
+
+/* 下家牌背：保留原本 rotate(90deg) 設定 */
 .table-seat.pos-right .seat-backs {
   position: absolute;
   top: 50%;
