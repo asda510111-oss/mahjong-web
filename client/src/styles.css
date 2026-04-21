@@ -712,7 +712,7 @@ input:focus { border-color: var(--accent); }
 /* 位移 translateY(-35px)（原 -50 下移 15=0.3×50）、長軸 0.5× 縮短、厚度 1.3× */
 .turn-light-bar.bar-bottom {
   bottom: 6px; left: 40px; right: 40px; height: 8px;
-  transform: translateY(-35px) scaleX(0.65);
+  transform: translateY(-40px) scaleX(0.65); /* 再上移 5px */
   transform-origin: center;
 }
 .turn-light-bar.bar-top {
