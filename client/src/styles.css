@@ -774,6 +774,37 @@ input:focus { border-color: var(--accent); }
   padding: 1px;
 }
 
+/* ===== 對家副子區（鏡像於自家） ===== */
+.table-wrapper { --top-melds-x: 300px; --top-melds-y: -180px; }
+.top-melds {
+  position: absolute;
+  /* 以右下角為錨點，鏡像自家左上角 */
+  right: calc(50% - var(--top-melds-x));
+  bottom: calc(50% + var(--top-melds-y));
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  gap: 8px;
+  z-index: 3;
+  border: 3px solid #2a7bff;
+  border-radius: 4px;
+  background: rgba(42, 123, 255, 0.08);
+  padding: 4px;
+  min-width: 60px;
+  min-height: 52px;
+  align-items: center;
+  /* 旋轉 180° 讓牌面朝對家，且花補在左（自家視角右）→ 對家視角左 */
+  transform: rotate(180deg);
+  transform-origin: center;
+}
+.top-melds .meld-group { display: flex; gap: 1px; }
+.top-melds .tile {
+  --tile-w: 31px;
+  --tile-h: 42px;
+  border-radius: 3px;
+  padding: 1px;
+}
+
 /* ===== 自家棄牌區 ===== */
 /* 自家棄牌區位置變數，修改這兩個即可同時移動黑框＋棄牌 */
 .table-wrapper {
