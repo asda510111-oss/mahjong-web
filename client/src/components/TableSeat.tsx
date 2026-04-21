@@ -1,4 +1,3 @@
-import Tile from './Tile'
 import type { PublicPlayerState, PlayerInfo, SeatIndex } from '../game/types'
 import { SEAT_LABELS } from '../game/types'
 import catAvatar from '../assets/avatars/cat.svg'
@@ -26,7 +25,6 @@ export default function TableSeat({
   position, player, seat, publicState, isDealer, isTurn, isMe, score,
 }: Props) {
   const handCount = publicState?.handCount ?? 0
-  const melds = publicState?.melds ?? []
   const avatar = SEAT_AVATARS[seat]
 
   return (
@@ -76,17 +74,7 @@ export default function TableSeat({
         </div>
       )}
 
-      {melds.length > 0 && (
-        <div className="seat-melds">
-          {melds.map((m, mi) => (
-            <div key={mi} className={`meld-group ${m.type === 'flower' ? 'flower' : ''}`}>
-              {m.tiles.map((t, ti) => (
-                <Tile key={`${t}-${ti}`} id={t} disabled />
-              ))}
-            </div>
-          ))}
-        </div>
-      )}
+      {/* 舊的副子區 (.seat-melds) 已由 .my-melds / .top-melds / .left-melds / .right-melds 取代 */}
     </div>
   )
 }
