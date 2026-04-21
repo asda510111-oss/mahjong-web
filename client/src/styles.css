@@ -381,7 +381,7 @@ input:focus { border-color: var(--accent); }
   background: transparent;
   z-index: 2;
   /* 整個 box 往左+上平移自身一半 / 全寬，使其「右中」正好貼在 (--left-backs-x, --left-backs-y)，再圍繞右中旋轉 */
-  transform: translate(-100%, -50%) rotate(-102deg); /* 再逆時針 10° */
+  transform: translate(-100%, -50%) rotate(-97deg); /* 順時針 5° */
   transform-origin: right center;
 }
 
