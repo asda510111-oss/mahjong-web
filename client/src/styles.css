@@ -371,9 +371,9 @@ input:focus { border-color: var(--accent); }
   flex-wrap: nowrap;
   gap: 0;
   padding: 4px;
-  border: 3px solid #2ecc71;
+  border: 3px solid transparent;
   border-radius: 4px;
-  background: rgba(46, 204, 113, 0.08);
+  background: transparent;
   z-index: 2;
   /* 整個 box 往左+上平移自身一半 / 全寬，使其「右中」正好貼在 (--left-backs-x, --left-backs-y)，再圍繞右中旋轉 */
   transform: translate(-100%, -50%) rotate(-92deg); /* 原 -47°，再逆時針 45° */
@@ -388,9 +388,9 @@ input:focus { border-color: var(--accent); }
   max-width: 320px;
   overflow: hidden;
   z-index: 2;
-  border: 3px solid #2ecc71;
+  border: 3px solid transparent;
   border-radius: 4px;
-  background: rgba(46, 204, 113, 0.08);
+  background: transparent;
   padding: 4px;
 }
 .table-seat.pos-right .seat-backs {
@@ -813,9 +813,9 @@ input:focus { border-color: var(--accent); }
   gap: 8px;
   z-index: 3;
   /* 藍框（組合物件，框與副子一起移動） */
-  border: 3px solid #2a7bff;
+  border: 3px solid transparent;
   border-radius: 4px;
-  background: rgba(42, 123, 255, 0.08);
+  background: transparent;
   padding: 4px;
   min-width: 60px;
   min-height: 52px;
@@ -858,9 +858,9 @@ input:focus { border-color: var(--accent); }
   flex-wrap: nowrap;
   gap: 8px;
   z-index: 3;
-  border: 3px solid #2a7bff;
+  border: 3px solid transparent;
   border-radius: 4px;
-  background: rgba(42, 123, 255, 0.08);
+  background: transparent;
   padding: 4px;
   min-width: 60px;
   min-height: 52px;
@@ -888,9 +888,9 @@ input:focus { border-color: var(--accent); }
   flex-wrap: nowrap;
   gap: 8px;
   z-index: 3;
-  border: 3px solid #2a7bff;
+  border: 3px solid transparent;
   border-radius: 4px;
-  background: rgba(42, 123, 255, 0.08);
+  background: transparent;
   padding: 4px;
   min-width: 60px;
   min-height: 52px;
@@ -917,9 +917,9 @@ input:focus { border-color: var(--accent); }
   flex-wrap: nowrap;
   gap: 8px;
   z-index: 3;
-  border: 3px solid #2a7bff;
+  border: 3px solid transparent;
   border-radius: 4px;
-  background: rgba(42, 123, 255, 0.08);
+  background: transparent;
   padding: 4px;
   min-width: 60px;
   min-height: 52px;
