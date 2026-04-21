@@ -865,8 +865,8 @@ input:focus { border-color: var(--accent); }
   min-width: 60px;
   min-height: 52px;
   align-items: center;
-  /* 旋轉 180° 讓牌面朝對家，且花補在左（自家視角右）→ 對家視角左 */
-  transform: rotate(180deg);
+  /* 旋轉 180° 讓牌面朝對家，縮小 0.8 */
+  transform: rotate(180deg) scale(0.8);
   transform-origin: center;
 }
 .top-melds .meld-group { display: flex; gap: 1px; }
@@ -907,7 +907,7 @@ input:focus { border-color: var(--accent); }
 }
 
 /* ===== 下家副子區：定錨點=藍框左下 ===== */
-.table-wrapper { --right-melds-x: 374px; --right-melds-y: -150px; } /* 左移 37px（1×37） */
+.table-wrapper { --right-melds-x: 374px; --right-melds-y: -200px; } /* 再下移 50px（1×50） */
 .right-melds {
   position: absolute;
   left: calc(50% + var(--right-melds-x));
