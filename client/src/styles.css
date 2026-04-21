@@ -767,6 +767,13 @@ input:focus { border-color: var(--accent); }
   display: flex;
   gap: 1px;
 }
+/* 花牌 meld-group：牌之間無間隔（四家皆同） */
+.my-melds .meld-group.flower,
+.top-melds .meld-group.flower,
+.left-melds .meld-group.flower,
+.right-melds .meld-group.flower {
+  gap: 0;
+}
 .my-melds .tile {
   --tile-w: 31px;
   --tile-h: 42px;
