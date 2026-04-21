@@ -326,7 +326,7 @@ input:focus { border-color: var(--accent); }
 /* 右側木框調整與下家手牌綠框長軸平行（下家 rotate(94deg) 等同偏離垂直 4°） */
 .wood-right {
   right: 0;
-  transform: rotate(4deg);
+  transform: rotate(-4deg);
   transform-origin: top right;
 }
 .table-wrapper .table-grid {
