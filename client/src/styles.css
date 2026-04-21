@@ -370,14 +370,14 @@ input:focus { border-color: var(--accent); }
   padding: 4px;
 }
 .table-seat.pos-left .seat-backs {
-  /* 再往左 222px（6×37） */
-  left: -404px;
+  /* 再往左 37px（1×37） */
+  left: -441px;
   transform: translateY(-50%) rotate(-90deg);
   transform-origin: center;
 }
 .table-seat.pos-right .seat-backs {
-  /* 再往右 222px（6×37） */
-  right: -404px;
+  /* 再往右 37px（1×37） */
+  right: -441px;
   transform: translateY(-50%) rotate(90deg);
   transform-origin: center;
 }
@@ -775,7 +775,7 @@ input:focus { border-color: var(--accent); }
 }
 
 /* ===== 對家副子區（鏡像於自家） ===== */
-.table-wrapper { --top-melds-x: 300px; --top-melds-y: 170px; } /* 下移 50px（1×50） */
+.table-wrapper { --top-melds-x: 300px; --top-melds-y: 120px; } /* 再下移 50px（1×50） */
 .top-melds {
   position: absolute;
   /* 以右下角為錨點，鏡像自家左上角 */
@@ -806,7 +806,7 @@ input:focus { border-color: var(--accent); }
 }
 
 /* ===== 上家副子區（旋轉 -90°） ===== */
-.table-wrapper { --left-melds-x: -300px; --left-melds-y: 0px; }
+.table-wrapper { --left-melds-x: -300px; --left-melds-y: 150px; } /* 上移 150px（3×50） */
 .left-melds {
   position: absolute;
   left: calc(50% + var(--left-melds-x));
@@ -835,7 +835,7 @@ input:focus { border-color: var(--accent); }
 }
 
 /* ===== 下家副子區（旋轉 90°） ===== */
-.table-wrapper { --right-melds-x: 300px; --right-melds-y: 0px; }
+.table-wrapper { --right-melds-x: 300px; --right-melds-y: -150px; } /* 下移 150px（3×50） */
 .right-melds {
   position: absolute;
   left: calc(50% + var(--right-melds-x));
