@@ -372,7 +372,7 @@ input:focus { border-color: var(--accent); }
 .table-seat.pos-left .seat-backs {
   /* 再往左 37px（1×37） */
   left: -441px;
-  transform: translateY(-50%) rotate(-72deg); /* 原 -108°，順時針 36° */
+  transform: translateY(-50%) rotate(-54deg); /* 原 -72°，順時針 18° */
   transform-origin: center;
 }
 .table-seat.pos-right .seat-backs {
