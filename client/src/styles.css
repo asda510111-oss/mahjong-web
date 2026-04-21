@@ -708,13 +708,28 @@ input:focus { border-color: var(--accent); }
   z-index: 6;
   pointer-events: none;
 }
-.turn-light-bar.bar-bottom { bottom: 6px; left: 40px; right: 40px; height: 6px; }
-.turn-light-bar.bar-top    { top: 6px;    left: 40px; right: 40px; height: 6px; }
-.turn-light-bar.bar-left   { left: 6px;   top: 40px;  bottom: 40px; width: 6px;
-  background: linear-gradient(180deg, rgba(245,200,66,0.2), #f5c842 50%, rgba(245,200,66,0.2));
+/* 上移 50px（1×50）、沿長軸縮 0.5 倍 */
+.turn-light-bar.bar-bottom {
+  bottom: 6px; left: 40px; right: 40px; height: 6px;
+  transform: translateY(-50px) scaleX(0.5);
+  transform-origin: center;
 }
-.turn-light-bar.bar-right  { right: 6px;  top: 40px;  bottom: 40px; width: 6px;
+.turn-light-bar.bar-top {
+  top: 6px; left: 40px; right: 40px; height: 6px;
+  transform: translateY(-50px) scaleX(0.5);
+  transform-origin: center;
+}
+.turn-light-bar.bar-left {
+  left: 6px; top: 40px; bottom: 40px; width: 6px;
   background: linear-gradient(180deg, rgba(245,200,66,0.2), #f5c842 50%, rgba(245,200,66,0.2));
+  transform: translateY(-50px) scaleY(0.5);
+  transform-origin: center;
+}
+.turn-light-bar.bar-right {
+  right: 6px; top: 40px; bottom: 40px; width: 6px;
+  background: linear-gradient(180deg, rgba(245,200,66,0.2), #f5c842 50%, rgba(245,200,66,0.2));
+  transform: translateY(-50px) scaleY(0.5);
+  transform-origin: center;
 }
 @keyframes turn-light-flash {
   0%, 100% { opacity: 0.4; }
