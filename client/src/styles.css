@@ -709,6 +709,29 @@ body.in-game .table-seat.pos-right .seat-backs {
   border-radius: 4px;
   box-shadow: 0 0 8px rgba(245, 200, 66, 0.8);
 }
+/* 金色閃爍長條：表示輪到自家，自家風 → 下家風方向 */
+.wind-flash-bar {
+  position: absolute;
+  background: linear-gradient(90deg, rgba(245,200,66,0.2), #f5c842 50%, rgba(245,200,66,0.2));
+  border-radius: 3px;
+  box-shadow: 0 0 12px #f5c842, 0 0 20px rgba(245,200,66,0.6);
+  animation: wind-flash 0.6s ease-in-out infinite;
+  z-index: 6;
+  pointer-events: none;
+}
+.wind-flash-bar.bar-bottom { bottom: 6px; left: 40px; right: 40px; height: 6px; }
+.wind-flash-bar.bar-top    { top: 6px;    left: 40px; right: 40px; height: 6px; }
+.wind-flash-bar.bar-left   { left: 6px;   top: 40px;  bottom: 40px; width: 6px;
+  background: linear-gradient(180deg, rgba(245,200,66,0.2), #f5c842 50%, rgba(245,200,66,0.2));
+}
+.wind-flash-bar.bar-right  { right: 6px;  top: 40px;  bottom: 40px; width: 6px;
+  background: linear-gradient(180deg, rgba(245,200,66,0.2), #f5c842 50%, rgba(245,200,66,0.2));
+}
+@keyframes wind-flash {
+  0%, 100% { opacity: 0.4; }
+  50%      { opacity: 1;   }
+}
+
 .wind-corner.wind-bl { bottom: 40px !important;  left: 40px !important; top: auto !important; right: auto !important; }
 .wind-corner.wind-br { bottom: 40px !important; right: 40px !important; top: auto !important; left: auto !important;  transform: rotate(-90deg)  !important; }
 .wind-corner.wind-tr { top: 40px !important;    right: 40px !important; bottom: auto !important; left: auto !important; transform: rotate(-180deg) !important; }

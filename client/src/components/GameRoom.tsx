@@ -348,6 +348,10 @@ export default function GameRoom({
           <span className={`wind-corner wind-br ${dealerSeat === 1 ? 'dealer' : ''}`}>南</span>
           <span className={`wind-corner wind-tr ${dealerSeat === 2 ? 'dealer' : ''}`}>西</span>
           <span className={`wind-corner wind-tl ${dealerSeat === 3 ? 'dealer' : ''}`}>北</span>
+          {/* 輪到自家丟牌時，自家風 → 下一家風之間顯示金色閃爍長條 */}
+          {isMyTurn && mySeat !== null && (
+            <div className={`wind-flash-bar bar-${['bottom','right','top','left'][mySeat]}`} aria-hidden="true" />
+          )}
         </div>
         <div className="wood-edge wood-left" aria-hidden="true" />
         <div className="wood-edge wood-right" aria-hidden="true" />
