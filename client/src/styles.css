@@ -323,8 +323,8 @@ input:focus { border-color: var(--accent); }
   border-radius: 3px;
 }
 .wood-left {
-  left: 148px; /* 右移 148px（4×37） */
-  transform: rotate(19deg);
+  left: 0; /* 左移 148px（4×37）回原位 */
+  transform: rotate(19deg); /* 順時針 19° */
   transform-origin: top left;
 }
 /* 右側木框調整與下家手牌綠框長軸平行（下家 rotate(94deg) 等同偏離垂直 4°） */
