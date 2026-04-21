@@ -370,9 +370,10 @@ input:focus { border-color: var(--accent); }
   padding: 4px;
 }
 .table-seat.pos-left .seat-backs {
-  /* 再往左 37px（1×37） */
   left: -478px;
-  transform: translateY(-50%) rotate(-75deg); /* 斜立式排列，對應圖中黑框角度 */
+  /* 直立牌縱向堆疊，再傾 17° (= 90° − 73°) */
+  flex-direction: column !important;
+  transform: translateY(-50%) rotate(-17deg);
   transform-origin: center;
 }
 .table-seat.pos-right .seat-backs {
