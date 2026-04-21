@@ -554,21 +554,21 @@ export class Room {
         return
       }
       if (getTileDef(t).isFlower) {
+        // 把花放進花牌副子
         this.melds.get(p.id)!.push({ type: 'flower', tiles: [t] })
         this.broadcast({ type: 'meld_formed', seat: p.seat, meld: { type: 'flower', tiles: [t] } })
-        // 補一張從牌尾
-        const rep = this.wall.pop()
-        if (!rep) {
-          this.broadcast({ type: 'game_end', reason: 'draw', scores: this.buildScoresPayload() })
-          this.scheduleNextGame()
-          return
-        }
-        if (getTileDef(rep).isFlower) {
-          // 補到又是花，繼續從 wall shift/pop 迴圈... 簡化：把它放回 wall 尾部讓下次處理
-          // 這情況在實務上很少，略過
-          hand.push(rep)
-          drawnTile = rep
-          break
+        // 從牌尾補一張；若補到又是花就繼續補，直到拿到非花牌或牌山空
+        let rep: TileId | undefined
+        while (true) {
+          rep = this.wall.pop()
+          if (!rep) {
+            this.broadcast({ type: 'game_end', reason: 'draw', scores: this.buildScoresPayload() })
+            this.scheduleNextGame()
+            return
+          }
+          if (!getTileDef(rep).isFlower) break
+          this.melds.get(p.id)!.push({ type: 'flower', tiles: [rep] })
+          this.broadcast({ type: 'meld_formed', seat: p.seat, meld: { type: 'flower', tiles: [rep] } })
         }
         hand.push(rep)
         drawnTile = rep
