@@ -376,7 +376,7 @@ input:focus { border-color: var(--accent); }
   background: rgba(46, 204, 113, 0.08);
   z-index: 2;
   /* 整個 box 往左+上平移自身一半 / 全寬，使其「右中」正好貼在 (--left-backs-x, --left-backs-y)，再圍繞右中旋轉 */
-  transform: translate(-100%, -50%) rotate(-17deg);
+  transform: translate(-100%, -50%) rotate(-47deg); /* 原 -17°，再逆時針 30° */
   transform-origin: right center;
 }
 
