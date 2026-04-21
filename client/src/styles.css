@@ -1398,10 +1398,46 @@ input:focus { border-color: var(--accent); }
 .act-btn.peng { background: linear-gradient(135deg, #4dabf7, #1864ab); color: white; }
 /* 胡/槓/碰/吃(inline) 尺寸與「過」一致（移除 scale 與圓弧強調） */
 /* 主選單（非預覽）按鈕整體放大 1.17 倍（1.3 × 0.9） */
-.action-bar:not(.chi-preview-bar) > .act-btn {
+.action-bar:not(.chi-preview-bar):not(.chi-picker-bar) > .act-btn {
   transform: scale(1.17);
   transform-origin: center;
-  margin: 0.8rem 1.5rem; /* 再拉開間隔 */
+  margin: 0.8rem 1.5rem;
+}
+
+/* ===== 吃牌組合選擇畫面 ===== */
+.chi-picker-bar {
+  flex-direction: column !important;
+  align-items: center;
+  gap: 0.8rem !important;
+}
+.chi-picker-label {
+  color: var(--accent);
+  font-weight: 700;
+  font-size: 1.2rem;
+  text-shadow: 0 0 6px rgba(0,0,0,0.8);
+}
+.chi-picker-options {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+}
+.chi-picker-option {
+  display: flex;
+  gap: 2px;
+  padding: 6px;
+  background: rgba(0, 0, 0, 0.7);
+  border: 2px solid var(--accent);
+  border-radius: 10px;
+  cursor: pointer;
+}
+.chi-picker-option:hover { filter: brightness(1.15); transform: translateY(-2px); }
+.chi-picker-tile .tile { --tile-w: 40px; --tile-h: 54px; }
+.chi-picker-tile.from-discard .tile {
+  box-shadow:
+    0 0 0 2px rgba(255, 210, 0, 0.9),
+    0 0 14px rgba(255, 210, 0, 0.8);
 }
 .act-btn.chi { background: linear-gradient(135deg, #51cf66, #2f9e44); color: white; }
 .act-btn.pass { background: #555; color: white; }
