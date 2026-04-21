@@ -1396,6 +1396,15 @@ input:focus { border-color: var(--accent); }
 .act-btn.hu { background: linear-gradient(135deg, #ff9d2e, #ff5a36); color: white; }
 .act-btn.gang { background: linear-gradient(135deg, #845ef7, #5f3dc4); color: white; }
 .act-btn.peng { background: linear-gradient(135deg, #4dabf7, #1864ab); color: white; }
+/* 胡/槓/碰/吃(inline) 整體放大 1.5 倍 */
+.act-btn.hu,
+.act-btn.gang,
+.act-btn.peng,
+.act-btn.chi-inline {
+  transform: scale(1.5);
+  transform-origin: center;
+  margin: 0.8rem 1rem;
+}
 .act-btn.chi { background: linear-gradient(135deg, #51cf66, #2f9e44); color: white; }
 .act-btn.pass { background: #555; color: white; }
 @keyframes pulse-attention {
