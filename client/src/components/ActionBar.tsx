@@ -77,11 +77,7 @@ export default function ActionBar({ options, onAction }: Props) {
       {options.canChi.length > 0 && (
         <button
           className="act-btn chi"
-          onClick={() => {
-            // 只有一組就直接吃，多組則開組合選單
-            if (options.canChi.length === 1) onAction('chi', 0)
-            else setChiPickerOpen(true)
-          }}
+          onClick={() => setChiPickerOpen(true)}
         >
           吃
         </button>
