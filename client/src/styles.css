@@ -380,20 +380,30 @@ input:focus { border-color: var(--accent); }
   transform-origin: right center;
 }
 
-/* 下家牌背：保留原本 rotate(90deg) 設定 */
-.table-seat.pos-right .seat-backs {
+/* 下家牌背：定錨點=綠框左上 */
+.table-wrapper { --right-backs-x: 150px; --right-backs-y: 0px; }
+body.in-game .table-seat.pos-right .seat-backs {
   position: absolute;
-  top: 50%;
-  gap: 0;
-  max-width: 320px;
-  overflow: hidden;
-  z-index: 2;
-  border: 3px solid #2ecc71;
-  border-radius: 4px;
-  background: rgba(46, 204, 113, 0.08);
-  padding: 4px;
+  left: calc(50% + var(--right-backs-x)) !important;
+  top: calc(50% - var(--right-backs-y)) !important;
+  right: auto !important;
+  bottom: auto !important;
+  display: flex !important;
+  flex-direction: column !important;
+  flex-wrap: nowrap !important;
+  gap: 0 !important;
+  padding: 4px !important;
+  border: 3px solid #2ecc71 !important;
+  border-radius: 4px !important;
+  background: rgba(46, 204, 113, 0.08) !important;
+  z-index: 2 !important;
+  transform: rotate(90deg) !important;
+  transform-origin: top left !important;
+  max-width: none !important;
+  max-height: none !important;
+  overflow: visible !important;
 }
-.table-seat.pos-right .seat-backs {
+.table-seat.pos-right .seat-backs-LEGACY {
   /* 再往右 37px（1×37） */
   right: -441px;
   transform: translateY(-50%) rotate(90deg);
