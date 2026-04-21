@@ -907,7 +907,7 @@ input:focus { border-color: var(--accent); }
 }
 
 /* ===== 下家副子區：定錨點=藍框左下 ===== */
-.table-wrapper { --right-melds-x: 411px; --right-melds-y: -150px; } /* 右移 111px（3×37） */
+.table-wrapper { --right-melds-x: 374px; --right-melds-y: -150px; } /* 左移 37px（1×37） */
 .right-melds {
   position: absolute;
   left: calc(50% + var(--right-melds-x));
@@ -924,7 +924,7 @@ input:focus { border-color: var(--accent); }
   min-width: 60px;
   min-height: 52px;
   align-items: center;
-  transform: rotate(-100deg) scale(0.7); /* 再逆時針 10° */
+  transform: rotate(-105deg) scale(0.7); /* 再逆時針 5° */
   transform-origin: bottom left;
 }
 .right-melds .meld-group { display: flex; gap: 1px; }
