@@ -360,6 +360,7 @@ input:focus { border-color: var(--accent); }
    - 整體旋轉 -17°（90° - 73°），與圖中黑框角度一致
    - 定錨：左側木框外，垂直中央
 */
+/* 定錨點 = 綠框「右側中央」；變數 x/y 為該錨點的刻度座標（Y 正=上） */
 .table-wrapper { --left-backs-x: -300px; --left-backs-y: 0px; }
 .table-seat.pos-left .seat-backs {
   position: absolute;
@@ -374,8 +375,9 @@ input:focus { border-color: var(--accent); }
   border-radius: 4px;
   background: rgba(46, 204, 113, 0.08);
   z-index: 2;
-  transform: rotate(-17deg);
-  transform-origin: top left;
+  /* 整個 box 往左+上平移自身一半 / 全寬，使其「右中」正好貼在 (--left-backs-x, --left-backs-y)，再圍繞右中旋轉 */
+  transform: translate(-100%, -50%) rotate(-17deg);
+  transform-origin: right center;
 }
 
 /* 下家牌背：保留原本 rotate(90deg) 設定 */
