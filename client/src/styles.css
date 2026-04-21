@@ -866,12 +866,12 @@ input:focus { border-color: var(--accent); }
   padding: 1px;
 }
 
-/* ===== 下家副子區（旋轉 90°） ===== */
-.table-wrapper { --right-melds-x: 300px; --right-melds-y: -150px; } /* 下移 150px（3×50） */
+/* ===== 下家副子區：定錨點=藍框左下 ===== */
+.table-wrapper { --right-melds-x: 300px; --right-melds-y: -150px; }
 .right-melds {
   position: absolute;
   left: calc(50% + var(--right-melds-x));
-  top: calc(50% - var(--right-melds-y));
+  bottom: calc(50% + var(--right-melds-y));
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
@@ -884,8 +884,8 @@ input:focus { border-color: var(--accent); }
   min-width: 60px;
   min-height: 52px;
   align-items: center;
-  transform: rotate(-90deg) scale(0.7); /* 縮小 0.7 */
-  transform-origin: top left;
+  transform: rotate(-109deg) scale(0.7); /* 再逆時針 19° */
+  transform-origin: bottom left;
 }
 .right-melds .meld-group { display: flex; gap: 1px; }
 .right-melds .tile {
