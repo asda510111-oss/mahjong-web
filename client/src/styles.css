@@ -834,9 +834,10 @@ input:focus { border-color: var(--accent); }
   padding: 1px;
 }
 
-/* ===== 下家副子區（旋轉 90°） ===== */
+/* ===== 下家副子區（旋轉 90°，暫時隱藏） ===== */
 .table-wrapper { --right-melds-x: 300px; --right-melds-y: 0px; }
 .right-melds {
+  display: none !important;
   position: absolute;
   left: calc(50% + var(--right-melds-x));
   top: calc(50% - var(--right-melds-y));
