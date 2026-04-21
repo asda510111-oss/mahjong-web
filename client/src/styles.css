@@ -399,7 +399,7 @@ input:focus { border-color: var(--accent); }
   padding: 4px;
 }
 .table-seat.pos-right .seat-backs {
-  right: -460px; /* 再往右 19px（0.5×37） */
+  right: -497px; /* 再往右 37px（1×37） */
   transform: translateY(-50%) rotate(94deg); /* 再順時針 4° */
   transform-origin: center;
 }
@@ -912,7 +912,7 @@ input:focus { border-color: var(--accent); }
 }
 
 /* ===== 下家副子區：定錨點=藍框左下 ===== */
-.table-wrapper { --right-melds-x: 374px; --right-melds-y: -200px; } /* 再下移 50px（1×50） */
+.table-wrapper { --right-melds-x: 411px; --right-melds-y: -200px; } /* 右移 37px（1×37） */
 .right-melds {
   position: absolute;
   left: calc(50% + var(--right-melds-x));
