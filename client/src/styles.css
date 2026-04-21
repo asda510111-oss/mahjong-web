@@ -355,7 +355,6 @@ input:focus { border-color: var(--accent); }
    水平中線 = table-wrapper 垂直 50%
    垂直中線 = table-wrapper 水平 50%
 */
-.table-seat.pos-left .seat-backs,
 .table-seat.pos-right .seat-backs {
   position: absolute;
   top: 50%;
@@ -363,18 +362,10 @@ input:focus { border-color: var(--accent); }
   max-width: 320px;
   overflow: hidden;
   z-index: 2;
-  /* 綠框標示牌背區塊 */
   border: 3px solid #2ecc71;
   border-radius: 4px;
   background: rgba(46, 204, 113, 0.08);
   padding: 4px;
-}
-.table-seat.pos-left .seat-backs {
-  left: -478px;
-  /* 直立牌縱向堆疊，再傾 17° (= 90° − 73°) */
-  flex-direction: column !important;
-  transform: translateY(-50%) rotate(-17deg);
-  transform-origin: center;
 }
 .table-seat.pos-right .seat-backs {
   /* 再往右 37px（1×37） */

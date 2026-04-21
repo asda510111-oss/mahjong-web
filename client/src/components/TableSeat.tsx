@@ -48,9 +48,9 @@ export default function TableSeat({
         </div>
       </div>
 
-      {!isMe && handCount > 0 && (
+      {!isMe && handCount > 0 && position !== 'left' && (
         <div className="seat-backs">
-          {(position === 'top' || position === 'right' || position === 'left')
+          {(position === 'top' || position === 'right')
             ? (() => {
                 // 對家/下家/上家：固定 17 格位，DOM 左側先隱藏
                 // - 對家（未旋轉）：左側=視覺左側，左減少
