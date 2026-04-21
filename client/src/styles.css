@@ -1403,7 +1403,7 @@ input:focus { border-color: var(--accent); }
 .act-btn.chi-inline {
   transform: scale(1.5);
   transform-origin: center;
-  margin: 0.8rem 1rem;
+  margin: 1.5rem 2.5rem; /* 加大間隔避免重疊 */
 }
 .act-btn.chi { background: linear-gradient(135deg, #51cf66, #2f9e44); color: white; }
 .act-btn.pass { background: #555; color: white; }
