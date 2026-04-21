@@ -322,7 +322,11 @@ input:focus { border-color: var(--accent); }
     3px 0 8px rgba(0, 0, 0, 0.55);
   border-radius: 3px;
 }
-.wood-left { left: 0; }
+.wood-left {
+  left: 0;
+  transform: rotate(19deg);
+  transform-origin: top left;
+}
 /* 右側木框調整與下家手牌綠框長軸平行（下家 rotate(94deg) 等同偏離垂直 4°） */
 .wood-right {
   right: 148px; /* 左移 148px（4×37） */
