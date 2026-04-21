@@ -383,7 +383,7 @@ input:focus { border-color: var(--accent); }
 /* 下家牌背 */
 .table-seat.pos-right .seat-backs {
   position: absolute;
-  top: 50%;
+  top: calc(50% - 50px); /* 上移 50px（1×50） */
   gap: 0;
   max-width: 320px;
   overflow: hidden;
