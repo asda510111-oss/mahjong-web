@@ -1431,6 +1431,9 @@ input:focus { border-color: var(--accent); }
   border: 2px solid var(--accent);
   border-radius: 10px;
   cursor: pointer;
+  transform: scale(1.5);
+  transform-origin: center;
+  margin: 1rem 1.5rem; /* 避免重疊 */
 }
 .chi-picker-option:hover { filter: brightness(1.15); transform: translateY(-2px); }
 .chi-picker-tile .tile { --tile-w: 40px; --tile-h: 54px; }
