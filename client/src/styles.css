@@ -394,8 +394,8 @@ input:focus { border-color: var(--accent); }
   padding: 4px;
 }
 .table-seat.pos-right .seat-backs {
-  right: -441px;
-  transform: translateY(-50%) rotate(90deg);
+  right: -460px; /* 再往右 19px（0.5×37） */
+  transform: translateY(-50%) rotate(94deg); /* 再順時針 4° */
   transform-origin: center;
 }
 /* 對家牌背 */
