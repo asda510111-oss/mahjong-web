@@ -805,6 +805,64 @@ input:focus { border-color: var(--accent); }
   padding: 1px;
 }
 
+/* ===== 上家副子區（旋轉 -90°） ===== */
+.table-wrapper { --left-melds-x: -300px; --left-melds-y: 0px; }
+.left-melds {
+  position: absolute;
+  left: calc(50% + var(--left-melds-x));
+  top: calc(50% - var(--left-melds-y));
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  gap: 8px;
+  z-index: 3;
+  border: 3px solid #2a7bff;
+  border-radius: 4px;
+  background: rgba(42, 123, 255, 0.08);
+  padding: 4px;
+  min-width: 60px;
+  min-height: 52px;
+  align-items: center;
+  transform: rotate(-90deg);
+  transform-origin: top left;
+}
+.left-melds .meld-group { display: flex; gap: 1px; }
+.left-melds .tile {
+  --tile-w: 31px;
+  --tile-h: 42px;
+  border-radius: 3px;
+  padding: 1px;
+}
+
+/* ===== 下家副子區（旋轉 90°） ===== */
+.table-wrapper { --right-melds-x: 300px; --right-melds-y: 0px; }
+.right-melds {
+  position: absolute;
+  left: calc(50% + var(--right-melds-x));
+  top: calc(50% - var(--right-melds-y));
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  gap: 8px;
+  z-index: 3;
+  border: 3px solid #2a7bff;
+  border-radius: 4px;
+  background: rgba(42, 123, 255, 0.08);
+  padding: 4px;
+  min-width: 60px;
+  min-height: 52px;
+  align-items: center;
+  transform: rotate(90deg);
+  transform-origin: top left;
+}
+.right-melds .meld-group { display: flex; gap: 1px; }
+.right-melds .tile {
+  --tile-w: 31px;
+  --tile-h: 42px;
+  border-radius: 3px;
+  padding: 1px;
+}
+
 /* ===== 自家棄牌區 ===== */
 /* 自家棄牌區位置變數，修改這兩個即可同時移動黑框＋棄牌 */
 .table-wrapper {

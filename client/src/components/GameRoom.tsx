@@ -314,6 +314,32 @@ export default function GameRoom({
             </div>
           ))}
         </div>
+        {/* 上家吃/碰/槓/花 副子區 */}
+        <div className="left-melds">
+          {[
+            ...(getPub(leftSeat)?.melds ?? []).filter(m => m.type === 'flower'),
+            ...(getPub(leftSeat)?.melds ?? []).filter(m => m.type !== 'flower'),
+          ].map((m, mi) => (
+            <div key={mi} className={`meld-group ${m.type === 'flower' ? 'flower' : ''}`}>
+              {m.tiles.map((t, ti) => (
+                <Tile key={`${t}-${ti}`} id={t} disabled />
+              ))}
+            </div>
+          ))}
+        </div>
+        {/* 下家吃/碰/槓/花 副子區 */}
+        <div className="right-melds">
+          {[
+            ...(getPub(rightSeat)?.melds ?? []).filter(m => m.type === 'flower'),
+            ...(getPub(rightSeat)?.melds ?? []).filter(m => m.type !== 'flower'),
+          ].map((m, mi) => (
+            <div key={mi} className={`meld-group ${m.type === 'flower' ? 'flower' : ''}`}>
+              {m.tiles.map((t, ti) => (
+                <Tile key={`${t}-${ti}`} id={t} disabled />
+              ))}
+            </div>
+          ))}
+        </div>
         {/* 中央資訊覆蓋層：牌桌兩條對角線交點 */}
         <div className="table-center-info">
           <div className="center-round">{dealerLabel}</div>
