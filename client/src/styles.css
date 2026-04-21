@@ -792,6 +792,13 @@ input:focus { border-color: var(--accent); }
 .right-melds .meld-group.flower {
   gap: 0;
 }
+/* 相鄰花牌 meld-group 之間也無間隔 */
+.my-melds .meld-group.flower + .meld-group.flower,
+.top-melds .meld-group.flower + .meld-group.flower,
+.left-melds .meld-group.flower + .meld-group.flower,
+.right-melds .meld-group.flower + .meld-group.flower {
+  margin-left: -8px; /* 抵消父層 gap: 8px */
+}
 .my-melds .tile {
   --tile-w: 31px;
   --tile-h: 42px;
