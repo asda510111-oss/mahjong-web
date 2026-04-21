@@ -65,6 +65,12 @@ export default function ActionBar({ options, onAction }: Props) {
   // ===== 主選單：僅五顆按鈕 =====
   return (
     <div className="action-bar">
+      {fromTile && (
+        <div className="action-target">
+          <span className="action-target-label">目標牌</span>
+          <span className="action-target-tile"><Tile id={fromTile} disabled /></span>
+        </div>
+      )}
       {options.canHu && (
         <button className="act-btn hu" onClick={() => onAction('hu')}>胡</button>
       )}

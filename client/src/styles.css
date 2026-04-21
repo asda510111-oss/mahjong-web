@@ -1404,6 +1404,30 @@ input:focus { border-color: var(--accent); }
   margin: 0.8rem 1.5rem;
 }
 
+/* ===== 主選單上的目標牌顯示 ===== */
+.action-target {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  padding: 6px 10px;
+  background: rgba(0, 0, 0, 0.7);
+  border: 2px solid var(--accent);
+  border-radius: 10px;
+}
+.action-target-label {
+  font-size: 0.8rem;
+  color: var(--accent);
+  font-weight: 700;
+}
+.action-target-tile .tile {
+  --tile-w: 48px;
+  --tile-h: 64px;
+  box-shadow:
+    0 0 0 2px rgba(255, 210, 0, 0.9),
+    0 0 12px rgba(255, 210, 0, 0.6);
+}
+
 /* ===== 吃牌組合選擇畫面 ===== */
 .chi-picker-bar {
   flex-direction: column !important;
