@@ -52,9 +52,9 @@ export default function TableSeat({
 
       {!isMe && handCount > 0 && (
         <div className="seat-backs">
-          {position === 'top'
+          {(position === 'top' || position === 'right')
             ? (() => {
-                // 對家：固定 17 格位，從右至左填入（左側因吃碰槓先減少）
+                // 對家/下家：固定 17 格位，從右至左填入（因旋轉，下家視覺為由下往上填），左側（下家視覺上方）先減少
                 const MAX = 17
                 return Array.from({ length: MAX }).map((_, i) => {
                   const visible = i >= MAX - handCount
