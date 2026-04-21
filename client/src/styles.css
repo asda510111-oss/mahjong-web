@@ -361,7 +361,7 @@ input:focus { border-color: var(--accent); }
    - 定錨：左側木框外，垂直中央
 */
 /* 定錨點 = 綠框「右側中央」；變數 x/y 為該錨點的刻度座標（Y 正=上） */
-.table-wrapper { --left-backs-x: -78px; --left-backs-y: 400px; } /* 再上移 100px（2×50） */
+.table-wrapper { --left-backs-x: -78px; --left-backs-y: 500px; } /* 再上移 100px（2×50） */
 .table-seat.pos-left .seat-backs {
   position: absolute;
   left: calc(50% + var(--left-backs-x));
