@@ -381,7 +381,7 @@ input:focus { border-color: var(--accent); }
   background: transparent;
   z-index: 2;
   /* 整個 box 往左+上平移自身一半 / 全寬，使其「右中」正好貼在 (--left-backs-x, --left-backs-y)，再圍繞右中旋轉 */
-  transform: translate(-100%, -50%) rotate(-92deg); /* 原 -47°，再逆時針 45° */
+  transform: translate(-100%, -50%) rotate(-102deg); /* 再逆時針 10° */
   transform-origin: right center;
 }
 
@@ -900,7 +900,7 @@ input:focus { border-color: var(--accent); }
   min-width: 60px;
   min-height: 52px;
   align-items: center;
-  transform: rotate(110deg) scale(0.7); /* 再逆時針 5° */
+  transform: rotate(100deg) scale(0.7); /* 再逆時針 10° */
   transform-origin: top left;
 }
 .left-melds .meld-group { display: flex; gap: 1px; }
