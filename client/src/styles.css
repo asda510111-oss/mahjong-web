@@ -677,6 +677,7 @@ input:focus { border-color: var(--accent); }
 }
 .wind-corner {
   position: absolute;
+  z-index: 3; /* 在回合光條之上 */
   font-size: 15px;
   font-weight: 800;
   color: var(--accent);
@@ -705,7 +706,7 @@ input:focus { border-color: var(--accent); }
   border-radius: 3px;
   box-shadow: 0 0 12px #f5c842, 0 0 20px rgba(245,200,66,0.6);
   animation: turn-light-flash 0.6s ease-in-out infinite;
-  z-index: 6;
+  z-index: 1; /* 在風位之下 */
   pointer-events: none;
 }
 /* 位移 translateY(-35px)（原 -50 下移 15=0.3×50）、長軸 0.5× 縮短、厚度 1.3× */
