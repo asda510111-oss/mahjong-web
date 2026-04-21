@@ -775,7 +775,7 @@ input:focus { border-color: var(--accent); }
 }
 
 /* ===== 對家副子區（鏡像於自家） ===== */
-.table-wrapper { --top-melds-x: 300px; --top-melds-y: 220px; } /* 上移 400px（8×50） */
+.table-wrapper { --top-melds-x: 300px; --top-melds-y: 170px; } /* 下移 50px（1×50） */
 .top-melds {
   position: absolute;
   /* 以右下角為錨點，鏡像自家左上角 */
@@ -823,7 +823,7 @@ input:focus { border-color: var(--accent); }
   min-width: 60px;
   min-height: 52px;
   align-items: center;
-  transform: rotate(-90deg);
+  transform: rotate(90deg); /* 原 -90°，再翻轉 180° */
   transform-origin: top left;
 }
 .left-melds .meld-group { display: flex; gap: 1px; }
@@ -852,7 +852,7 @@ input:focus { border-color: var(--accent); }
   min-width: 60px;
   min-height: 52px;
   align-items: center;
-  transform: rotate(90deg);
+  transform: rotate(-90deg); /* 原 90°，再翻轉 180° */
   transform-origin: top left;
 }
 .right-melds .meld-group { display: flex; gap: 1px; }
