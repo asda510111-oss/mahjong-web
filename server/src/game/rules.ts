@@ -185,10 +185,7 @@ export function calculateTai(ctx: TaiContext): TaiResult {
   if (concealed) items.push({ name: '門清', tai: 1 })
   if (concealed && isZimo) items.push({ name: '門清自摸', tai: 1 })
 
-  // 花牌
-  if (flowerMelds.length > 0) {
-    items.push({ name: `花牌 ×${flowerMelds.length}`, tai: flowerMelds.length })
-  }
+  // 花牌：每張不額外算台（僅正花計算）
   // 正花：季節花 f(seatWind+1)、梅蘭竹菊 f(seatWind+5)
   const seasonFlower = `f${seatWind + 1}`
   const plantFlower = `f${seatWind + 5}`
