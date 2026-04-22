@@ -47,18 +47,18 @@ const PIN_POS: Record<number, Array<[number, number]>> = {
   9: [[18, 20], [30, 20], [42, 20], [18, 40], [30, 40], [42, 40], [18, 60], [30, 60], [42, 60]],
 }
 
-function Dot({ x, y, r }: { x: number; y: number; r: number }) {
+function Dot({ x, y, r, color = 'green' }: { x: number; y: number; r: number; color?: 'green' | 'red' }) {
+  const outer = color === 'red' ? '#6d0d0d' : '#1b5e20'
+  const innerRing = color === 'red' ? '#c0172b' : '#2e7d32'
+  const core = color === 'red' ? '#1b5e20' : '#c0172b'
+  const coreHL = color === 'red' ? '#66bb6a' : '#ff8a80'
   return (
     <g>
-      {/* 外環（深綠）*/}
-      <circle cx={x} cy={y} r={r} fill="#1b5e20" />
-      {/* 中圈（淺色）*/}
+      <circle cx={x} cy={y} r={r} fill={outer} />
       <circle cx={x} cy={y} r={r * 0.7} fill="#fdfaec" />
-      {/* 內綠環 */}
-      <circle cx={x} cy={y} r={r * 0.55} fill="none" stroke="#2e7d32" strokeWidth={r * 0.12} />
-      {/* 紅心 */}
-      <circle cx={x} cy={y} r={r * 0.28} fill="#c0172b" />
-      <circle cx={x - r * 0.08} cy={y - r * 0.08} r={r * 0.09} fill="#ff8a80" opacity="0.7" />
+      <circle cx={x} cy={y} r={r * 0.55} fill="none" stroke={innerRing} strokeWidth={r * 0.12} />
+      <circle cx={x} cy={y} r={r * 0.28} fill={core} />
+      <circle cx={x - r * 0.08} cy={y - r * 0.08} r={r * 0.09} fill={coreHL} opacity="0.7" />
     </g>
   )
 }
@@ -81,6 +81,17 @@ function PinGraphic({ rank }: { rank: number }) {
         ))}
         {/* 中心紅 */}
         <circle cx={cx} cy={cy} r="3.5" fill="#c0172b" stroke="#1a1a1a" strokeWidth="0.5" />
+      </g>
+    )
+  }
+  // 七筒：上 3 顆綠（斜線）、下 4 顆紅（2×2）
+  if (rank === 7) {
+    const top: Array<[number, number]> = [[15, 14], [30, 22], [45, 30]]
+    const bot: Array<[number, number]> = [[20, 50], [40, 50], [20, 64], [40, 64]]
+    return (
+      <g>
+        {top.map(([x, y], i) => <Dot key={`t${i}`} x={x} y={y} r={7} color="green" />)}
+        {bot.map(([x, y], i) => <Dot key={`b${i}`} x={x} y={y} r={7} color="red" />)}
       </g>
     )
   }
