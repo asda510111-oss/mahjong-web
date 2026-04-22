@@ -238,8 +238,8 @@ export function calculateTai(ctx: TaiContext): TaiResult {
   if (allTiles.filter(t => t === myWindTile).length >= 3) {
     items.push({ name: '門風牌', tai: 1 })
   }
-  // 圈風牌（若圈風 == 自風，已由門風牌計過就不重複加）
-  if (roundWindTile !== myWindTile && allTiles.filter(t => t === roundWindTile).length >= 3) {
+  // 圈風牌（與門風可雙算 → 連風刻）
+  if (allTiles.filter(t => t === roundWindTile).length >= 3) {
     items.push({ name: '圈風牌', tai: 1 })
   }
   for (const d of dragons) {
