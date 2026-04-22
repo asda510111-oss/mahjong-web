@@ -300,8 +300,8 @@ export default function GameRoom({
             </div>
           ))}
         </div>
-        {/* 倒數秒數系統已移除，等待重建：預留白色長方形框 */}
-        <div className="timer-box" aria-hidden="true" />
+        {/* 計時框 */}
+        <div className="timer-frame" aria-hidden="true" />
 
         {/* 對家吃/碰/槓/花 副子區（鏡像邏輯） */}
         <div className="top-melds">
