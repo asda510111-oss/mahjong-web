@@ -1259,7 +1259,18 @@ input:focus { border-color: var(--accent); }
   color: #000;
   font-size: 2.5rem;
 }
-.timer-base  { color: #000; }
+.timer-base {
+  color: #fff;
+  text-shadow:
+    -2px -2px 0 #000,
+     2px -2px 0 #000,
+    -2px  2px 0 #000,
+     2px  2px 0 #000,
+    -2px  0   0 #000,
+     2px  0   0 #000,
+     0   -2px 0 #000,
+     0    2px 0 #000;
+}
 .timer-plus  { color: #000; font-size: 2rem; }
 .timer-think { color: #d17100; }
 /* turn-timer 相關 CSS 已全部移除 */
