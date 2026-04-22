@@ -340,10 +340,11 @@ export class Room {
       const mc = countMeldsForHu(melds)
       const isNext = ((bySeat + 1) % 4) === p.seat
 
+      // 台麻規則：下家（next）可吃但不可槓上家的棄牌
       const opt: ActionOptions = {
         canHu: canHu([...hand, tile], mc),
         canPeng: canPeng(hand, tile),
-        canGangExposed: canGangExposed(hand, tile),
+        canGangExposed: !isNext && canGangExposed(hand, tile),
         canGangConcealed: [],
         canGangAdded: [],
         canChi: isNext ? canChi(hand, tile) : [],
