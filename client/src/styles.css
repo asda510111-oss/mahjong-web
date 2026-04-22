@@ -1239,11 +1239,17 @@ input:focus { border-color: var(--accent); }
   top: 50%;
   transform: translateY(-50%);
   background: rgba(255, 255, 255, 0.95);
-  border: 2px solid rgba(255, 255, 255, 0.9);
-  border-radius: 10px;
-  padding: 6px 10px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+  border: 3px solid #ffffff;   /* 白色正方形外框 */
+  border-radius: 0;            /* 方角 */
+  width: 64px;
+  height: 64px;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4), 0 0 0 2px rgba(0,0,0,0.5);
   z-index: 2;
+  box-sizing: border-box;
 }
 .turn-timer-stack {
   display: flex;
