@@ -392,8 +392,14 @@ export class Room {
 
   private startResponseTimer(p: ServerPlayer) {
     this.clearResponseTimer(p.id)
-    void this.handleResponseTimeout
-    return
+    const baseSec = this.playerBase.get(p.id) ?? 0
+    const baseMs = baseSec * 1000
+    const startAt = Date.now()
+    this.responseStartAt.set(p.id, startAt)
+    this.sendTo(p.id, { type: 'turn_timer', seat: p.seat, thinkMs: THINK_MS, baseMs, startAt })
+    const total = THINK_MS + baseMs
+    const timer = setTimeout(() => this.handleResponseTimeout(p.id), total)
+    this.responseTimerIds.set(p.id, timer)
   }
 
   private clearResponseTimer(pid: string) {
@@ -679,11 +685,18 @@ export class Room {
     }
   }
 
-  // ========= 計時器（暫停中，等待重建） =========
-  private startTurnTimer(_seat: SeatIndex) {
+  // ========= 計時器 =========
+  private startTurnTimer(seat: SeatIndex) {
     this.stopTurnTimer()
-    void this.handleTurnTimeout
-    return
+    const p = this.getPlayerBySeat(seat)
+    if (!p || p.isBot) return
+    const baseSec = this.playerBase.get(p.id) ?? 0
+    const baseMs = baseSec * 1000
+    const startAt = Date.now()
+    this.turnStartAt = startAt
+    this.broadcast({ type: 'turn_timer', seat, thinkMs: THINK_MS, baseMs, startAt })
+    const total = THINK_MS + baseMs
+    this.turnTimerId = setTimeout(() => this.handleTurnTimeout(seat), total)
   }
 
   private stopTurnTimer() {

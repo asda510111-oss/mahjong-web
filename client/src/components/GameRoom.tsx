@@ -3,6 +3,7 @@ import Tile from './Tile'
 import TableSeat from './TableSeat'
 import CenterArea from './CenterArea'
 import ActionBar from './ActionBar'
+import TimerDisplay from './TimerDisplay'
 import type { RoomState, SeatIndex, PublicPlayerState, ActionOptions } from '../game/types'
 import { SEAT_LABELS } from '../game/types'
 import type { TileId } from '../game/tiles'
@@ -42,7 +43,7 @@ const SEAT_AVATARS = [catAvatar, pandaAvatar, foxAvatar, bearAvatar]
 
 export default function GameRoom({
   room, myPlayerId, mySeat, myHand, discards, publicStates = [], wallRemaining,
-  currentTurn, dealerSeat, isMyTurn, actionOptions, lastDrawn, lastDiscardSeat,
+  currentTurn, dealerSeat, isMyTurn, actionOptions, lastDrawn, lastDiscardSeat, turnTimer,
   gameIndex, roundScores,
   onLeave, onAddBot, onStart, onDiscard, onAction,
 }: Props) {
@@ -301,7 +302,15 @@ export default function GameRoom({
           ))}
         </div>
         {/* 計時框 */}
-        <div className="timer-frame" aria-hidden="true" />
+        <div className="timer-frame">
+          {turnTimer && mySeat !== null && turnTimer.seat === mySeat && (
+            <TimerDisplay
+              thinkMs={turnTimer.thinkMs}
+              baseMs={turnTimer.baseMs}
+              startAt={turnTimer.startAt}
+            />
+          )}
+        </div>
 
         {/* 對家吃/碰/槓/花 副子區（鏡像邏輯） */}
         <div className="top-melds">

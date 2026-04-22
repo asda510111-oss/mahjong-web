@@ -1247,7 +1247,22 @@ input:focus { border-color: var(--accent); }
   z-index: 999;
   box-sizing: border-box;
   pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
+.timer-content {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 900;
+  line-height: 1;
+  color: #000;
+  font-size: 2.5rem;
+}
+.timer-base  { color: #000; }
+.timer-plus  { color: #000; font-size: 2rem; }
+.timer-think { color: #d17100; }
 /* turn-timer 相關 CSS 已全部移除 */
 .turn-timer-stack .turn-timer {
   position: static;
