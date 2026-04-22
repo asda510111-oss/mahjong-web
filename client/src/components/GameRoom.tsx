@@ -381,21 +381,23 @@ export default function GameRoom({
       {actionOptions && <ActionBar options={actionOptions} onAction={onAction} />}
 
 
-      {/* 聽牌預覽區（常駐）：第一行「聽」，第二行為聽的牌 + 剩餘張數 */}
-      <div className="ting-preview-zone">
-        <div className="ting-preview-label">聽</div>
-        <div className="ting-preview-tiles">
-          {tingTiles.map((t, i) => {
-            const remain = countRemainingTile(t)
-            return (
-              <span key={`${t}-${i}`} className={`ting-preview-item ${remain === 0 ? 'dead' : ''}`}>
-                <Tile id={t} disabled />
-                <span className="ting-preview-count">{remain}</span>
-              </span>
-            )
-          })}
+      {/* 聽牌預覽區：第一行「聽」，第二行聽的牌 + 牌正下方剩餘張數；無牌時隱藏 */}
+      {tingTiles.length > 0 && (
+        <div className="ting-preview-zone">
+          <div className="ting-preview-label">聽</div>
+          <div className="ting-preview-tiles">
+            {tingTiles.map((t, i) => {
+              const remain = countRemainingTile(t)
+              return (
+                <span key={`${t}-${i}`} className={`ting-preview-item ${remain === 0 ? 'dead' : ''}`}>
+                  <Tile id={t} disabled />
+                  <span className="ting-preview-count">{remain}</span>
+                </span>
+              )
+            })}
+          </div>
         </div>
-      </div>
+      )}
       {/* 固定底部手牌 */}
       <div className={`hand-fixed ${isMyTurn ? 'my-turn' : ''}`}>
         <div className="hand-hint">
