@@ -1224,7 +1224,7 @@ input:focus { border-color: var(--accent); }
   position: fixed;
   left: 0;
   right: 0;
-  bottom: 0;
+  bottom: 24px; /* 上移 24px（0.4×60） */
   padding: 0.5rem;
   background: transparent;
   border-top: none;
@@ -1358,7 +1358,7 @@ input:focus { border-color: var(--accent); }
 .ting-preview-zone {
   position: fixed;
   left: 12px;
-  bottom: 112px; /* 上移 12px（0.2×60） */
+  bottom: 136px; /* 再上移 24px（0.4×60） */
   min-width: 68px;
   background: #000;
   border: 2px solid #f5c842;
