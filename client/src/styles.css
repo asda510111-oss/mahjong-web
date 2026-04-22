@@ -1358,7 +1358,7 @@ input:focus { border-color: var(--accent); }
 .ting-preview-zone {
   position: fixed;
   left: 12px;
-  bottom: 100px;
+  bottom: 112px; /* 上移 12px（0.2×60） */
   min-width: 68px;
   background: #000;
   border: 2px solid #f5c842;
@@ -1400,13 +1400,13 @@ input:focus { border-color: var(--accent); }
 .ting-preview-count {
   background: rgba(0, 0, 0, 0.75);
   color: #fff;
-  font-size: 0.85rem;
+  font-size: 1.7rem;   /* 原 0.85rem × 2 */
   font-weight: 800;
-  min-width: 20px;
+  min-width: 32px;
   line-height: 1;
   text-align: center;
   border-radius: 4px;
-  padding: 2px 4px;
+  padding: 4px 8px;
 }
 .ting-preview-item.dead { opacity: 0.4; }
 .ting-preview-item.dead .ting-preview-count {
