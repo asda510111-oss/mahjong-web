@@ -1234,7 +1234,7 @@ input:focus { border-color: var(--accent); }
 }
 /* 倒數計時：放在手牌最右邊（剛摸牌的右側），顯示思考秒+基礎秒兩個數字 */
 /* 計時框（timer-frame）：白色長方形，置於下家副子區 */
-.table-wrapper { --timer-x: 411px; --timer-y: -190px; } /* 上移 10px（0.2×50） */
+.table-wrapper { --timer-x: 411px; --timer-y: -166px; } /* 再上移 24px（0.4×60） */
 .timer-frame {
   position: absolute;
   left: calc(50% + var(--timer-x));
