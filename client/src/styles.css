@@ -466,11 +466,11 @@ input:focus { border-color: var(--accent); }
   gap: 0.5rem;
 }
 .table-seat.turn {
-  /* 輪到該家時的高亮：改用柔和光暈，不畫框 */
+  /* 輪到該家的光暈已移除 */
   background: transparent;
   border: none;
-  box-shadow: 0 0 18px rgba(245, 197, 66, 0.55);
-  border-radius: 14px;
+  box-shadow: none;
+  border-radius: 0;
 }
 .table-seat.me {
   border-color: transparent;
