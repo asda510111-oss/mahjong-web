@@ -353,8 +353,8 @@ export default function GameRoom({
       {actionOptions && <ActionBar options={actionOptions} onAction={onAction} />}
 
 
-      {/* 第一張自家手牌上方的橘色長框 */}
-      <div className="first-hand-frame" aria-hidden="true" />
+      {/* 聽牌預覽區（常駐）：常駐在打出牌後聽的預覽 */}
+      <div className="ting-preview-zone" aria-hidden="true" />
       {/* 固定底部手牌 */}
       <div className={`hand-fixed ${isMyTurn ? 'my-turn' : ''}`}>
         <div className="hand-hint">

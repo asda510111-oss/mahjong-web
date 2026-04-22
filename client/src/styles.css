@@ -1354,12 +1354,12 @@ input:focus { border-color: var(--accent); }
 
 /* 聽牌預覽系統全部移除 */
 
-/* 第一張自家手牌上方：橘色長框 */
-.first-hand-frame {
+/* 聽牌預覽區（ting-preview-zone）：常駐於第一張手牌上方，顯示打出後聽的牌 */
+.ting-preview-zone {
   position: fixed;
-  left: 12px;           /* 再右移 4px（0.1×44） */
-  bottom: 100px;        /* 緊貼手牌上方 */
-  width: 68px;          /* 與手牌 slot 同寬 */
+  left: 12px;
+  bottom: 100px;
+  width: 68px;
   height: 42px;
   background: #ff8a00;
   border: 2px solid #8b3a00;
