@@ -99,7 +99,10 @@ function PinGraphic({ rank }: { rank: number }) {
   const r = rank === 2 ? 9 : rank <= 3 ? 7 : rank <= 6 ? 6 : 5
   return (
     <g>
-      {positions.map(([x, y], i) => <Dot key={i} x={x} y={y} r={r} />)}
+      {positions.map(([x, y], i) => (
+        // 五筒中間（index 2）紅色
+        <Dot key={i} x={x} y={y} r={r} color={rank === 5 && i === 2 ? 'red' : 'green'} />
+      ))}
     </g>
   )
 }
