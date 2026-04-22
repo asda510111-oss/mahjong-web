@@ -153,7 +153,7 @@ export class Room {
         if (t) h[s].push(t)
       }
     }
-    this.dealerSeat = this.gameIndex as SeatIndex
+    this.dealerSeat = (this.gameIndex % 4) as SeatIndex
     this.currentTurnSeat = this.dealerSeat
     const dealerExtra = this.wall.shift()
     if (dealerExtra) h[this.dealerSeat].push(dealerExtra)
@@ -778,7 +778,7 @@ export class Room {
       isZimo,
       winTile,
       seatWind: winnerSeat,
-      roundWind: 0, // 目前只跑東圈；未來多圈制時改為 Math.floor(overallGameIndex/4)
+      roundWind: Math.floor(this.gameIndex / 4) % 4,
       isDealer: winnerSeat === this.dealerSeat,
       consecutiveDealer: 0,
     })
@@ -824,8 +824,8 @@ export class Room {
     this.responseStartAt.clear()
     this.pendingDiscard = null
 
-    if (this.gameIndex >= 3) {
-      // 四局結束 → 整圈結束
+    if (this.gameIndex >= 15) {
+      // 16 局結束 → 四圈結束
       this.phase = 'ended'
       this.broadcast({
         type: 'round_end',
