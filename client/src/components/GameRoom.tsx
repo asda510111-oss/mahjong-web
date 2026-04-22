@@ -156,9 +156,11 @@ export default function GameRoom({
   const getPlayer = (s: SeatIndex) => room.players.find(p => p.seat === s)
   const getPub = (s: SeatIndex) => publicStates.find(ps => ps.seat === s)
 
-  const dealerLabel = dealerSeat !== null
-    ? `${SEAT_LABELS[dealerSeat]}${gameIndex + 1}局`
-    : ''
+  // 局數：圈風 × 4 + 局 (gameIndex 0-15)；目前伺服器只跑東圈 0-3
+  const ROUND_WINDS = ['東', '南', '西', '北'] as const
+  const roundIdx = Math.floor((gameIndex ?? 0) / 4) % 4
+  const gameInRound = ((gameIndex ?? 0) % 4) + 1
+  const dealerLabel = `${ROUND_WINDS[roundIdx]}${gameInRound}局`
 
   const getScore = (seat: SeatIndex): number | null => {
     if (!roundScores) return null
