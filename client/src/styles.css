@@ -1356,7 +1356,7 @@ input:focus { border-color: var(--accent); }
 .ting-preview {
   position: fixed;
   left: 0; right: 0;
-  bottom: 120px;
+  bottom: 270px; /* 再上移 150px（3×50） */
   display: flex;
   align-items: center;
   justify-content: flex-start;
