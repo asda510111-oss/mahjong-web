@@ -681,12 +681,18 @@ export class Room {
   }
 
   // ========= 計時器 =========
-  // 倒數計時暫停中：保留框架但不啟動、不廣播、不自動出牌
-  private startTurnTimer(_seat: SeatIndex) {
+  // 每回合：思考時間 THINK_MS（5s）+ 剩餘基礎時間（本局不回滿）
+  private startTurnTimer(seat: SeatIndex) {
     this.stopTurnTimer()
-    // 保留 handleTurnTimeout 參考，之後要重新開啟計時時直接改這裡
-    void this.handleTurnTimeout
-    return
+    const p = this.getPlayerBySeat(seat)
+    if (!p || p.isBot) return
+    const baseSec = this.playerBase.get(p.id) ?? 0
+    const baseMs = baseSec * 1000
+    const startAt = Date.now()
+    this.turnStartAt = startAt
+    this.broadcast({ type: 'turn_timer', seat, thinkMs: THINK_MS, baseMs, startAt })
+    const total = THINK_MS + baseMs
+    this.turnTimerId = setTimeout(() => this.handleTurnTimeout(seat), total)
   }
 
   private stopTurnTimer() {
