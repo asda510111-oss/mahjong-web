@@ -3,7 +3,6 @@ import Tile from './Tile'
 import TableSeat from './TableSeat'
 import CenterArea from './CenterArea'
 import ActionBar from './ActionBar'
-import CountdownDisplay from './CountdownDisplay'
 import type { RoomState, SeatIndex, PublicPlayerState, ActionOptions } from '../game/types'
 import { SEAT_LABELS } from '../game/types'
 import type { TileId } from '../game/tiles'
@@ -43,7 +42,7 @@ const SEAT_AVATARS = [catAvatar, pandaAvatar, foxAvatar, bearAvatar]
 
 export default function GameRoom({
   room, myPlayerId, mySeat, myHand, discards, publicStates = [], wallRemaining,
-  currentTurn, dealerSeat, isMyTurn, actionOptions, lastDrawn, lastDiscardSeat, turnTimer,
+  currentTurn, dealerSeat, isMyTurn, actionOptions, lastDrawn, lastDiscardSeat,
   gameIndex, roundScores,
   onLeave, onAddBot, onStart, onDiscard, onAction,
 }: Props) {
@@ -301,16 +300,7 @@ export default function GameRoom({
             </div>
           ))}
         </div>
-        {/* 倒數秒數框（最上圖層，位於下家副子區附近） */}
-        {turnTimer && mySeat !== null && turnTimer.seat === mySeat && (
-          <div className="hand-timer-box">
-            <CountdownDisplay
-              thinkMs={turnTimer.thinkMs}
-              baseMs={turnTimer.baseMs}
-              startAt={turnTimer.startAt}
-            />
-          </div>
-        )}
+        {/* 倒數秒數系統已移除，等待重建 */}
         {/* 對家吃/碰/槓/花 副子區（鏡像邏輯） */}
         <div className="top-melds">
           {[

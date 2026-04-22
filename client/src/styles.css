@@ -1233,61 +1233,8 @@ input:focus { border-color: var(--accent); }
   -webkit-overflow-scrolling: touch;
 }
 /* 倒數計時：放在手牌最右邊（剛摸牌的右側），顯示思考秒+基礎秒兩個數字 */
-/* 倒數秒數框：對齊下家副子區左上，最上圖層 */
-.table-wrapper { --timer-x: 411px; --timer-y: -200px; }
-.hand-timer-box {
-  position: absolute;
-  left: calc(50% + var(--timer-x));
-  top: calc(50% - var(--timer-y));
-  transform: translate(0, 0);
-  background: rgba(255, 255, 255, 0.95);
-  border: 3px solid #fff;
-  border-radius: 0;
-  padding: 12px 18px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4), 0 0 0 2px rgba(0,0,0,0.5);
-  z-index: 999;
-  box-sizing: border-box;
-}
-.turn-timer-stack {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  flex-shrink: 0;
-  align-self: center;
-}
-.turn-timer-row {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  gap: 14px; /* 放大後拉開間距避免重疊 */
-  flex-shrink: 0;
-  font-weight: 800;
-}
-.turn-timer-row .turn-timer {
-  min-width: 60px;
-  text-align: center;
-  font-size: 3.3rem; /* 原 1.1rem × 3 */
-  line-height: 1;
-  padding: 6px 12px;
-  border: 3px solid #000;
-  border-radius: 6px;
-  font-weight: 900;
-}
-.turn-timer-row .turn-timer.base {
-  background: #fff; color: #000;
-  transform: translate(-37px, -50px); /* 左移 37px + 上移 50px */
-}
-.turn-timer-row .turn-timer.think {
-  background: #ffd84a; color: #000;
-  transform: translate(37px, -50px); /* 右移 37px + 上移 50px */
-}
-.turn-timer-plus { transform: translateY(-50px); }
-.turn-timer-row .turn-timer.dim { opacity: 0.35; }
-.turn-timer-plus { color: #000; font-weight: 900; font-size: 3rem; line-height: 1; }
+/* 倒數秒數系統 CSS 已全部移除，等待重建 */
+/* turn-timer 相關 CSS 已全部移除 */
 .turn-timer-stack .turn-timer {
   position: static;
   min-width: 28px;
