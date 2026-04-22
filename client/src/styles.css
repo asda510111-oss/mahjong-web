@@ -329,7 +329,7 @@ input:focus { border-color: var(--accent); }
 }
 /* 右側木框調整與下家手牌綠框長軸平行（下家 rotate(94deg) 等同偏離垂直 4°） */
 .wood-right {
-  right: 148px; /* 左移 148px（4×37） */
+  right: 167px; /* 再左移 19px（0.5×37） */
   transform: rotate(-19deg);
   transform-origin: top right;
 }
