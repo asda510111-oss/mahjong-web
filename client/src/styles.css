@@ -966,8 +966,8 @@ input:focus { border-color: var(--accent); }
   left: calc(50% + var(--cd-bot-x));
   top: calc(50% - var(--cd-bot-y));
   display: grid;
-  grid-template-columns: repeat(6, 37px);
-  grid-template-rows: repeat(3, 50px);
+  grid-template-columns: repeat(6, 44px);
+  grid-template-rows: repeat(3, 60px);
   grid-auto-flow: row;
   gap: 2px;
   z-index: 3;
@@ -977,8 +977,8 @@ input:focus { border-color: var(--accent); }
   padding: 4px;
 }
 .cd-bot .tile {
-  --tile-w: 37px;
-  --tile-h: 50px;
+  --tile-w: 44px;
+  --tile-h: 60px;
   border-radius: 3px;
   padding: 1px;
 }
@@ -990,8 +990,8 @@ input:focus { border-color: var(--accent); }
   right: calc(50% - var(--cd-top-x));
   bottom: calc(50% + var(--cd-top-y));
   display: grid;
-  grid-template-columns: repeat(6, 37px);
-  grid-template-rows: repeat(3, 50px);
+  grid-template-columns: repeat(6, 44px);
+  grid-template-rows: repeat(3, 60px);
   grid-auto-flow: row;
   gap: 2px;
   z-index: 3;
@@ -1004,8 +1004,8 @@ input:focus { border-color: var(--accent); }
   transform-origin: center;
 }
 .cd-top .tile {
-  --tile-w: 37px;
-  --tile-h: 50px;
+  --tile-w: 44px;
+  --tile-h: 60px;
   border-radius: 3px;
   padding: 1px;
 }
@@ -1016,8 +1016,8 @@ input:focus { border-color: var(--accent); }
   left: calc(50% + var(--cd-right-x));
   top: calc(50% - var(--cd-right-y));
   display: grid;
-  grid-template-columns: repeat(6, 37px);
-  grid-template-rows: repeat(3, 50px);
+  grid-template-columns: repeat(6, 44px);
+  grid-template-rows: repeat(3, 60px);
   grid-auto-flow: row;
   gap: 2px;
   z-index: 3;
@@ -1030,8 +1030,8 @@ input:focus { border-color: var(--accent); }
   transform-origin: top left;
 }
 .cd-right .tile {
-  --tile-w: 37px;
-  --tile-h: 50px;
+  --tile-w: 44px;
+  --tile-h: 60px;
   border-radius: 3px;
   padding: 1px;
 }
@@ -1042,8 +1042,8 @@ input:focus { border-color: var(--accent); }
   left: calc(50% + var(--cd-left-x));
   top: calc(50% - var(--cd-left-y));
   display: grid;
-  grid-template-columns: repeat(6, 37px);
-  grid-template-rows: repeat(3, 50px);
+  grid-template-columns: repeat(6, 44px);
+  grid-template-rows: repeat(3, 60px);
   grid-auto-flow: row;
   gap: 2px;
   z-index: 3;
@@ -1056,8 +1056,8 @@ input:focus { border-color: var(--accent); }
   transform-origin: top left;
 }
 .cd-left .tile {
-  --tile-w: 37px;
-  --tile-h: 50px;
+  --tile-w: 44px;
+  --tile-h: 60px;
   border-radius: 3px;
   padding: 1px;
 }
