@@ -96,7 +96,7 @@ function PinGraphic({ rank }: { rank: number }) {
     )
   }
   const positions = PIN_POS[rank]
-  const r = rank <= 3 ? 7 : rank <= 6 ? 6 : 5
+  const r = rank === 2 ? 9 : rank <= 3 ? 7 : rank <= 6 ? 6 : 5
   return (
     <g>
       {positions.map(([x, y], i) => <Dot key={i} x={x} y={y} r={r} />)}
