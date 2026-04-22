@@ -87,7 +87,7 @@ function PinGraphic({ rank }: { rank: number }) {
   // 七筒：上 3 顆綠（斜線）、下 4 顆紅（2×2）
   if (rank === 7) {
     const top: Array<[number, number]> = [[15, 14], [30, 22], [45, 30]]
-    const bot: Array<[number, number]> = [[20, 50], [40, 50], [20, 64], [40, 64]]
+    const bot: Array<[number, number]> = [[20, 46], [40, 46], [20, 66], [40, 66]]
     return (
       <g>
         {top.map(([x, y], i) => <Dot key={`t${i}`} x={x} y={y} r={7} color="green" />)}
