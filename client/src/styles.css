@@ -1284,7 +1284,18 @@ input:focus { border-color: var(--accent); }
      0   -2px 0 #000,
      0    2px 0 #000;
 }
-.timer-think { color: #d17100; }
+.timer-think {
+  color: #ffd84a;
+  text-shadow:
+    -2px -2px 0 #000,
+     2px -2px 0 #000,
+    -2px  2px 0 #000,
+     2px  2px 0 #000,
+    -2px  0   0 #000,
+     2px  0   0 #000,
+     0   -2px 0 #000,
+     0    2px 0 #000;
+}
 /* turn-timer 相關 CSS 已全部移除 */
 .turn-timer-stack .turn-timer {
   position: static;
