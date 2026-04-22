@@ -417,11 +417,11 @@ input:focus { border-color: var(--accent); }
   gap: 0;
   z-index: 2;
 }
-/* 對家牌背：與自家手牌同尺寸 */
+/* 對家牌背：縮小 0.9 倍 */
 .table-seat.pos-top .tile.back.compact {
-  --tile-w: 68px;
-  --tile-h: 90px;
-  --back-depth: 28px;
+  --tile-w: 61px;
+  --tile-h: 81px;
+  --back-depth: 25px;
 }
 /* 副子也跟著該家的牌牆一起傾 */
 .table-seat.pos-left .seat-melds {
