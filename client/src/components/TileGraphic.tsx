@@ -107,7 +107,8 @@ function PinGraphic({ rank }: { rank: number }) {
 // ===== 條子：分節竹棍 =====
 const SOU_POS: Record<number, Array<[number, number]>> = {
   2: [[22, 40], [38, 40]],
-  3: [[30, 22], [22, 56], [38, 56]],
+  /* 三條：第二行左右寬加大 */
+  3: [[30, 22], [18, 56], [42, 56]],
   4: [[22, 24], [38, 24], [22, 56], [38, 56]],
   /* 五條：第 1 行與第 3 行左右寬加大 */
   5: [[16, 20], [44, 20], [30, 40], [16, 60], [44, 60]],
@@ -176,7 +177,7 @@ function SouGraphic({ rank }: { rank: number }) {
   }
   const positions = SOU_POS[rank]
   const stickLen = rank <= 3 ? 22 : rank === 7 ? 18 : rank === 8 ? 15 : rank <= 6 ? 16 : 11
-  const stickWidth = rank <= 3 ? 5.5 : (rank === 5 || rank === 7) ? 5 : rank === 8 ? 3.5 : 4
+  const stickWidth = rank <= 4 ? 5.5 : (rank === 5 || rank === 7) ? 5 : rank === 8 ? 3.5 : 4
   // 4、7 條傳統為紅色
   const isRed = rank === 4 || rank === 7
   return (
