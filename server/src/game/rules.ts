@@ -165,6 +165,7 @@ export interface TaiContext {
   isZimo: boolean           // 自摸
   winTile: TileId
   seatWind: number          // 0=東 1=南 2=西 3=北
+  roundWind?: number        // 圈風 0=東 1=南 2=西 3=北（預設東圈）
   isDealer: boolean
   consecutiveDealer: number // 連莊次數
 }
@@ -174,7 +175,7 @@ export interface TaiResult { total: number; items: TaiItem[] }
 
 export function calculateTai(ctx: TaiContext): TaiResult {
   const items: TaiItem[] = []
-  const { hand, melds, isZimo, seatWind, isDealer, consecutiveDealer } = ctx
+  const { hand, melds, isZimo, seatWind, roundWind = 0, isDealer, consecutiveDealer } = ctx
   const nonFlowerMelds = melds.filter(m => m.type !== 'flower')
   const flowerMelds = melds.filter(m => m.type === 'flower')
 
@@ -230,11 +231,16 @@ export function calculateTai(ctx: TaiContext): TaiResult {
   if (windMelds === 4) items.push({ name: '大四喜', tai: 16 })
   else if (windMelds === 3 && windPair === 1) items.push({ name: '小四喜', tai: 8 })
 
-  // 門風牌 / 三元牌：刻子 +1
+  // 門風牌 / 圈風牌 / 三元牌：刻子 +1
   // seatWind 0=東(z1)..3=北(z4)
   const myWindTile = `z${seatWind + 1}`
+  const roundWindTile = `z${roundWind + 1}`
   if (allTiles.filter(t => t === myWindTile).length >= 3) {
     items.push({ name: '門風牌', tai: 1 })
+  }
+  // 圈風牌（若圈風 == 自風，已由門風牌計過就不重複加）
+  if (roundWindTile !== myWindTile && allTiles.filter(t => t === roundWindTile).length >= 3) {
+    items.push({ name: '圈風牌', tai: 1 })
   }
   for (const d of dragons) {
     if (allTiles.filter(t => t === d).length >= 3) {

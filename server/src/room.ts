@@ -768,6 +768,7 @@ export class Room {
       isZimo,
       winTile,
       seatWind: winnerSeat,
+      roundWind: 0, // 目前只跑東圈；未來多圈制時改為 Math.floor(overallGameIndex/4)
       isDealer: winnerSeat === this.dealerSeat,
       consecutiveDealer: 0,
     })
