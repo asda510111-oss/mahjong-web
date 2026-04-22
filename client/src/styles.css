@@ -1360,12 +1360,12 @@ input:focus { border-color: var(--accent); }
   left: 12px;
   bottom: 100px;
   min-width: 68px;
-  background: #ff8a00;
-  border: 2px solid #8b3a00;
+  background: #000;
+  border: 2px solid #f5c842;
   border-radius: 6px;
   z-index: 49;
   pointer-events: none;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.6);
   padding: 4px 6px;
   display: flex;
   flex-direction: column;
@@ -1379,7 +1379,6 @@ input:focus { border-color: var(--accent); }
   text-align: center;
   width: 100%;
   line-height: 1;
-  text-shadow: 0 1px 0 #8b3a00;
 }
 .ting-preview-tiles {
   display: flex;
