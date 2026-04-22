@@ -121,30 +121,24 @@ const SOU_POS: Record<number, Array<[number, number]>> = {
   9: [[18, 20], [30, 20], [42, 20], [18, 40], [30, 40], [42, 40], [18, 60], [30, 60], [42, 60]],
 }
 
-function Bamboo({ x, y, len, width, red }: { x: number; y: number; len: number; width: number; red?: boolean }) {
+function Bamboo({ x, y, len, width, red, angle = 0 }: { x: number; y: number; len: number; width: number; red?: boolean; angle?: number }) {
   const main = red ? '#c0172b' : '#2e7d32'
   const dark = red ? '#6d0d0d' : '#1b5e20'
   const light = red ? '#f28d94' : '#a5d6a7'
   return (
-    <g>
-      {/* 陰影 */}
+    <g transform={angle ? `rotate(${angle} ${x} ${y})` : undefined}>
       <rect x={x - width / 2 + 0.4} y={y - len / 2 + 0.4}
             width={width} height={len} rx="1.5" fill={dark} opacity="0.35" />
-      {/* 主體 */}
       <rect x={x - width / 2} y={y - len / 2}
             width={width} height={len} rx="1.5" fill={main} stroke={dark} strokeWidth="0.7" />
-      {/* 頂蓋 */}
       <rect x={x - width / 2 - 0.4} y={y - len / 2 - 0.6}
             width={width + 0.8} height={1.6} rx="0.5" fill={dark} />
-      {/* 底蓋 */}
       <rect x={x - width / 2 - 0.4} y={y + len / 2 - 1}
             width={width + 0.8} height={1.6} rx="0.5" fill={dark} />
-      {/* 中節 */}
       {len > 14 && (
         <rect x={x - width / 2 - 0.2} y={y - 0.7}
               width={width + 0.4} height={1.4} fill={dark} />
       )}
-      {/* 高光條 */}
       <rect x={x - width / 2 + 0.7} y={y - len / 2 + 1.5}
             width={width * 0.28} height={len - 3.5} rx="0.5"
             fill={light} opacity="0.65" />
@@ -178,14 +172,32 @@ function SouGraphic({ rank }: { rank: number }) {
   const positions = SOU_POS[rank]
   const stickLen = rank <= 3 ? 22 : rank === 7 ? 18 : rank === 8 ? 15 : rank <= 6 ? 16 : 11
   const stickWidth = rank <= 4 ? 5.5 : (rank === 5 || rank === 7) ? 5 : rank === 8 ? 3.5 : 4
-  // 4、7 條傳統為紅色
-  const isRed = rank === 4 || rank === 7
+  // 八條：上半 反 M（^ peaks）、下半 M（v valleys），內側 2 根各傾斜
+  if (rank === 8) {
+    const tilt = 25
+    return (
+      <g>
+        {/* 上半：外左直、內左 /（angle -tilt）、內右 \（+tilt）、外右直 */}
+        <Bamboo x={13} y={22} len={stickLen} width={stickWidth} />
+        <Bamboo x={25} y={22} len={stickLen} width={stickWidth} angle={-tilt} />
+        <Bamboo x={37} y={22} len={stickLen} width={stickWidth} angle={tilt} />
+        <Bamboo x={49} y={22} len={stickLen} width={stickWidth} />
+        {/* 下半：內側 2 根角度反向 */}
+        <Bamboo x={13} y={58} len={stickLen} width={stickWidth} />
+        <Bamboo x={25} y={58} len={stickLen} width={stickWidth} angle={tilt} />
+        <Bamboo x={37} y={58} len={stickLen} width={stickWidth} angle={-tilt} />
+        <Bamboo x={49} y={58} len={stickLen} width={stickWidth} />
+      </g>
+    )
+  }
+
+  // 4、7 條傳統為紅色；5 條中間紅
   return (
     <g>
       {positions.map(([x, y], i) => {
-        // 7 條其中 1 根紅、其他綠
-        let useRed = isRed
+        let useRed = rank === 4
         if (rank === 7) useRed = i === 0  // 最上方那根紅
+        if (rank === 5) useRed = i === 2  // 中間那根紅
         return (
           <Bamboo key={i} x={x} y={y} len={stickLen} width={stickWidth} red={useRed} />
         )
