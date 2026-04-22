@@ -1236,14 +1236,14 @@ input:focus { border-color: var(--accent); }
 .hand-timer-box {
   position: absolute;
   right: 12px;
-  top: 50%;
+  top: calc(50% - 150px); /* 上移 150px（3×50） */
   transform: translateY(-50%);
   background: rgba(255, 255, 255, 0.95);
-  border: 3px solid #ffffff;   /* 白色正方形外框 */
-  border-radius: 0;            /* 方角 */
-  width: 64px;
-  height: 64px;
-  padding: 4px;
+  border: 3px solid #ffffff;
+  border-radius: 0;
+  width: auto;
+  height: auto;
+  padding: 12px 18px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1263,24 +1263,24 @@ input:focus { border-color: var(--accent); }
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  gap: 4px;
+  gap: 14px; /* 放大後拉開間距避免重疊 */
   flex-shrink: 0;
   font-weight: 800;
 }
 .turn-timer-row .turn-timer {
-  min-width: 20px;
+  min-width: 60px;
   text-align: center;
-  font-size: 1.1rem;
+  font-size: 3.3rem; /* 原 1.1rem × 3 */
   line-height: 1;
-  padding: 2px 4px;
-  border: 2px solid #000;
-  border-radius: 4px;
+  padding: 6px 12px;
+  border: 3px solid #000;
+  border-radius: 6px;
   font-weight: 900;
 }
 .turn-timer-row .turn-timer.base { background: #fff; color: #000; }
 .turn-timer-row .turn-timer.think { background: #ffd84a; color: #000; }
 .turn-timer-row .turn-timer.dim { opacity: 0.35; }
-.turn-timer-plus { color: #000; font-weight: 900; font-size: 1rem; }
+.turn-timer-plus { color: #000; font-weight: 900; font-size: 3rem; line-height: 1; }
 .turn-timer-stack .turn-timer {
   position: static;
   min-width: 28px;
