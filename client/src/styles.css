@@ -1352,11 +1352,11 @@ input:focus { border-color: var(--accent); }
   min-width: 4px;
 }
 
-/* 聽牌預覽 */
+/* 聽牌預覽：緊貼自家手牌上緣 */
 .ting-preview {
   position: fixed;
   left: 0; right: 0;
-  bottom: 62px;
+  bottom: 120px;
   display: flex;
   align-items: center;
   justify-content: center;
