@@ -27,6 +27,7 @@ export default function App() {
   const [lastDiscardSeat, setLastDiscardSeat] = useState<SeatIndex | null>(null)
   const [turnTimer, setTurnTimer] = useState<null | { seat: SeatIndex; thinkMs: number; baseMs: number; startAt: number }>(null)
   const [gameIndex, setGameIndex] = useState<number>(0)
+  const [consecutiveDealer, setConsecutiveDealer] = useState<number>(0)
   const [roundScores, setRoundScores] = useState<Array<{ seat: SeatIndex; name: string; score: number }> | null>(null)
   const [roundEnd, setRoundEnd] = useState<null | { scores: Array<{ seat: SeatIndex; name: string; score: number }> }>(null)
   const [huResult, setHuResult] = useState<null | {
@@ -97,6 +98,7 @@ export default function App() {
           setActionOptions(null)
           setGameIndex(msg.gameIndex)
           setDealerSeat(msg.dealerSeat)
+          setConsecutiveDealer(msg.consecutiveDealer)
           setRoundEnd(null)
           setNotice(`第 ${msg.gameIndex + 1} 局開始！`)
           setTimeout(() => setNotice(''), 2000)
@@ -260,6 +262,7 @@ export default function App() {
           lastDiscardSeat={lastDiscardSeat}
           turnTimer={turnTimer}
           gameIndex={gameIndex}
+          consecutiveDealer={consecutiveDealer}
           roundScores={roundScores}
           currentTurn={currentTurn}
           dealerSeat={dealerSeat}

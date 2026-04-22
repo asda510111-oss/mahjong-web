@@ -56,7 +56,7 @@ export type ServerMessage =
   | { type: 'welcome'; playerId: string }
   | { type: 'room_update'; room: RoomState }
   | { type: 'error'; message: string }
-  | { type: 'game_start'; seed: number; gameIndex: number; dealerSeat: SeatIndex }
+  | { type: 'game_start'; seed: number; gameIndex: number; dealerSeat: SeatIndex; consecutiveDealer: number }
   | { type: 'round_end'; scores: Array<{ seat: SeatIndex; name: string; score: number }> }
   | { type: 'deal'; hand: TileId[]; dealerSeat: SeatIndex }
   | { type: 'turn'; seat: SeatIndex }

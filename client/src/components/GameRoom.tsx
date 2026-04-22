@@ -31,6 +31,7 @@ interface Props {
   lastDiscardSeat: SeatIndex | null
   turnTimer: { seat: SeatIndex; thinkMs: number; baseMs: number; startAt: number } | null
   gameIndex: number
+  consecutiveDealer: number
   roundScores: Array<{ seat: SeatIndex; name: string; score: number }> | null
   onLeave: () => void
   onAddBot: () => void
@@ -44,7 +45,7 @@ const SEAT_AVATARS = [catAvatar, pandaAvatar, foxAvatar, bearAvatar]
 export default function GameRoom({
   room, myPlayerId, mySeat, myHand, discards, publicStates = [], wallRemaining,
   currentTurn, dealerSeat, isMyTurn, actionOptions, lastDrawn, lastDiscardSeat, turnTimer,
-  gameIndex, roundScores,
+  gameIndex, consecutiveDealer, roundScores,
   onLeave, onAddBot, onStart, onDiscard, onAction,
 }: Props) {
   const isHost = room.hostId === myPlayerId
@@ -156,11 +157,12 @@ export default function GameRoom({
   const getPlayer = (s: SeatIndex) => room.players.find(p => p.seat === s)
   const getPub = (s: SeatIndex) => publicStates.find(ps => ps.seat === s)
 
-  // 局數：圈風 × 4 + 局 (gameIndex 0-15)；目前伺服器只跑東圈 0-3
+  // 局數 + 連莊：圈風 × 4 + 局 (gameIndex 0-15)；連莊次數顯示於第三行
   const ROUND_WINDS = ['東', '南', '西', '北'] as const
   const roundIdx = Math.floor((gameIndex ?? 0) / 4) % 4
   const gameInRound = ((gameIndex ?? 0) % 4) + 1
   const dealerLabel = `${ROUND_WINDS[roundIdx]}${gameInRound}局`
+  const lianZhuangLabel = (consecutiveDealer ?? 0) > 0 ? `連${consecutiveDealer}` : ''
 
   const getScore = (seat: SeatIndex): number | null => {
     if (!roundScores) return null
@@ -344,6 +346,7 @@ export default function GameRoom({
         <div className="table-center-info">
           <div className="center-round">{dealerLabel}</div>
           <div className="center-wall-num">{`餘${String(wallRemaining).padStart(2, '0')}`}</div>
+          {lianZhuangLabel && <div className="center-lianzhuang">{lianZhuangLabel}</div>}
           <span className={`wind-corner wind-bl ${dealerSeat === 0 ? 'dealer' : ''}`}>東</span>
           <span className={`wind-corner wind-br ${dealerSeat === 1 ? 'dealer' : ''}`}>南</span>
           <span className={`wind-corner wind-tr ${dealerSeat === 2 ? 'dealer' : ''}`}>西</span>

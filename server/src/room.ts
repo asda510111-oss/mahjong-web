@@ -55,9 +55,11 @@ export class Room {
   turnStartAt: number = 0                         // 當前回合計時起點（ms 時間戳）
   turnTimerId: NodeJS.Timeout | null = null
 
-  // 多局制（一圈 = 4 局，莊家輪流）
-  gameIndex: number = 0                           // 0-3，目前第幾局
-  roundScores: Map<string, number> = new Map()   // 整圈累計得分
+  // 多局制（4 圈 = 16 局，莊家輪流；連莊時 gameIndex 不前進）
+  gameIndex: number = 0                           // 0-15
+  consecutiveDealer: number = 0                   // 連莊次數（0 = 首次）
+  dealerKeepNext: boolean = false                 // 下一局是否連莊（endGame 時決定）
+  roundScores: Map<string, number> = new Map()
   nextGameTimer: NodeJS.Timeout | null = null
 
   constructor(code: string) { this.code = code }
@@ -120,6 +122,8 @@ export class Room {
   startGame() {
     if (this.players.length !== 4) return
     this.gameIndex = 0
+    this.consecutiveDealer = 0
+    this.dealerSeat = 0 // 東家開局
     this.roundScores.clear()
     for (const p of this.players) this.roundScores.set(p.id, 0)
     if (this.nextGameTimer) clearTimeout(this.nextGameTimer)
@@ -153,7 +157,7 @@ export class Room {
         if (t) h[s].push(t)
       }
     }
-    this.dealerSeat = (this.gameIndex % 4) as SeatIndex
+    // dealerSeat 由 scheduleNextGame 決定（連莊時不變），不再從 gameIndex 推算
     this.currentTurnSeat = this.dealerSeat
     const dealerExtra = this.wall.shift()
     if (dealerExtra) h[this.dealerSeat].push(dealerExtra)
@@ -163,6 +167,7 @@ export class Room {
       seed: Math.floor(Math.random() * 1_000_000),
       gameIndex: this.gameIndex,
       dealerSeat: this.dealerSeat,
+      consecutiveDealer: this.consecutiveDealer,
     })
     for (const p of this.players) {
       this.hands.set(p.id, h[p.seat])
@@ -606,6 +611,7 @@ export class Room {
     while (true) {
       const t = this.wall.shift()
       if (!t) {
+        this.dealerKeepNext = true // 流局連莊
         this.broadcast({ type: 'game_end', reason: 'draw', scores: this.buildScoresPayload() })
         this.scheduleNextGame()
         this.broadcast({ type: 'room_update', room: this.toState() })
@@ -620,6 +626,7 @@ export class Room {
         while (true) {
           rep = this.wall.pop()
           if (!rep) {
+            this.dealerKeepNext = true // 流局連莊
             this.broadcast({ type: 'game_end', reason: 'draw', scores: this.buildScoresPayload() })
             this.scheduleNextGame()
             return
@@ -780,8 +787,10 @@ export class Room {
       seatWind: winnerSeat,
       roundWind: Math.floor(this.gameIndex / 4) % 4,
       isDealer: winnerSeat === this.dealerSeat,
-      consecutiveDealer: 0,
+      consecutiveDealer: this.consecutiveDealer,
     })
+    // 連莊判斷：莊家贏（自摸或其他家放槍給莊家）→ 連莊
+    this.dealerKeepNext = winnerSeat === this.dealerSeat
     // 計分：底 1 + 台 tai.total
     const pts = 1 + tai.total
     for (const p of this.players) {
@@ -824,8 +833,12 @@ export class Room {
     this.responseStartAt.clear()
     this.pendingDiscard = null
 
-    if (this.gameIndex >= 15) {
-      // 16 局結束 → 四圈結束
+    // 連莊判斷（由 endGameWithHu/draw 設定 dealerKeepNext 後呼叫本函式）
+    const willKeep = this.dealerKeepNext
+    this.dealerKeepNext = false // reset flag for next round
+
+    // 非連莊 + 已是最後一局 → 整場結束
+    if (!willKeep && this.gameIndex >= 15) {
       this.phase = 'ended'
       this.broadcast({
         type: 'round_end',
@@ -843,7 +856,15 @@ export class Room {
     if (this.nextGameTimer) clearTimeout(this.nextGameTimer)
     this.nextGameTimer = setTimeout(() => {
       if (this.players.length !== 4) return
-      this.gameIndex++
+      if (willKeep) {
+        // 連莊：gameIndex 與 dealerSeat 不變，連莊次數 +1
+        this.consecutiveDealer++
+      } else {
+        // 下莊：gameIndex++，莊家順推下一家，連莊歸零
+        this.gameIndex++
+        this.dealerSeat = ((this.dealerSeat + 1) % 4) as SeatIndex
+        this.consecutiveDealer = 0
+      }
       this.dealNewGame()
     }, 6000)
   }
