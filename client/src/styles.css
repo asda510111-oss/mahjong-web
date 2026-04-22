@@ -324,7 +324,7 @@ input:focus { border-color: var(--accent); }
 }
 .wood-left {
   left: 148px; /* 左移 148px（4×37） */
-  transform: rotate(9deg); /* 再逆時針 10° */
+  transform: rotate(14deg); /* 順時針 5° */
   transform-origin: top left;
 }
 /* 右側木框調整與下家手牌綠框長軸平行（下家 rotate(94deg) 等同偏離垂直 4°） */
