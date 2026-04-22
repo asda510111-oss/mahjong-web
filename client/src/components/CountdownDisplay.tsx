@@ -6,8 +6,7 @@ interface Props {
   startAt: number
 }
 
-// 顯示兩個數字：思考秒（黃）/ 基礎秒（白）
-// 思考用完才會開始扣基礎
+// 顯示 基礎 + 思考（左右排列），例：20 + 5
 export default function CountdownDisplay({ thinkMs, baseMs, startAt }: Props) {
   const [, setTick] = useState(0)
   useEffect(() => {
@@ -23,12 +22,13 @@ export default function CountdownDisplay({ thinkMs, baseMs, startAt }: Props) {
   const thinkActive = thinkRemain > 0
 
   return (
-    <div className="turn-timer-stack" aria-label="倒數計時">
-      <div className={`turn-timer think ${thinkActive ? '' : 'dim'}`}>
-        {Math.ceil(thinkRemain / 1000)}
-      </div>
+    <div className="turn-timer-row" aria-label="倒數計時">
       <div className={`turn-timer base ${thinkActive ? 'dim' : ''}`}>
         {Math.ceil(baseRemain / 1000)}
+      </div>
+      <span className="turn-timer-plus">+</span>
+      <div className={`turn-timer think ${thinkActive ? '' : 'dim'}`}>
+        {Math.ceil(thinkRemain / 1000)}
       </div>
     </div>
   )

@@ -1258,6 +1258,26 @@ input:focus { border-color: var(--accent); }
   flex-shrink: 0;
   align-self: center;
 }
+.turn-timer-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  flex-shrink: 0;
+  font-weight: 800;
+}
+.turn-timer-row .turn-timer {
+  min-width: 16px;
+  text-align: center;
+  font-size: 1.1rem;
+  line-height: 1;
+  color: #111;
+}
+.turn-timer-row .turn-timer.base { color: #0066cc; }
+.turn-timer-row .turn-timer.think { color: #d17100; }
+.turn-timer-row .turn-timer.dim { opacity: 0.3; }
+.turn-timer-plus { color: #444; font-weight: 700; }
 .turn-timer-stack .turn-timer {
   position: static;
   min-width: 28px;
