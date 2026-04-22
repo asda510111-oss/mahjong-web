@@ -1357,7 +1357,7 @@ input:focus { border-color: var(--accent); }
 /* 第一張自家手牌上方：橘色長框 */
 .first-hand-frame {
   position: fixed;
-  left: 8px;            /* 再右移 4px（0.1×44） */
+  left: 12px;           /* 再右移 4px（0.1×44） */
   bottom: 100px;        /* 緊貼手牌上方 */
   width: 68px;          /* 與手牌 slot 同寬 */
   height: 42px;
