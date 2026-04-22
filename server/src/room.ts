@@ -269,9 +269,60 @@ export class Room {
       this.endGameWithHu(p.seat, undefined, hand[hand.length - 1])
       return { ok: true }
     }
-    // 暗槓 / 加槓先不支援（Batch B）
+
+    if (action === 'gang') {
+      // 先嘗試暗槓（手中 4 張同牌）
+      const concealed = canGangConcealed(hand)
+      if (concealed.length > 0) {
+        const gangTile = concealed[0]
+        // 從手牌移除 4 張
+        for (let i = 0; i < 4; i++) {
+          const idx = hand.indexOf(gangTile)
+          if (idx >= 0) hand.splice(idx, 1)
+        }
+        const meld: Meld = { type: 'gang_concealed', tiles: [gangTile, gangTile, gangTile, gangTile], fromSeat: p.seat }
+        this.melds.get(p.id)!.push(meld)
+        this.broadcast({ type: 'meld_formed', seat: p.seat, meld })
+        this.broadcast({ type: 'action_taken', seat: p.seat, action: 'gang' })
+        const replacement = this.drawFromTail(p.id)
+        this.sendTo(p.id, { type: 'hand_update', hand })
+        if (replacement) this.sendTo(p.id, { type: 'tile_drawn', seat: p.seat, tile: replacement })
+        this.broadcastPublicState()
+        this.justDrawnBy = p.id
+        this.justDrawnTile = replacement
+        // 補牌後留在原家繼續行動
+        this.sendTurnOrAutoAction(p.seat)
+        return { ok: true }
+      }
+      // 加槓（手中 1 張 + 已碰過的同牌）
+      const added = canGangAdded(hand, melds)
+      if (added.length > 0) {
+        const gangTile = added[0]
+        // 從手牌移除 1 張
+        const idx = hand.indexOf(gangTile)
+        if (idx >= 0) hand.splice(idx, 1)
+        // 升級原碰為槓
+        const pengIdx = melds.findIndex(m => m.type === 'peng' && m.tiles[0] === gangTile)
+        if (pengIdx >= 0) {
+          const originalFromSeat = melds[pengIdx].fromSeat ?? p.seat
+          melds[pengIdx] = { type: 'gang_exposed', tiles: [gangTile, gangTile, gangTile, gangTile], fromSeat: originalFromSeat }
+          this.broadcast({ type: 'meld_formed', seat: p.seat, meld: melds[pengIdx] })
+        }
+        this.broadcast({ type: 'action_taken', seat: p.seat, action: 'gang' })
+        const replacement = this.drawFromTail(p.id)
+        this.sendTo(p.id, { type: 'hand_update', hand })
+        if (replacement) this.sendTo(p.id, { type: 'tile_drawn', seat: p.seat, tile: replacement })
+        this.broadcastPublicState()
+        this.justDrawnBy = p.id
+        this.justDrawnTile = replacement
+        this.sendTurnOrAutoAction(p.seat)
+        return { ok: true }
+      }
+      return { ok: false, error: '無可槓牌' }
+    }
+
     if (action === 'pass') {
-      // 等同直接等待該家打牌；這裡不做事，UI 應該直接打牌
+      // UI 直接打牌即可
       return { ok: true }
     }
     return { ok: false, error: '此動作尚未支援' }
@@ -487,6 +538,7 @@ export class Room {
     // 從牌尾補摸 + 補花
     const replacement = this.drawFromTail(pid)
     this.sendTo(pid, { type: 'hand_update', hand })
+    if (replacement) this.sendTo(pid, { type: 'tile_drawn', seat: p.seat, tile: replacement })
     this.broadcastPublicState()
     this.currentTurnSeat = p.seat
     this.justDrawnBy = pid
@@ -612,7 +664,11 @@ export class Room {
       canGangAdded: canGangAdded(hand, melds),
       canChi: [],
     }
-    if (!p.isBot && selfOpts.canHu) {
+    // 進牌後若可胡、暗槓、加槓 → 送 action_options 讓玩家選
+    const hasSelfOption = selfOpts.canHu
+      || selfOpts.canGangConcealed.length > 0
+      || selfOpts.canGangAdded.length > 0
+    if (!p.isBot && hasSelfOption) {
       this.sendTo(p.id, { type: 'action_options', options: selfOpts })
     }
 

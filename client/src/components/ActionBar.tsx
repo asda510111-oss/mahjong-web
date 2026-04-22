@@ -74,7 +74,7 @@ export default function ActionBar({ options, onAction }: Props) {
       {options.canHu && (
         <button className="act-btn hu" onClick={() => onAction('hu')}>胡</button>
       )}
-      {options.canGangExposed && (
+      {(options.canGangExposed || options.canGangConcealed.length > 0 || options.canGangAdded.length > 0) && (
         <button className="act-btn gang" onClick={() => onAction('gang')}>槓</button>
       )}
       {options.canPeng && (
