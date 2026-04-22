@@ -1354,6 +1354,21 @@ input:focus { border-color: var(--accent); }
 
 /* 聽牌預覽系統全部移除 */
 
+/* 第一張自家手牌上方：橘色長框 */
+.first-hand-frame {
+  position: fixed;
+  left: 0.25rem;        /* 對齊 .hand 的 padding */
+  bottom: 100px;        /* 緊貼手牌上方 */
+  width: 68px;          /* 與手牌 slot 同寬 */
+  height: 42px;
+  background: #ff8a00;
+  border: 2px solid #8b3a00;
+  border-radius: 6px;
+  z-index: 49;
+  pointer-events: none;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+}
+
 /* ===== Action buttons ===== */
 .action-bar {
   position: fixed;

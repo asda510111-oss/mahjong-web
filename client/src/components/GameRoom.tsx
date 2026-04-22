@@ -353,6 +353,8 @@ export default function GameRoom({
       {actionOptions && <ActionBar options={actionOptions} onAction={onAction} />}
 
 
+      {/* 第一張自家手牌上方的橘色長框 */}
+      <div className="first-hand-frame" aria-hidden="true" />
       {/* 固定底部手牌 */}
       <div className={`hand-fixed ${isMyTurn ? 'my-turn' : ''}`}>
         <div className="hand-hint">
