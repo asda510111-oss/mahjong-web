@@ -1233,22 +1233,22 @@ input:focus { border-color: var(--accent); }
   -webkit-overflow-scrolling: touch;
 }
 /* 倒數計時：放在手牌最右邊（剛摸牌的右側），顯示思考秒+基礎秒兩個數字 */
+/* 倒數秒數框：對齊下家副子區左上，最上圖層 */
+.table-wrapper { --timer-x: 411px; --timer-y: -200px; }
 .hand-timer-box {
   position: absolute;
-  right: 12px;
-  top: calc(50% - 150px); /* 上移 150px（3×50） */
-  transform: translateY(-50%);
+  left: calc(50% + var(--timer-x));
+  top: calc(50% - var(--timer-y));
+  transform: translate(0, 0);
   background: rgba(255, 255, 255, 0.95);
-  border: 3px solid #ffffff;
+  border: 3px solid #fff;
   border-radius: 0;
-  width: auto;
-  height: auto;
   padding: 12px 18px;
   display: flex;
   align-items: center;
   justify-content: center;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4), 0 0 0 2px rgba(0,0,0,0.5);
-  z-index: 2;
+  z-index: 999;
   box-sizing: border-box;
 }
 .turn-timer-stack {

@@ -301,6 +301,16 @@ export default function GameRoom({
             </div>
           ))}
         </div>
+        {/* 倒數秒數框（最上圖層，位於下家副子區附近） */}
+        {turnTimer && mySeat !== null && turnTimer.seat === mySeat && (
+          <div className="hand-timer-box">
+            <CountdownDisplay
+              thinkMs={turnTimer.thinkMs}
+              baseMs={turnTimer.baseMs}
+              startAt={turnTimer.startAt}
+            />
+          </div>
+        )}
         {/* 對家吃/碰/槓/花 副子區（鏡像邏輯） */}
         <div className="top-melds">
           {[
@@ -435,15 +445,6 @@ export default function GameRoom({
           )}
           {sortedHand.length === 0 && !drawnTile && <span className="muted">（尚未發牌）</span>}
         </div>
-        {turnTimer && mySeat !== null && turnTimer.seat === mySeat && (
-          <div className="hand-timer-box">
-            <CountdownDisplay
-              thinkMs={turnTimer.thinkMs}
-              baseMs={turnTimer.baseMs}
-              startAt={turnTimer.startAt}
-            />
-          </div>
-        )}
       </div>
     </div>
   )
