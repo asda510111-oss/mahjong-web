@@ -178,18 +178,17 @@ function SouGraphic({ rank }: { rank: number }) {
   // 八條：上半 反 M（^ peaks）、下半 M（v valleys），內側 2 根各傾斜
   if (rank === 8) {
     const tilt = 25
+    const XS = [18, 26, 34, 42] // 緊排（原 [13,25,37,49]）
     return (
       <g>
-        {/* 上半：外左直、內左 /（angle -tilt）、內右 \（+tilt）、外右直 */}
-        <Bamboo x={13} y={22} len={stickLen} width={stickWidth} />
-        <Bamboo x={25} y={22} len={stickLen} width={stickWidth} angle={-tilt} />
-        <Bamboo x={37} y={22} len={stickLen} width={stickWidth} angle={tilt} />
-        <Bamboo x={49} y={22} len={stickLen} width={stickWidth} />
-        {/* 下半：內側 2 根角度反向 */}
-        <Bamboo x={13} y={58} len={stickLen} width={stickWidth} />
-        <Bamboo x={25} y={58} len={stickLen} width={stickWidth} angle={tilt} />
-        <Bamboo x={37} y={58} len={stickLen} width={stickWidth} angle={-tilt} />
-        <Bamboo x={49} y={58} len={stickLen} width={stickWidth} />
+        <Bamboo x={XS[0]} y={22} len={stickLen} width={stickWidth} />
+        <Bamboo x={XS[1]} y={22} len={stickLen} width={stickWidth} angle={-tilt} />
+        <Bamboo x={XS[2]} y={22} len={stickLen} width={stickWidth} angle={tilt} />
+        <Bamboo x={XS[3]} y={22} len={stickLen} width={stickWidth} />
+        <Bamboo x={XS[0]} y={58} len={stickLen} width={stickWidth} />
+        <Bamboo x={XS[1]} y={58} len={stickLen} width={stickWidth} angle={tilt} />
+        <Bamboo x={XS[2]} y={58} len={stickLen} width={stickWidth} angle={-tilt} />
+        <Bamboo x={XS[3]} y={58} len={stickLen} width={stickWidth} />
       </g>
     )
   }
