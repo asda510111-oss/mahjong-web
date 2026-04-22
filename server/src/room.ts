@@ -789,15 +789,33 @@ export class Room {
       isDealer: winnerSeat === this.dealerSeat,
       consecutiveDealer: this.consecutiveDealer,
     })
-    // 連莊判斷：莊家贏（自摸或其他家放槍給莊家）→ 連莊
-    this.dealerKeepNext = winnerSeat === this.dealerSeat
+    // 連莊判斷：莊家贏 → 連莊；上限 10 次，連 10 後再胡也下莊
+    const dealerWins = winnerSeat === this.dealerSeat
+    this.dealerKeepNext = dealerWins && this.consecutiveDealer < 10
+
     // 計分：底 1 + 台 tai.total
     const pts = 1 + tai.total
+    // 莊家被胡時，要額外賠連莊台數（連 N 拉 N = 2N+1 台）給贏家
+    const dealerPenalty = (!dealerWins && this.consecutiveDealer > 0)
+      ? (2 * this.consecutiveDealer + 1)
+      : 0
+
     for (const p of this.players) {
       if (p.seat === winnerSeat) {
-        this.addScore(p.id, isZimo ? pts * 3 : pts)
+        // 贏家得分：基本分 + 若莊家不是贏家，莊家那份額外加連莊賠償
+        const base = isZimo ? pts * 3 : pts
+        const extra = dealerPenalty
+        this.addScore(p.id, base + extra)
       } else if (isZimo || p.seat === loserSeat) {
+        // 放炮者（或自摸時每家）扣基本分
         this.addScore(p.id, -pts)
+      }
+      // 莊家被胡（非贏家也非放炮者）→ 單獨扣連莊台
+      if (!dealerWins && p.seat === this.dealerSeat && p.seat !== winnerSeat && p.seat !== loserSeat) {
+        this.addScore(p.id, -dealerPenalty)
+      } else if (!dealerWins && p.seat === this.dealerSeat && p.seat === loserSeat) {
+        // 莊家自己放炮：基本分已扣，再扣連莊台
+        this.addScore(p.id, -dealerPenalty)
       }
     }
     this.broadcast({
