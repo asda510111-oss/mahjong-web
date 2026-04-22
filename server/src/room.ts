@@ -391,10 +391,15 @@ export class Room {
   private responseStartAt: Map<string, number> = new Map()
 
   private startResponseTimer(p: ServerPlayer) {
-    // 倒數計時暫停中：不啟動、不廣播、不自動 pass
     this.clearResponseTimer(p.id)
-    void this.handleResponseTimeout
-    return
+    const baseSec = this.playerBase.get(p.id) ?? 0
+    const baseMs = baseSec * 1000
+    const startAt = Date.now()
+    this.responseStartAt.set(p.id, startAt)
+    this.sendTo(p.id, { type: 'turn_timer', seat: p.seat, thinkMs: THINK_MS, baseMs, startAt })
+    const total = THINK_MS + baseMs
+    const timer = setTimeout(() => this.handleResponseTimeout(p.id), total)
+    this.responseTimerIds.set(p.id, timer)
   }
 
   private clearResponseTimer(pid: string) {
