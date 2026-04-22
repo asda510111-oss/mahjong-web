@@ -1277,8 +1277,15 @@ input:focus { border-color: var(--accent); }
   border-radius: 6px;
   font-weight: 900;
 }
-.turn-timer-row .turn-timer.base { background: #fff; color: #000; }
-.turn-timer-row .turn-timer.think { background: #ffd84a; color: #000; }
+.turn-timer-row .turn-timer.base {
+  background: #fff; color: #000;
+  transform: translate(-37px, -50px); /* 左移 37px + 上移 50px */
+}
+.turn-timer-row .turn-timer.think {
+  background: #ffd84a; color: #000;
+  transform: translate(37px, -50px); /* 右移 37px + 上移 50px */
+}
+.turn-timer-plus { transform: translateY(-50px); }
 .turn-timer-row .turn-timer.dim { opacity: 0.35; }
 .turn-timer-plus { color: #000; font-weight: 900; font-size: 3rem; line-height: 1; }
 .turn-timer-stack .turn-timer {
