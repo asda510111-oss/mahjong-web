@@ -157,12 +157,12 @@ export default function GameRoom({
   const getPlayer = (s: SeatIndex) => room.players.find(p => p.seat === s)
   const getPub = (s: SeatIndex) => publicStates.find(ps => ps.seat === s)
 
-  // 局數 + 連莊：圈風 × 4 + 局 (gameIndex 0-15)；連莊次數顯示於第三行
+  // 局數 + 連莊同一行：例「東1局 連1」
   const ROUND_WINDS = ['東', '南', '西', '北'] as const
   const roundIdx = Math.floor((gameIndex ?? 0) / 4) % 4
   const gameInRound = ((gameIndex ?? 0) % 4) + 1
-  const dealerLabel = `${ROUND_WINDS[roundIdx]}${gameInRound}局`
-  const lianZhuangLabel = (consecutiveDealer ?? 0) > 0 ? `連${consecutiveDealer}` : ''
+  const lianSuffix = (consecutiveDealer ?? 0) > 0 ? ` 連${consecutiveDealer}` : ''
+  const dealerLabel = `${ROUND_WINDS[roundIdx]}${gameInRound}局${lianSuffix}`
 
   const getScore = (seat: SeatIndex): number | null => {
     if (!roundScores) return null
@@ -346,7 +346,6 @@ export default function GameRoom({
         <div className="table-center-info">
           <div className="center-round">{dealerLabel}</div>
           <div className="center-wall-num">{`餘${String(wallRemaining).padStart(2, '0')}`}</div>
-          {lianZhuangLabel && <div className="center-lianzhuang">{lianZhuangLabel}</div>}
           <span className={`wind-corner wind-bl ${dealerSeat === 0 ? 'dealer' : ''}`}>東</span>
           <span className={`wind-corner wind-br ${dealerSeat === 1 ? 'dealer' : ''}`}>南</span>
           <span className={`wind-corner wind-tr ${dealerSeat === 2 ? 'dealer' : ''}`}>西</span>
