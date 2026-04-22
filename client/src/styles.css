@@ -1268,16 +1268,19 @@ input:focus { border-color: var(--accent); }
   font-weight: 800;
 }
 .turn-timer-row .turn-timer {
-  min-width: 16px;
+  min-width: 20px;
   text-align: center;
   font-size: 1.1rem;
   line-height: 1;
-  color: #111;
+  padding: 2px 4px;
+  border: 2px solid #000;
+  border-radius: 4px;
+  font-weight: 900;
 }
-.turn-timer-row .turn-timer.base { color: #0066cc; }
-.turn-timer-row .turn-timer.think { color: #d17100; }
-.turn-timer-row .turn-timer.dim { opacity: 0.3; }
-.turn-timer-plus { color: #444; font-weight: 700; }
+.turn-timer-row .turn-timer.base { background: #fff; color: #000; }
+.turn-timer-row .turn-timer.think { background: #ffd84a; color: #000; }
+.turn-timer-row .turn-timer.dim { opacity: 0.35; }
+.turn-timer-plus { color: #000; font-weight: 900; font-size: 1rem; }
 .turn-timer-stack .turn-timer {
   position: static;
   min-width: 28px;
