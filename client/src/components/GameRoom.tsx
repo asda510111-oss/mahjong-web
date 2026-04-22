@@ -8,7 +8,6 @@ import type { RoomState, SeatIndex, PublicPlayerState, ActionOptions } from '../
 import { SEAT_LABELS } from '../game/types'
 import type { TileId } from '../game/tiles'
 import { sortHand } from '../game/tiles'
-import { getTingTiles } from '../game/rules'
 import type { DiscardMap } from '../App'
 import catAvatar from '../assets/avatars/cat.svg'
 import pandaAvatar from '../assets/avatars/panda.svg'
@@ -114,42 +113,9 @@ export default function GameRoom({
     }
   }
 
-  // 聽牌預覽：
-  //  - 若已選某張（模擬打出後）→ 計算那情境的聽牌
-  //  - 否則若手牌本身就是聽牌狀態（16 張）→ 直接顯示聽哪些
+  // 聽牌預覽系統已全部移除
   const myPub = publicStates.find(ps => ps.seat === mySeat)
-  const myMeldCount = (myPub?.melds ?? []).filter(m => m.type !== 'flower').length
-  let tingTiles: TileId[] = []
-  let tingLabel = '聽'
-  if (selectedTileId) {
-    const remaining = [...myHand]
-    const idx = remaining.indexOf(selectedTileId)
-    if (idx >= 0) remaining.splice(idx, 1)
-    tingTiles = getTingTiles(remaining, myMeldCount)
-    if (tingTiles.length > 0) tingLabel = '打出後聽'
-  } else if (myHand.length > 0) {
-    const expected = (5 - myMeldCount) * 3 + 1
-    if (myHand.length === expected) {
-      tingTiles = getTingTiles(myHand, myMeldCount)
-      tingLabel = '聽'
-    }
-  }
-  const isTenpai = tingTiles.length > 0
 
-  const countRemainingTile = (tile: TileId): number => {
-    let seen = 0
-    for (const t of myHand) if (t === tile) seen++
-    if (selectedTileId && tile === selectedTileId) seen--
-    for (const s of [0, 1, 2, 3] as const) {
-      for (const t of (discards[s] ?? [])) if (t === tile) seen++
-    }
-    for (const pub of publicStates) {
-      for (const m of pub.melds) {
-        for (const t of m.tiles) if (t === tile) seen++
-      }
-    }
-    return Math.max(0, 4 - seen)
-  }
   const inGame = room.phase === 'playing' || room.phase === 'ended'
 
   // 依我的座位計算其他三家相對位置（逆時針：下家=右、對家=上、上家=左）
@@ -386,23 +352,6 @@ export default function GameRoom({
       {/* 動作按鈕 */}
       {actionOptions && <ActionBar options={actionOptions} onAction={onAction} />}
 
-      {/* 聽牌預覽 */}
-      {isTenpai && !actionOptions && (
-        <div className="ting-preview">
-          <span className="ting-label">{tingLabel}</span>
-          <span className="ting-tiles">
-            {tingTiles.map((t, i) => {
-              const remain = countRemainingTile(t)
-              return (
-                <span key={`${t}-${i}`} className={`ting-tile ${remain === 0 ? 'dead' : ''}`}>
-                  <Tile id={t} disabled />
-                  <span className="ting-count">{remain}</span>
-                </span>
-              )
-            })}
-          </span>
-        </div>
-      )}
 
       {/* 固定底部手牌 */}
       <div className={`hand-fixed ${isMyTurn ? 'my-turn' : ''}`}>
