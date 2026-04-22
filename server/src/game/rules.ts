@@ -263,9 +263,10 @@ export function calculateTai(ctx: TaiContext): TaiResult {
     if (ok && pairCount === 1) items.push({ name: '碰碰胡', tai: 4 })
   }
 
-  // 連莊
+  // 連莊：連 N = 2N + 1 台（連1=3、連2=5、連3=7…）
   if (isDealer && consecutiveDealer > 0) {
-    items.push({ name: `連${consecutiveDealer}`, tai: consecutiveDealer })
+    const lianTai = 2 * consecutiveDealer + 1
+    items.push({ name: `連${consecutiveDealer}`, tai: lianTai })
   }
 
   return { total: items.reduce((s, i) => s + i.tai, 0), items }
