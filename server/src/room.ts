@@ -844,13 +844,26 @@ export class Room {
     const isZimo = loserSeat === undefined
     if (!isZimo && !hand.includes(winTile)) hand.push(winTile)
     const melds = this.melds.get(winner.id) ?? []
-    // 天地人胡判定（依棄牌總數）
+    // 天地人胡判定
     const totalDiscards = (this.discards[0].length + this.discards[1].length
       + this.discards[2].length + this.discards[3].length)
     const isDealer = winnerSeat === this.dealerSeat
+    // 是否尚無任何吃/碰/槓（花牌副子除外）→ 確保「第一巡」
+    const noExposedMelds = this.players.every(pp => {
+      const ms = this.melds.get(pp.id) ?? []
+      return ms.every(m => m.type === 'flower')
+    })
     const isTianHu = isZimo && isDealer && totalDiscards === 0
-    const isDiHu = isZimo && !isDealer && totalDiscards === 0
-    const isRenHu = !isZimo && !isDealer && loserSeat === this.dealerSeat && totalDiscards === 1
+    // 地胡：閒家自摸、自己從未打過牌、無人吃碰槓
+    const isDiHu = isZimo && !isDealer
+      && (this.discards[winnerSeat]?.length ?? 0) === 0
+      && noExposedMelds
+    // 人胡：閒家放槍胡莊、莊家只打出 1 張、無人吃碰槓
+    const isRenHu = !isZimo && !isDealer
+      && loserSeat === this.dealerSeat
+      && (this.discards[this.dealerSeat]?.length ?? 0) === 1
+      && totalDiscards === 1
+      && noExposedMelds
     // 槓上自摸：自摸 + 剛剛補槓牌
     const isGangShangZimo = isZimo && this.lastDrawWasGang
     // 海底撈月：自摸 + 剛摸完就沒牌了（wall 空）
