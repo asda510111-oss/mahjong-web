@@ -311,17 +311,17 @@ export function calculateTai(ctx: TaiContext): TaiResult {
   if (isQiangGang) items.push({ name: '搶槓胡', tai: 1 })
   if (isHaiDi) items.push({ name: '海底撈月', tai: 1 })
 
-  // 平胡：所有非花副子皆為順子 + 雀頭非字牌 + 非自摸
-  const allChi = nonFlowerMelds.length > 0 && nonFlowerMelds.every(m => m.type === 'chi')
+  // 平胡：所有面子皆為順子（含門清）+ 雀頭非字 + 非自摸 + 手牌無刻子
+  const allChi = nonFlowerMelds.every(m => m.type === 'chi')
   if (allChi && !isZimo) {
-    // 找雀頭（手牌去掉 winTile 後應該形成 順子 + 對子；偵測對子是否 z 開頭）
     const handCounts = countTiles(hand)
     let pairTile: TileId | null = null
+    let hasTriplet = false
     for (const [t, c] of handCounts) {
-      if (c === 2) { pairTile = t; break }
+      if (c >= 3) hasTriplet = true
+      if (c === 2) pairTile = t
     }
-    // 雀頭非字
-    if (pairTile && !String(pairTile).startsWith('z')) {
+    if (!hasTriplet && pairTile && !String(pairTile).startsWith('z')) {
       items.push({ name: '平胡', tai: 1 })
     }
   }
