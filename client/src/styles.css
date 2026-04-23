@@ -350,6 +350,7 @@ input:focus { border-color: var(--accent); }
 }
 /* 反向旋轉頭像與名字，維持正面朝玩家 */
 .table-seat .seat-card {
+  display: none !important; /* 四家頭像區暫時隱藏 */
   transform: rotateX(-42deg);
   transform-origin: center;
 }
