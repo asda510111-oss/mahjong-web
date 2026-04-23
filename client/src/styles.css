@@ -385,7 +385,7 @@ input:focus { border-color: var(--accent); }
   background: transparent;
   z-index: 2;
   /* 整個 box 往左+上平移自身一半 / 全寬，使其「右中」正好貼在 (--left-backs-x, --left-backs-y)，再圍繞右中旋轉 */
-  transform: translate(-100%, -50%) rotate(-100deg); /* 再逆時針 3° */
+  transform: translate(-100%, -50%) rotate(-98deg); /* 順時針 2° */
   transform-origin: right center;
 }
 
@@ -887,7 +887,7 @@ input:focus { border-color: var(--accent); }
 }
 
 /* ===== 上家副子區（旋轉 -90°） ===== */
-.table-wrapper { --left-melds-x: -300px; --left-melds-y: 150px; } /* 上移 150px（3×50） */
+.table-wrapper { --left-melds-x: -344px; --left-melds-y: 150px; } /* 左移 44px（1×44） */
 .left-melds {
   position: absolute;
   left: calc(50% + var(--left-melds-x));
