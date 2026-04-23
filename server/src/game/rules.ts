@@ -173,6 +173,7 @@ export interface TaiContext {
   isRenHu?: boolean         // 人胡：閒家第一巡胡到莊家打的牌
   isGangShangZimo?: boolean // 槓上自摸
   isQiangGang?: boolean     // 搶槓胡
+  isHaiDi?: boolean         // 海底撈月（最後一張牌自摸）
 }
 
 export interface TaiItem { name: string; tai: number }
@@ -182,7 +183,7 @@ export function calculateTai(ctx: TaiContext): TaiResult {
   const items: TaiItem[] = []
   const { hand, melds, isZimo, winTile, seatWind, roundWind = 0, isDealer, consecutiveDealer,
     isTianHu = false, isDiHu = false, isRenHu = false,
-    isGangShangZimo = false, isQiangGang = false } = ctx
+    isGangShangZimo = false, isQiangGang = false, isHaiDi = false } = ctx
   const nonFlowerMelds = melds.filter(m => m.type !== 'flower')
   const flowerMelds = melds.filter(m => m.type === 'flower')
 
@@ -305,9 +306,39 @@ export function calculateTai(ctx: TaiContext): TaiResult {
   else if (isDiHu) items.push({ name: '地胡', tai: 8 })
   else if (isRenHu) items.push({ name: '人胡', tai: 8 })
 
-  // 槓上自摸 / 搶槓胡
+  // 槓上自摸 / 搶槓胡 / 海底撈月
   if (isGangShangZimo) items.push({ name: '槓上自摸', tai: 1 })
   if (isQiangGang) items.push({ name: '搶槓胡', tai: 1 })
+  if (isHaiDi) items.push({ name: '海底撈月', tai: 1 })
+
+  // 平胡：所有非花副子皆為順子 + 雀頭非字牌 + 非自摸
+  const allChi = nonFlowerMelds.length > 0 && nonFlowerMelds.every(m => m.type === 'chi')
+  if (allChi && !isZimo) {
+    // 找雀頭（手牌去掉 winTile 後應該形成 順子 + 對子；偵測對子是否 z 開頭）
+    const handCounts = countTiles(hand)
+    let pairTile: TileId | null = null
+    for (const [t, c] of handCounts) {
+      if (c === 2) { pairTile = t; break }
+    }
+    // 雀頭非字
+    if (pairTile && !String(pairTile).startsWith('z')) {
+      items.push({ name: '平胡', tai: 1 })
+    }
+  }
+
+  // 暗刻計算：hand 中 3+ 張同牌 + gang_concealed
+  // 放槍時，若 winTile 剛好組成三張，該組算明刻；自摸則所有皆算暗刻
+  const handCountsForAn = countTiles(hand)
+  let anKeCount = nonFlowerMelds.filter(m => m.type === 'gang_concealed').length
+  for (const [t, c] of handCountsForAn) {
+    if (c >= 3) {
+      if (!isZimo && t === winTile && c === 3) continue // 放槍單吊進刻 → 明刻
+      anKeCount++
+    }
+  }
+  if (anKeCount === 5) items.push({ name: '五暗刻', tai: 8 })
+  else if (anKeCount === 4) items.push({ name: '四暗刻', tai: 5 })
+  else if (anKeCount === 3) items.push({ name: '三暗刻', tai: 2 })
 
   // 做莊 +1 台
   if (isDealer) {

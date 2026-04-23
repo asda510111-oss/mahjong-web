@@ -853,6 +853,8 @@ export class Room {
     const isRenHu = !isZimo && !isDealer && loserSeat === this.dealerSeat && totalDiscards === 1
     // 槓上自摸：自摸 + 剛剛補槓牌
     const isGangShangZimo = isZimo && this.lastDrawWasGang
+    // 海底撈月：自摸 + 剛摸完就沒牌了（wall 空）
+    const isHaiDi = isZimo && this.wall.length === 0
     const tai = calculateTai({
       hand,
       melds,
@@ -867,6 +869,7 @@ export class Room {
       isRenHu,
       isGangShangZimo,
       isQiangGang: this.isQiangGangInProgress,
+      isHaiDi,
     })
     // 連莊判斷：莊家贏 → 連莊；上限 10 次，連 10 後再胡也下莊
     const dealerWins = winnerSeat === this.dealerSeat
