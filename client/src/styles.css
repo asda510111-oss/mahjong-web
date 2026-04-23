@@ -974,7 +974,7 @@ input:focus { border-color: var(--accent); }
 }
 
 /* ===== 下家副子區：定錨點=藍框左下 ===== */
-.table-wrapper { --right-melds-x: 448px; --right-melds-y: -200px; } /* 再右移 37px（1×37） */
+.table-wrapper { --right-melds-x: 492px; --right-melds-y: -200px; } /* 再右移 44px（1×44） */
 .right-melds {
   position: absolute;
   left: calc(50% + var(--right-melds-x));
