@@ -1413,12 +1413,12 @@ input:focus { border-color: var(--accent); }
 .ting-preview-zone {
   position: fixed;
   left: 12px;
-  bottom: 136px; /* 再上移 24px（0.4×60） */
+  bottom: 136px;
+  z-index: 99999;  /* 蓋過所有元素（含頭像 9999） */
   min-width: 68px;
   background: #000;
   border: 2px solid #f5c842;
   border-radius: 6px;
-  z-index: 49;
   pointer-events: none;
   box-shadow: 0 2px 6px rgba(0,0,0,0.6);
   padding: 4px 6px;
