@@ -302,7 +302,7 @@ input:focus { border-color: var(--accent); }
 .table-wrapper::before {
   top: 0;
   left: 150px;
-  right: 180px;
+  right: 170px; /* 右邊再延 10px */
   clip-path: polygon(0 0, 100% 0, calc(100% - 22px) 100%, 22px 100%);
 }
 .table-wrapper::after {
@@ -349,8 +349,8 @@ input:focus { border-color: var(--accent); }
 /* 右側木框調整與下家手牌綠框長軸平行（下家 rotate(94deg) 等同偏離垂直 4°） */
 .wood-right {
   right: 167px;
-  top: 0;
-  bottom: 0;
+  top: -10px;     /* 向上延 10 */
+  bottom: -10px;  /* 向下延 10 */
   transform: rotate(-19deg);
   transform-origin: top right;
   clip-path: polygon(0 22px, 100% 0, 100% 100%, 0 calc(100% - 22px));
