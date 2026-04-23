@@ -291,8 +291,9 @@ export class Room {
         this.melds.get(p.id)!.push(meld)
         this.broadcast({ type: 'meld_formed', seat: p.seat, meld })
         this.broadcast({ type: 'action_taken', seat: p.seat, action: 'gang' })
-        const replacement = this.drawFromTail(p.id)
+        // 先送不含補牌的 hand_update，再 drawFromTail 補牌，最後 tile_drawn 讓 client 加牌（避免重複）
         this.sendTo(p.id, { type: 'hand_update', hand })
+        const replacement = this.drawFromTail(p.id)
         if (replacement) this.sendTo(p.id, { type: 'tile_drawn', seat: p.seat, tile: replacement })
         this.broadcastPublicState()
         this.justDrawnBy = p.id
@@ -557,8 +558,8 @@ export class Room {
       this.broadcast({ type: 'meld_formed', seat: p.seat, meld: melds[pengIdx] })
     }
     this.broadcast({ type: 'action_taken', seat: p.seat, action: 'gang' })
-    const replacement = this.drawFromTail(p.id)
     this.sendTo(p.id, { type: 'hand_update', hand })
+    const replacement = this.drawFromTail(p.id)
     if (replacement) this.sendTo(p.id, { type: 'tile_drawn', seat: p.seat, tile: replacement })
     this.broadcastPublicState()
     this.justDrawnBy = p.id
@@ -609,9 +610,9 @@ export class Room {
     this.melds.get(pid)!.push(meld)
     this.broadcast({ type: 'meld_formed', seat: p.seat, meld })
     this.broadcast({ type: 'action_taken', seat: p.seat, action: 'gang' })
-    // 從牌尾補摸 + 補花
-    const replacement = this.drawFromTail(pid)
+    // 先送 hand_update（無補牌），再 drawFromTail 補牌，最後 tile_drawn
     this.sendTo(pid, { type: 'hand_update', hand })
+    const replacement = this.drawFromTail(pid)
     if (replacement) this.sendTo(pid, { type: 'tile_drawn', seat: p.seat, tile: replacement })
     this.broadcastPublicState()
     this.currentTurnSeat = p.seat
