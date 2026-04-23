@@ -461,7 +461,7 @@ input:focus { border-color: var(--accent); }
   padding: 4px;
 }
 .table-seat.pos-right .seat-backs {
-  right: -535px; /* 再往右 19px（0.5×37） */
+  right: -623px; /* 再往右 88px（2×44） */
   transform: translateY(-50%) rotate(94deg); /* 再順時針 4° */
   transform-origin: center;
 }
