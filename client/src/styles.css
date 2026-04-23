@@ -350,9 +350,32 @@ input:focus { border-color: var(--accent); }
 }
 /* 反向旋轉頭像與名字，維持正面朝玩家 */
 .table-seat .seat-card {
-  display: none !important; /* 四家頭像區暫時隱藏 */
+  display: flex !important;
+  position: absolute;
+  z-index: 9999;
+  background: transparent;
+  border: 2px solid #87ceeb;  /* 淡藍色方框 */
+  border-radius: 0;            /* 方框不圓角 */
+  padding: 4px;
   transform: rotateX(-42deg);
   transform-origin: center;
+}
+/* 每家頭像移到該家棄牌區位置 */
+.table-seat.pos-bottom .seat-card {
+  left: calc(50% + var(--cd-bot-x, -110px));
+  top: calc(50% - var(--cd-bot-y, 115px));
+}
+.table-seat.pos-top .seat-card {
+  right: calc(50% - var(--cd-top-x, 123px));
+  bottom: calc(50% + var(--cd-top-y, 357px));
+}
+.table-seat.pos-left .seat-card {
+  left: calc(50% + var(--cd-left-x, -118px));
+  top: calc(50% - var(--cd-left-y, 355px));
+}
+.table-seat.pos-right .seat-card {
+  left: calc(50% + var(--cd-right-x, 116px));
+  top: calc(50% - var(--cd-right-y, 105px));
 }
 
 /* ===== 各家牌牆：直立牌橫向並排後旋轉成對角線 =====
