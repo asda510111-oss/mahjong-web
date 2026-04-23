@@ -385,13 +385,13 @@ input:focus { border-color: var(--accent); }
 .table-seat .seat-card .seat-sub { display: none; } /* 副資訊隱藏，只留 ID */
 /* 每家頭像移到該家棄牌區位置 + 自訂偏移（4 張棄牌） */
 .table-seat.pos-bottom .seat-card {
-  left: calc(50% + var(--cd-bot-x, -110px) - 352px);  /* 左移累計 8×44 */
+  left: calc(50% + var(--cd-bot-x, -110px) - 440px);  /* 再左移 2×44，累計 10×44 */
   top: calc(50% - var(--cd-bot-y, 115px));
 }
 .table-seat.pos-top .seat-card {
   right: calc(50% - var(--cd-top-x, 123px));
-  bottom: calc(50% + var(--cd-top-y, 357px) + 180px); /* 再上移 1×60，淨上 180 */
-  transform: rotateX(-42deg) scale(1.5);              /* 對家放大 1.5 倍 */
+  bottom: calc(50% + var(--cd-top-y, 357px) + 168px); /* 再下移 0.2×60，淨上 168 */
+  transform: rotateX(-42deg) scale(1.5);
 }
 .table-seat.pos-left .seat-card {
   left: calc(50% + var(--cd-left-x, -118px) - 308px); /* 再左移 1×44，累計 7×44 */
@@ -399,7 +399,7 @@ input:focus { border-color: var(--accent); }
 }
 .table-seat.pos-right .seat-card {
   left: calc(50% + var(--cd-right-x, 116px) + 176px);
-  top: calc(50% - var(--cd-right-y, 105px));
+  top: calc(50% - var(--cd-right-y, 105px) + 12px);   /* 下移 0.2×60 */
 }
 
 /* ===== 各家牌牆：直立牌橫向並排後旋轉成對角線 =====
