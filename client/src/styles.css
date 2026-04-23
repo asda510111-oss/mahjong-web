@@ -183,11 +183,11 @@ input:focus { border-color: var(--accent); }
 }
 .lobby-seat.empty { opacity: 0.5; }
 .avatar {
-  font-size: 2rem;
+  font-size: 4rem;
   background: radial-gradient(circle at 35% 30%, rgba(255,255,255,0.25), rgba(255,255,255,0.05));
   border-radius: 50%;
-  width: 52px;
-  height: 52px;
+  width: 104px;
+  height: 104px;
   display: flex;
   align-items: center;
   justify-content: center;
