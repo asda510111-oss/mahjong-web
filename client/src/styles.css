@@ -462,7 +462,7 @@ input:focus { border-color: var(--accent); }
 }
 .table-seat.pos-right .seat-backs {
   right: -623px; /* 再往右 88px（2×44） */
-  transform: translateY(-50%) rotate(94deg); /* 再順時針 4° */
+  transform: translateY(-50%) rotate(99deg); /* 再順時針 5° */
   transform-origin: center;
 }
 /* 對家牌背 */
