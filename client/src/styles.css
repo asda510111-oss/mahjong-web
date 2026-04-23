@@ -390,7 +390,7 @@ input:focus { border-color: var(--accent); }
 }
 .table-seat.pos-top .seat-card {
   right: calc(50% - var(--cd-top-x, 123px));
-  bottom: calc(50% + var(--cd-top-y, 357px) + 300px); /* 再上移 2.2×60，淨上 300 */
+  bottom: calc(50% + var(--cd-top-y, 357px) + 420px); /* 再上移 2×60，淨上 420 */
   transform: rotateX(-42deg) scale(1.5);
 }
 .table-seat.pos-left .seat-card {
