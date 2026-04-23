@@ -299,7 +299,8 @@ input:focus { border-color: var(--accent); }
   border-radius: 3px;
 }
 .table-wrapper::before { top: 0; }
-.table-wrapper::after { bottom: 0; }
+/* 下木框向兩側延伸 */
+.table-wrapper::after { bottom: 0; left: -200px; right: -200px; }
 
 /* 左右木頭桌緣（用 DOM 元素，pseudo 只有兩個不夠） */
 .wood-edge {
@@ -336,7 +337,9 @@ input:focus { border-color: var(--accent); }
 }
 /* 右側木框調整與下家手牌綠框長軸平行（下家 rotate(94deg) 等同偏離垂直 4°） */
 .wood-right {
-  right: 167px; /* 再左移 19px（0.5×37） */
+  right: 167px;
+  top: -200px;         /* 向上延伸 */
+  bottom: -200px;      /* 向下延伸 */
   transform: rotate(-19deg);
   transform-origin: top right;
 }
