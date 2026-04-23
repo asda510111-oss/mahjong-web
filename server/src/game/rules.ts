@@ -168,6 +168,9 @@ export interface TaiContext {
   roundWind?: number        // 圈風 0=東 1=南 2=西 3=北（預設東圈）
   isDealer: boolean
   consecutiveDealer: number // 連莊次數
+  isTianHu?: boolean        // 天胡：莊家發牌就胡
+  isDiHu?: boolean          // 地胡：閒家第一巡自摸
+  isRenHu?: boolean         // 人胡：閒家第一巡胡到莊家打的牌
 }
 
 export interface TaiItem { name: string; tai: number }
@@ -175,7 +178,8 @@ export interface TaiResult { total: number; items: TaiItem[] }
 
 export function calculateTai(ctx: TaiContext): TaiResult {
   const items: TaiItem[] = []
-  const { hand, melds, isZimo, seatWind, roundWind = 0, isDealer, consecutiveDealer } = ctx
+  const { hand, melds, isZimo, winTile, seatWind, roundWind = 0, isDealer, consecutiveDealer,
+    isTianHu = false, isDiHu = false, isRenHu = false } = ctx
   const nonFlowerMelds = melds.filter(m => m.type !== 'flower')
   const flowerMelds = melds.filter(m => m.type === 'flower')
 
@@ -195,6 +199,18 @@ export function calculateTai(ctx: TaiContext): TaiResult {
     if (m.tiles[0] === seasonFlower || m.tiles[0] === plantFlower) zhengHua++
   }
   if (zhengHua > 0) items.push({ name: `正花 ×${zhengHua}`, tai: zhengHua })
+
+  // 花槓：4 張季節花（f1-f4）或 4 張植物花（f5-f8）各 +2
+  const seasonCount = flowerMelds.filter(m => {
+    const t = m.tiles[0]
+    return t === 'f1' || t === 'f2' || t === 'f3' || t === 'f4'
+  }).length
+  const plantCount = flowerMelds.filter(m => {
+    const t = m.tiles[0]
+    return t === 'f5' || t === 'f6' || t === 'f7' || t === 'f8'
+  }).length
+  if (seasonCount >= 4) items.push({ name: '花槓(季節)', tai: 2 })
+  if (plantCount >= 4) items.push({ name: '花槓(植物)', tai: 2 })
 
   // 全部手+副子的牌（不含花）
   const allTiles: TileId[] = [...hand]
@@ -262,6 +278,29 @@ export function calculateTai(ctx: TaiContext): TaiResult {
     }
     if (ok && pairCount === 1) items.push({ name: '碰碰胡', tai: 4 })
   }
+
+  // 全求人：所有非花副子皆為吃/碰/明槓（非暗槓），放槍胡，且手牌剩 winTile + 1 張對子
+  const allExposed = nonFlowerMelds.length > 0 && nonFlowerMelds.every(
+    m => m.type === 'chi' || m.type === 'peng' || m.type === 'gang_exposed'
+  )
+  const handWithoutWin = [...hand]
+  const wIdx = handWithoutWin.indexOf(winTile)
+  if (wIdx >= 0) handWithoutWin.splice(wIdx, 1)
+  const isSingleWait = handWithoutWin.length === 1 && handWithoutWin[0] === winTile
+  if (allExposed && !isZimo && isSingleWait) {
+    items.push({ name: '全求人', tai: 1 })
+  }
+
+  // 獨聽：去掉 winTile 後計算聽牌數，若只有 1 張 = 獨聽
+  const tingAfterRemove = getTingTiles(handWithoutWin, nonFlowerMelds.length)
+  if (tingAfterRemove.length === 1) {
+    items.push({ name: '獨聽', tai: 1 })
+  }
+
+  // 天地人胡（互斥）
+  if (isTianHu) items.push({ name: '天胡', tai: 8 })
+  else if (isDiHu) items.push({ name: '地胡', tai: 8 })
+  else if (isRenHu) items.push({ name: '人胡', tai: 8 })
 
   // 做莊 +1 台
   if (isDealer) {

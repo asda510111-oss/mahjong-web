@@ -779,6 +779,13 @@ export class Room {
     const isZimo = loserSeat === undefined
     if (!isZimo && !hand.includes(winTile)) hand.push(winTile)
     const melds = this.melds.get(winner.id) ?? []
+    // 天地人胡判定（依棄牌總數）
+    const totalDiscards = (this.discards[0].length + this.discards[1].length
+      + this.discards[2].length + this.discards[3].length)
+    const isDealer = winnerSeat === this.dealerSeat
+    const isTianHu = isZimo && isDealer && totalDiscards === 0
+    const isDiHu = isZimo && !isDealer && totalDiscards === 0
+    const isRenHu = !isZimo && !isDealer && loserSeat === this.dealerSeat && totalDiscards === 1
     const tai = calculateTai({
       hand,
       melds,
@@ -786,8 +793,11 @@ export class Room {
       winTile,
       seatWind: winnerSeat,
       roundWind: Math.floor(this.gameIndex / 4) % 4,
-      isDealer: winnerSeat === this.dealerSeat,
+      isDealer,
       consecutiveDealer: this.consecutiveDealer,
+      isTianHu,
+      isDiHu,
+      isRenHu,
     })
     // 連莊判斷：莊家贏 → 連莊；上限 10 次，連 10 後再胡也下莊
     const dealerWins = winnerSeat === this.dealerSeat
