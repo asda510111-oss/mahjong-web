@@ -301,8 +301,8 @@ input:focus { border-color: var(--accent); }
 /* 上木框：左右兩端 45° 斜切 + 長軸各縮 50px */
 .table-wrapper::before {
   top: 0;
-  left: 130px;
-  right: 130px;
+  left: 150px;
+  right: 180px;
   clip-path: polygon(0 0, 100% 0, calc(100% - 22px) 100%, 22px 100%);
 }
 .table-wrapper::after {
