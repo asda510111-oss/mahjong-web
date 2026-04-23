@@ -945,7 +945,7 @@ input:focus { border-color: var(--accent); }
 }
 
 /* ===== 上家副子區（旋轉 -90°） ===== */
-.table-wrapper { --left-melds-x: -344px; --left-melds-y: 150px; } /* 左移 44px（1×44） */
+.table-wrapper { --left-melds-x: -344px; --left-melds-y: 210px; } /* 再上移 60px（1×60） */
 .left-melds {
   position: absolute;
   left: calc(50% + var(--left-melds-x));
