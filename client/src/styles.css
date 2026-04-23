@@ -374,7 +374,7 @@ input:focus { border-color: var(--accent); }
   position: absolute;
   z-index: 9999;
   background: transparent;
-  border: 2px solid #87ceeb;
+  border: 2px solid transparent;
   border-radius: 0;
   padding: 4px;
   transform: rotateX(-42deg);
@@ -1029,9 +1029,9 @@ input:focus { border-color: var(--accent); }
   grid-auto-flow: row;
   gap: 2px;
   z-index: 3;
-  border: 3px solid #000;
+  border: 3px solid transparent;
   border-radius: 4px;
-  background: rgba(0, 0, 0, 0.15);
+  background: transparent;
   padding: 4px;
 }
 .cd-bot .tile {
@@ -1053,9 +1053,9 @@ input:focus { border-color: var(--accent); }
   grid-auto-flow: row;
   gap: 2px;
   z-index: 3;
-  border: 3px solid #000;
+  border: 3px solid transparent;
   border-radius: 4px;
-  background: rgba(0, 0, 0, 0.15);
+  background: transparent;
   padding: 4px;
   /* 旋轉 180° 讓牌面朝對家，且填入順序自然反向（右→左、下→上） */
   transform: rotate(180deg);
@@ -1079,9 +1079,9 @@ input:focus { border-color: var(--accent); }
   grid-auto-flow: row;
   gap: 2px;
   z-index: 3;
-  border: 3px solid #000;
+  border: 3px solid transparent;
   border-radius: 4px;
-  background: rgba(0, 0, 0, 0.15);
+  background: transparent;
   padding: 4px;
   /* 整體逆時針旋轉 90° */
   transform: rotate(-90deg);
@@ -1105,9 +1105,9 @@ input:focus { border-color: var(--accent); }
   grid-auto-flow: row;
   gap: 2px;
   z-index: 3;
-  border: 3px solid #000;
+  border: 3px solid transparent;
   border-radius: 4px;
-  background: rgba(0, 0, 0, 0.15);
+  background: transparent;
   padding: 4px;
   /* 整體逆時針旋轉 270° */
   transform: rotate(-270deg);
