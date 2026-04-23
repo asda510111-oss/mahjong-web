@@ -350,8 +350,8 @@ input:focus { border-color: var(--accent); }
 /* 右側木框調整與下家手牌綠框長軸平行（下家 rotate(94deg) 等同偏離垂直 4°） */
 .wood-right {
   right: 167px;
-  top: -10px;     /* 向上延 10 */
-  bottom: -10px;  /* 向下延 10 */
+  top: -5px;      /* 再縮 5，累計 -5 */
+  bottom: -20px;  /* 再延 10，累計 -20 */
   transform: rotate(-19deg);
   transform-origin: top right;
   clip-path: polygon(0 13px, 100% 0, 100% 100%, 0 calc(100% - 22px)); /* 上角 30° */
