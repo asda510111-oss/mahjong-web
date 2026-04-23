@@ -307,6 +307,7 @@ input:focus { border-color: var(--accent); }
 }
 .table-wrapper::after {
   bottom: 0;
+  right: -20px;  /* 右邊延 20 */
   clip-path: polygon(22px 0, calc(100% - 22px) 0, 100% 100%, 0 100%);
 }
 
