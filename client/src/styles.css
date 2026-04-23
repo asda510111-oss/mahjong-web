@@ -183,11 +183,11 @@ input:focus { border-color: var(--accent); }
 }
 .lobby-seat.empty { opacity: 0.5; }
 .avatar {
-  font-size: 2.6rem;
+  font-size: 6rem;
   background: radial-gradient(circle at 35% 30%, rgba(255,255,255,0.25), rgba(255,255,255,0.05));
   border-radius: 50%;
-  width: 69px;     /* 208/3 */
-  height: 69px;
+  width: 156px;    /* 52 × 3 */
+  height: 156px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -369,12 +369,12 @@ input:focus { border-color: var(--accent); }
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: 4px;
+  gap: 8px;
   white-space: nowrap;
-  font-size: 1rem;
+  font-size: 2rem;
   line-height: 1;
 }
-.table-seat .seat-card .seat-name { font-size: 1rem; font-weight: 700; }
+.table-seat .seat-card .seat-name { font-size: 2rem; font-weight: 700; }
 .table-seat .seat-card .seat-sub { display: none; } /* 副資訊隱藏，只留 ID */
 /* 每家頭像移到該家棄牌區位置 */
 .table-seat.pos-bottom .seat-card {
