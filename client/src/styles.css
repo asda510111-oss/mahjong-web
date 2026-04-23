@@ -307,7 +307,7 @@ input:focus { border-color: var(--accent); }
 }
 .table-wrapper::after {
   bottom: 0;
-  right: -20px;  /* 右邊延 20 */
+  right: -40px;  /* 再延 20，累計 -40 */
   clip-path: polygon(22px 0, calc(100% - 22px) 0, 100% 100%, 0 100%);
 }
 
@@ -354,7 +354,7 @@ input:focus { border-color: var(--accent); }
   bottom: -10px;  /* 向下延 10 */
   transform: rotate(-19deg);
   transform-origin: top right;
-  clip-path: polygon(0 18px, 100% 0, 100% 100%, 0 calc(100% - 22px)); /* 上角 40° */
+  clip-path: polygon(0 13px, 100% 0, 100% 100%, 0 calc(100% - 22px)); /* 上角 30° */
 }
 .table-wrapper .table-grid {
   position: relative;
