@@ -824,7 +824,8 @@ input:focus { border-color: var(--accent); }
 .wind-corner.wind-tr { top: 40px !important;    right: 40px !important; bottom: auto !important; left: auto !important; transform: rotate(-180deg) !important; }
 .wind-corner.wind-tl { top: 40px !important;     left: 40px !important; bottom: auto !important; right: auto !important; transform: rotate(-270deg) !important; }
 /* ===== 除錯用座標刻度 ===== */
-.debug-ruler {
+.debug-ruler { display: none; } /* 整組刻度隱藏 */
+.debug-ruler-HIDDEN {
   position: absolute;
   inset: 0;
   pointer-events: none;
