@@ -59,6 +59,8 @@ export class Room {
   gameIndex: number = 0                           // 0-15
   consecutiveDealer: number = 0                   // 連莊次數（0 = 首次）
   dealerKeepNext: boolean = false                 // 下一局是否連莊（endGame 時決定）
+  lastDrawWasGang: boolean = false                // 剛剛補槓牌（給槓上自摸判定）
+  isQiangGangInProgress: boolean = false          // 搶槓胡進行中（加槓時被搶胡）
   roundScores: Map<string, number> = new Map()
   nextGameTimer: NodeJS.Timeout | null = null
 
@@ -295,32 +297,60 @@ export class Room {
         this.broadcastPublicState()
         this.justDrawnBy = p.id
         this.justDrawnTile = replacement
+        this.lastDrawWasGang = true
         // 補牌後留在原家繼續行動
         this.sendTurnOrAutoAction(p.seat)
         return { ok: true }
       }
-      // 加槓（手中 1 張 + 已碰過的同牌）
+      // 加槓（手中 1 張 + 已碰過的同牌）→ 先檢查其他家是否能搶槓胡
       const added = canGangAdded(hand, melds)
       if (added.length > 0) {
         const gangTile = added[0]
-        // 從手牌移除 1 張
-        const idx = hand.indexOf(gangTile)
-        if (idx >= 0) hand.splice(idx, 1)
-        // 升級原碰為槓
-        const pengIdx = melds.findIndex(m => m.type === 'peng' && m.tiles[0] === gangTile)
-        if (pengIdx >= 0) {
-          const originalFromSeat = melds[pengIdx].fromSeat ?? p.seat
-          melds[pengIdx] = { type: 'gang_exposed', tiles: [gangTile, gangTile, gangTile, gangTile], fromSeat: originalFromSeat }
-          this.broadcast({ type: 'meld_formed', seat: p.seat, meld: melds[pengIdx] })
+        // 搶槓胡檢查：若任一他家 hand+gangTile 可胡 → 進入搶槓流程
+        const qiangHuCandidates: Array<{ pid: string; seat: SeatIndex }> = []
+        for (const other of this.players) {
+          if (other.id === p.id) continue
+          const oHand = this.hands.get(other.id) ?? []
+          const oMelds = this.melds.get(other.id) ?? []
+          const oMc = countMeldsForHu(oMelds)
+          if (canHu([...oHand, gangTile], oMc)) {
+            qiangHuCandidates.push({ pid: other.id, seat: other.seat })
+          }
         }
-        this.broadcast({ type: 'action_taken', seat: p.seat, action: 'gang' })
-        const replacement = this.drawFromTail(p.id)
-        this.sendTo(p.id, { type: 'hand_update', hand })
-        if (replacement) this.sendTo(p.id, { type: 'tile_drawn', seat: p.seat, tile: replacement })
-        this.broadcastPublicState()
-        this.justDrawnBy = p.id
-        this.justDrawnTile = replacement
-        this.sendTurnOrAutoAction(p.seat)
+        if (qiangHuCandidates.length > 0) {
+          // 建立搶槓 pending：給可胡者發送 action_options（只有 canHu）
+          this.isQiangGangInProgress = true
+          for (const c of qiangHuCandidates) {
+            const cp = this.getPlayer(c.pid)!
+            const opt: ActionOptions = {
+              canHu: true, canPeng: false, canGangExposed: false,
+              canGangConcealed: [], canGangAdded: [],
+              canChi: [], fromTile: gangTile, fromSeat: p.seat,
+            }
+            if (!cp.isBot) this.sendTo(c.pid, { type: 'action_options', options: opt })
+          }
+          // 以 pendingDiscard 結構紀錄（重用 pass/hu 解析）
+          const pendingOptions = new Map<string, ActionOptions>()
+          for (const c of qiangHuCandidates) {
+            pendingOptions.set(c.pid, {
+              canHu: true, canPeng: false, canGangExposed: false,
+              canGangConcealed: [], canGangAdded: [],
+              canChi: [], fromTile: gangTile, fromSeat: p.seat,
+            })
+          }
+          const received = new Map<string, { action: 'pass' | 'hu' | 'peng' | 'gang' | 'chi' }>()
+          const timeoutHandle = setTimeout(() => {
+            // 超時未胡 → 完成加槓
+            this.completeGangAdded(p, gangTile)
+          }, ACTION_TIMEOUT_MS)
+          this.pendingDiscard = {
+            tile: gangTile, bySeat: p.seat, options: pendingOptions,
+            received, timeoutHandle,
+          }
+          return { ok: true }
+        }
+        // 無人能搶槓 → 直接完成加槓
+        this.completeGangAdded(p, gangTile)
         return { ok: true }
       }
       return { ok: false, error: '無可槓牌' }
@@ -500,8 +530,41 @@ export class Room {
       return
     }
 
-    // 全 pass → 下一家摸牌
+    // 全 pass
+    if (this.isQiangGangInProgress) {
+      // 搶槓流程中沒人胡 → 完成加槓
+      const p = this.getPlayerBySeat(pending.bySeat)!
+      this.completeGangAdded(p, pending.tile)
+      return
+    }
+    // 一般棄牌流程：下一家摸牌
     this.advanceToNextDraw(pending.bySeat)
+  }
+
+  // 加槓完成：實際升級牌組 + 補牌
+  private completeGangAdded(p: ServerPlayer, gangTile: TileId) {
+    this.pendingDiscard = null
+    this.isQiangGangInProgress = false
+    const hand = this.hands.get(p.id)!
+    const melds = this.melds.get(p.id)!
+    // 從手牌移除 1 張
+    const idx = hand.indexOf(gangTile)
+    if (idx >= 0) hand.splice(idx, 1)
+    const pengIdx = melds.findIndex(m => m.type === 'peng' && m.tiles[0] === gangTile)
+    if (pengIdx >= 0) {
+      const originalFromSeat = melds[pengIdx].fromSeat ?? p.seat
+      melds[pengIdx] = { type: 'gang_exposed', tiles: [gangTile, gangTile, gangTile, gangTile], fromSeat: originalFromSeat }
+      this.broadcast({ type: 'meld_formed', seat: p.seat, meld: melds[pengIdx] })
+    }
+    this.broadcast({ type: 'action_taken', seat: p.seat, action: 'gang' })
+    const replacement = this.drawFromTail(p.id)
+    this.sendTo(p.id, { type: 'hand_update', hand })
+    if (replacement) this.sendTo(p.id, { type: 'tile_drawn', seat: p.seat, tile: replacement })
+    this.broadcastPublicState()
+    this.justDrawnBy = p.id
+    this.justDrawnTile = replacement
+    this.lastDrawWasGang = true
+    this.sendTurnOrAutoAction(p.seat)
   }
 
   private removeLastDiscard(fromSeat: SeatIndex, tile: TileId) {
@@ -554,6 +617,7 @@ export class Room {
     this.currentTurnSeat = p.seat
     this.justDrawnBy = pid
     this.justDrawnTile = replacement
+    this.lastDrawWasGang = true
     this.sendTurnOrAutoAction(p.seat)
   }
 
@@ -605,6 +669,7 @@ export class Room {
     this.currentTurnSeat = nextSeat
     const p = this.getPlayerBySeat(nextSeat)!
     const hand = this.hands.get(p.id)!
+    this.lastDrawWasGang = false  // 一般摸牌重置
 
     // 摸牌（遇花補花）
     let drawnTile: TileId | null = null
@@ -786,6 +851,8 @@ export class Room {
     const isTianHu = isZimo && isDealer && totalDiscards === 0
     const isDiHu = isZimo && !isDealer && totalDiscards === 0
     const isRenHu = !isZimo && !isDealer && loserSeat === this.dealerSeat && totalDiscards === 1
+    // 槓上自摸：自摸 + 剛剛補槓牌
+    const isGangShangZimo = isZimo && this.lastDrawWasGang
     const tai = calculateTai({
       hand,
       melds,
@@ -798,6 +865,8 @@ export class Room {
       isTianHu,
       isDiHu,
       isRenHu,
+      isGangShangZimo,
+      isQiangGang: this.isQiangGangInProgress,
     })
     // 連莊判斷：莊家贏 → 連莊；上限 10 次，連 10 後再胡也下莊
     const dealerWins = winnerSeat === this.dealerSeat
@@ -839,6 +908,9 @@ export class Room {
       winnerMelds: melds,
       scores: this.buildScoresPayload(),
     })
+    // 結算後重置搶槓標記與槓上自摸標記
+    this.isQiangGangInProgress = false
+    this.lastDrawWasGang = false
     this.scheduleNextGame()
   }
 

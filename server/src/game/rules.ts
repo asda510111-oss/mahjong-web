@@ -171,6 +171,8 @@ export interface TaiContext {
   isTianHu?: boolean        // 天胡：莊家發牌就胡
   isDiHu?: boolean          // 地胡：閒家第一巡自摸
   isRenHu?: boolean         // 人胡：閒家第一巡胡到莊家打的牌
+  isGangShangZimo?: boolean // 槓上自摸
+  isQiangGang?: boolean     // 搶槓胡
 }
 
 export interface TaiItem { name: string; tai: number }
@@ -179,7 +181,8 @@ export interface TaiResult { total: number; items: TaiItem[] }
 export function calculateTai(ctx: TaiContext): TaiResult {
   const items: TaiItem[] = []
   const { hand, melds, isZimo, winTile, seatWind, roundWind = 0, isDealer, consecutiveDealer,
-    isTianHu = false, isDiHu = false, isRenHu = false } = ctx
+    isTianHu = false, isDiHu = false, isRenHu = false,
+    isGangShangZimo = false, isQiangGang = false } = ctx
   const nonFlowerMelds = melds.filter(m => m.type !== 'flower')
   const flowerMelds = melds.filter(m => m.type === 'flower')
 
@@ -301,6 +304,10 @@ export function calculateTai(ctx: TaiContext): TaiResult {
   if (isTianHu) items.push({ name: '天胡', tai: 8 })
   else if (isDiHu) items.push({ name: '地胡', tai: 8 })
   else if (isRenHu) items.push({ name: '人胡', tai: 8 })
+
+  // 槓上自摸 / 搶槓胡
+  if (isGangShangZimo) items.push({ name: '槓上自摸', tai: 1 })
+  if (isQiangGang) items.push({ name: '搶槓胡', tai: 1 })
 
   // 做莊 +1 台
   if (isDealer) {
