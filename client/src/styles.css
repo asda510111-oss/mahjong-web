@@ -353,7 +353,7 @@ input:focus { border-color: var(--accent); }
   bottom: -10px;  /* 向下延 10 */
   transform: rotate(-19deg);
   transform-origin: top right;
-  clip-path: polygon(0 22px, 100% 0, 100% 100%, 0 calc(100% - 22px));
+  clip-path: polygon(0 18px, 100% 0, 100% 100%, 0 calc(100% - 22px)); /* 上角 40° */
 }
 .table-wrapper .table-grid {
   position: relative;
