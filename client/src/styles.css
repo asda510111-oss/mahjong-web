@@ -331,8 +331,10 @@ input:focus { border-color: var(--accent); }
   border-radius: 3px;
 }
 .wood-left {
-  left: 148px; /* 左移 148px（4×37） */
-  transform: rotate(14deg); /* 順時針 5° */
+  left: 148px;
+  top: -200px;         /* 向上延伸 */
+  bottom: -200px;      /* 向下延伸 */
+  transform: rotate(14deg);
   transform-origin: top left;
 }
 /* 右側木框調整與下家手牌綠框長軸平行（下家 rotate(94deg) 等同偏離垂直 4°） */
