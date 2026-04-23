@@ -390,11 +390,11 @@ input:focus { border-color: var(--accent); }
 }
 .table-seat.pos-top .seat-card {
   right: calc(50% - var(--cd-top-x, 123px));
-  bottom: calc(50% + var(--cd-top-y, 357px) + 60px);  /* 上移 4×60 再下移 3×60 = 淨上 60 */
+  bottom: calc(50% + var(--cd-top-y, 357px) + 120px); /* 再上移 1×60，淨上 120 */
 }
 .table-seat.pos-left .seat-card {
-  left: calc(50% + var(--cd-left-x, -118px) - 176px); /* 左移 4×44 */
-  top: calc(50% - var(--cd-left-y, 355px) + 120px);   /* 下移 2×60 */
+  left: calc(50% + var(--cd-left-x, -118px) - 264px); /* 再左移 2×44，累計 6×44 */
+  top: calc(50% - var(--cd-left-y, 355px) + 240px);   /* 再下移 2×60，累計 4×60 */
 }
 .table-seat.pos-right .seat-card {
   left: calc(50% + var(--cd-right-x, 116px) + 176px);
