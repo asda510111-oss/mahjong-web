@@ -68,8 +68,8 @@ body.in-game .center-round { font-size: 23px !important; }
 body.in-game .center-wall-num { font-size: 23px !important; }
 body.in-game .center-wall-label { font-size: 23px !important; }
 
-/* 遊戲中強制頭像 156×156，不被手機 media query 壓縮 */
-body.in-game .avatar {
+/* 遊戲牌桌四家頭像 156×156（僅 table-seat 內，不影響 lobby .avatar.big） */
+body.in-game .table-seat .avatar {
   width: 156px !important;
   height: 156px !important;
   font-size: 6rem !important;
@@ -190,11 +190,11 @@ input:focus { border-color: var(--accent); }
 }
 .lobby-seat.empty { opacity: 0.5; }
 .avatar {
-  font-size: 6rem;
+  font-size: 2rem;
   background: radial-gradient(circle at 35% 30%, rgba(255,255,255,0.25), rgba(255,255,255,0.05));
   border-radius: 50%;
-  width: 156px;    /* 52 × 3 */
-  height: 156px;
+  width: 52px;
+  height: 52px;
   display: flex;
   align-items: center;
   justify-content: center;
