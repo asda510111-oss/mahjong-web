@@ -2,6 +2,7 @@ import { WebSocketServer, type WebSocket } from 'ws'
 import { randomUUID } from 'node:crypto'
 import type { ClientMessage, ServerMessage, SeatIndex } from './game/types.js'
 import { RoomManager, type ServerPlayer } from './room.js'
+import { login as authLogin, verifyToken, makeToken, getProfile } from './auth.js'
 
 const PORT = parseInt(process.env.PORT ?? '8080', 10)
 const wss = new WebSocketServer({ port: PORT })
@@ -11,6 +12,8 @@ interface Session {
   id: string
   name: string
   socket: WebSocket
+  authedName?: string   // 已登入的帳號名
+  avatar?: 0 | 1 | 2 | 3
 }
 
 const sessions: Map<WebSocket, Session> = new Map()
@@ -107,6 +110,44 @@ function handleMessage(sess: Session, msg: ClientMessage) {
       sess.name = msg.name
       const list = rooms.listJoinableRooms()
       sess.socket.send(JSON.stringify({ type: 'room_list', rooms: list }))
+      break
+    }
+
+    case 'login': {
+      const u = authLogin(msg.name, msg.password)
+      if (!u) {
+        sess.socket.send(JSON.stringify({ type: 'auth_result', ok: false, error: '帳號或密碼錯誤' }))
+        return
+      }
+      sess.authedName = u.name
+      sess.name = u.name
+      sess.avatar = u.avatar
+      const token = makeToken(u.name)
+      sess.socket.send(JSON.stringify({
+        type: 'auth_result', ok: true, token,
+        profile: { name: u.name, avatar: u.avatar, score: u.score },
+      }))
+      break
+    }
+
+    case 'auth': {
+      const name = verifyToken(msg.token)
+      if (!name) {
+        sess.socket.send(JSON.stringify({ type: 'auth_result', ok: false, error: 'Token 失效' }))
+        return
+      }
+      const u = getProfile(name)
+      if (!u) {
+        sess.socket.send(JSON.stringify({ type: 'auth_result', ok: false, error: '帳號不存在' }))
+        return
+      }
+      sess.authedName = u.name
+      sess.name = u.name
+      sess.avatar = u.avatar
+      sess.socket.send(JSON.stringify({
+        type: 'auth_result', ok: true,
+        profile: { name: u.name, avatar: u.avatar, score: u.score },
+      }))
       break
     }
 

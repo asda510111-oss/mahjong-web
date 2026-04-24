@@ -3,6 +3,7 @@ import MainMenu from './components/MainMenu'
 import GameRoom from './components/GameRoom'
 import HuResult from './components/HuResult'
 import RoundEnd from './components/RoundEnd'
+import AuthScreen from './components/AuthScreen'
 import { gameClient, resolveServerUrl, type ConnectionStatus } from './net/ws'
 import type { RoomState, SeatIndex, ServerMessage, PublicPlayerState, ActionOptions } from './game/types'
 import type { TileId } from './game/tiles'
@@ -43,6 +44,10 @@ export default function App() {
   }>(null)
   const [error, setError] = useState<string>('')
   const [notice, setNotice] = useState<string>('')
+  // 帳號
+  const [profile, setProfile] = useState<{ name: string; avatar: 0|1|2|3; score: number } | null>(null)
+  const [authError, setAuthError] = useState<string>('')
+  const [guestMode, setGuestMode] = useState<boolean>(false)
 
   const myIdRef = useRef('')
   const roomRef = useRef<RoomState | null>(null)
@@ -70,6 +75,23 @@ export default function App() {
       switch (msg.type) {
         case 'welcome':
           setMyId(msg.playerId)
+          // 若有 token 自動嘗試恢復登入
+          {
+            const t = localStorage.getItem('mahjong_token')
+            if (t) gameClient.send({ type: 'auth', token: t })
+          }
+          break
+        case 'auth_result':
+          if (msg.ok && msg.profile) {
+            setProfile(msg.profile)
+            setAuthError('')
+            if (msg.token) localStorage.setItem('mahjong_token', msg.token)
+            // 登入後存當前暱稱給後續 hello 使用
+            localStorage.setItem('mahjong_name', msg.profile.name)
+          } else {
+            setAuthError(msg.error ?? '登入失敗')
+            localStorage.removeItem('mahjong_token')
+          }
           break
         case 'room_list':
           setRoomList(msg.rooms)
@@ -281,6 +303,16 @@ export default function App() {
           onStart={handleStart}
           onDiscard={handleDiscard}
           onAction={handleAction}
+        />
+      ) : (!profile && !guestMode) ? (
+        <AuthScreen
+          status={status}
+          error={authError}
+          onLogin={(name, password) => {
+            setAuthError('')
+            gameClient.send({ type: 'login', name, password })
+          }}
+          onGuest={() => setGuestMode(true)}
         />
       ) : (
         <MainMenu
