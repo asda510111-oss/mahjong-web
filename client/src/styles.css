@@ -341,7 +341,7 @@ input:focus { border-color: var(--accent); }
   bottom: 0 !important;
   left: -5px !important;  /* 左延 5 */
   right: -45px !important;
-  clip-path: polygon(22px 0, calc(100% - 22px) 0, 100% 100%, 0 100%) !important;
+  clip-path: polygon(22px 0, calc(100% - 18px) 0, 100% 100%, 0 100%) !important; /* 右下角 40° */
 }
 
 /* 左右木頭桌緣（用 DOM 元素，pseudo 只有兩個不夠） */
@@ -375,10 +375,10 @@ input:focus { border-color: var(--accent); }
 .wood-left {
   left: 148px !important;
   top: 0 !important;
-  bottom: -5px !important; /* 向下延 5 */
+  bottom: -10px !important; /* 再延 5，累計 -10 */
   transform: rotate(14deg) !important;
   transform-origin: top left !important;
-  clip-path: polygon(0 0, 100% 22px, 100% calc(100% - 22px), 0 100%) !important;
+  clip-path: polygon(0 0, 100% 22px, 100% calc(100% - 13px), 0 100%) !important; /* 下角 30° */
 }
 /* 右側木框調整與下家手牌綠框長軸平行（下家 rotate(94deg) 等同偏離垂直 4°） */
 .wood-right {
