@@ -137,6 +137,19 @@ export function setAvatar(name: string, avatar: 0 | 1 | 2 | 3) {
   return u
 }
 
+export function renameUser(oldName: string, newName: string) {
+  if (!validName(newName)) throw new Error('新暱稱不合法（2-16 字、不含空格）')
+  const db = load()
+  const u = db.users[oldName]
+  if (!u) throw new Error(`帳號不存在: ${oldName}`)
+  if (db.users[newName]) throw new Error(`新暱稱已被使用: ${newName}`)
+  u.name = newName
+  db.users[newName] = u
+  delete db.users[oldName]
+  save(db)
+  return u
+}
+
 export function setPassword(name: string, newPassword: string) {
   if (newPassword.length < 4) throw new Error('Password too short')
   const db = load()

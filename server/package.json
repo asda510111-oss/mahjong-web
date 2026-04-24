@@ -16,7 +16,8 @@
     "reset-score": "tsx scripts/reset-score.ts",
     "delete-user": "tsx scripts/delete-user.ts",
     "set-avatar": "tsx scripts/set-avatar.ts",
-    "set-password": "tsx scripts/set-password.ts"
+    "set-password": "tsx scripts/set-password.ts",
+    "rename-user": "tsx scripts/rename-user.ts"
   },
   "dependencies": {
     "ws": "^8.18.0"

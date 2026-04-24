@@ -8,14 +8,6 @@
       "score": 10000,
       "createdAt": 1777053820773
     },
-    "玩家02": {
-      "name": "玩家02",
-      "hash": "c3e894984f923c75ab98c6a6ff7e9e2eabc4ed3a8c4c55c575ab3674a70dc31fa3187785d45cfe2025bc03b09f35da72a602e58ff626098cfa2431354d83a035",
-      "salt": "79947923948028b814d311ff7a699c57",
-      "avatar": 0,
-      "score": 10000,
-      "createdAt": 1777055523186
-    },
     "玩家03": {
       "name": "玩家03",
       "hash": "f8a8b82fc72cba5f6688c4f13da253e11cbc0807af1160a5eb6b6c7f877a43123089836dcae8145bc4b29711d52e6120e36628e989fdd39993301e68b0e87314",
@@ -159,6 +151,14 @@
       "avatar": 2,
       "score": 10000,
       "createdAt": 1777055533467
+    },
+    "文林": {
+      "name": "文林",
+      "hash": "c3e894984f923c75ab98c6a6ff7e9e2eabc4ed3a8c4c55c575ab3674a70dc31fa3187785d45cfe2025bc03b09f35da72a602e58ff626098cfa2431354d83a035",
+      "salt": "79947923948028b814d311ff7a699c57",
+      "avatar": 0,
+      "score": 10000,
+      "createdAt": 1777055523186
     }
   }
 }
