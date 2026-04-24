@@ -47,7 +47,7 @@ export default function MainMenu({
             <img className="profile-avatar" src={AVATARS[profile.avatar]} alt="" />
             <div className="profile-info">
               <div className="profile-name">{profile.name}</div>
-              <div className="profile-score">累計分數：{profile.score}</div>
+              <div className="profile-score">現有點數：{profile.score}</div>
             </div>
             <button className="profile-logout" onClick={onLogout}>登出</button>
           </div>
