@@ -41,7 +41,7 @@ export default function MainMenu({ status, onCreateRoom, onJoinRoom, onQuickMatc
         </button>
 
         <button disabled={busy || !name.trim()} onClick={() => onQuickMatch(name.trim())}>
-          快速配對
+          尋找房間
         </button>
 
         <div className="row">
