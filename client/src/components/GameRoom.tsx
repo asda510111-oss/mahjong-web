@@ -4,6 +4,7 @@ import TableSeat from './TableSeat'
 import CenterArea from './CenterArea'
 import ActionBar from './ActionBar'
 import TimerDisplay from './TimerDisplay'
+import { gameClient } from '../net/ws'
 import type { RoomState, SeatIndex, PublicPlayerState, ActionOptions } from '../game/types'
 import { SEAT_LABELS } from '../game/types'
 import type { TileId } from '../game/tiles'
@@ -55,16 +56,17 @@ export default function GameRoom({
   // 用索引追蹤（同張牌可能有多張，不能只用 id）
   // key: "sorted-<idx>" 或 "drawn"
   const [selectedKey, setSelectedKey] = useState<string | null>(null)
-  // 設定（底/台）
+  // 設定（底/台）由 server 同步；只有房主且 lobby 時可改
   const [settingsOpen, setSettingsOpen] = useState(false)
-  const [base, setBase] = useState<300 | 200>(() => (Number(localStorage.getItem('mahjong_base')) as 200 | 300) || 200)
-  const [taiPt, setTaiPt] = useState<100 | 50>(() => (Number(localStorage.getItem('mahjong_tai')) as 50 | 100) || 50)
-  // 底 = 300 時強制 台 = 100
-  useEffect(() => {
-    if (base === 300 && taiPt !== 100) setTaiPt(100)
-  }, [base, taiPt])
-  const saveBase = (v: 200 | 300) => { setBase(v); localStorage.setItem('mahjong_base', String(v)) }
-  const saveTai = (v: 50 | 100) => { setTaiPt(v); localStorage.setItem('mahjong_tai', String(v)) }
+  const base = room.base
+  const taiPt = room.taiPt
+  const saveBase = (v: 200 | 300) => {
+    const newTai: 50 | 100 = v === 300 ? 100 : taiPt
+    gameClient.send({ type: 'set_settings', base: v, taiPt: newTai })
+  }
+  const saveTai = (v: 50 | 100) => {
+    gameClient.send({ type: 'set_settings', base, taiPt: v })
+  }
   // 不是自己回合時清除選擇
   useEffect(() => {
     if (!isMyTurn) setSelectedKey(null)
@@ -240,10 +242,12 @@ export default function GameRoom({
                 <div className="settings-options">
                   <button
                     className={`settings-opt ${base === 300 ? 'active' : ''}`}
+                    disabled={!isHost}
                     onClick={() => saveBase(300)}
                   >300</button>
                   <button
                     className={`settings-opt ${base === 200 ? 'active' : ''}`}
+                    disabled={!isHost}
                     onClick={() => saveBase(200)}
                   >200</button>
                 </div>
@@ -254,17 +258,19 @@ export default function GameRoom({
                 <div className="settings-options">
                   <button
                     className={`settings-opt ${taiPt === 100 ? 'active' : ''}`}
+                    disabled={!isHost}
                     onClick={() => saveTai(100)}
                   >100</button>
                   <button
                     className={`settings-opt ${taiPt === 50 ? 'active' : ''} ${base === 300 ? 'disabled' : ''}`}
-                    disabled={base === 300}
+                    disabled={!isHost || base === 300}
                     onClick={() => saveTai(50)}
                   >50</button>
                 </div>
               </div>
 
               {base === 300 && <div className="settings-note">底 300 時，台鎖定為 100</div>}
+              {!isHost && <div className="settings-note">僅房主可修改設定</div>}
             </div>
           </div>
         )}

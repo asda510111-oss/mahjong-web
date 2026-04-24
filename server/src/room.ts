@@ -38,6 +38,9 @@ export class Room {
   players: ServerPlayer[] = []
   phase: 'lobby' | 'playing' | 'ended' = 'lobby'
   hostId = ''
+  // 房間設定（底/台）
+  base: 300 | 200 = 200
+  taiPt: 100 | 50 = 50
 
   wall: TileId[] = []
   hands: Map<string, TileId[]> = new Map()
@@ -104,7 +107,13 @@ export class Room {
       id: p.id, name: p.name, seat: p.seat, isBot: p.isBot,
       isConnected: p.isBot ? true : p.socket !== null,
     }))
-    return { code: this.code, players, phase: this.phase, hostId: this.hostId }
+    return { code: this.code, players, phase: this.phase, hostId: this.hostId, base: this.base, taiPt: this.taiPt }
+  }
+
+  setSettings(base: 300 | 200, taiPt: 100 | 50) {
+    this.base = base
+    // 底 300 → 台鎖定 100
+    this.taiPt = base === 300 ? 100 : taiPt
   }
 
   broadcast(msg: ServerMessage) {
@@ -889,11 +898,11 @@ export class Room {
     const dealerWins = winnerSeat === this.dealerSeat
     this.dealerKeepNext = dealerWins && this.consecutiveDealer < 10
 
-    // 計分：底 1 + 台 tai.total
-    const pts = 1 + tai.total
-    // 莊家被胡時，要額外賠連莊台數（連 N 拉 N = 2N+1 台）給贏家
+    // 計分：底 + 台 × 台數
+    const pts = this.base + this.taiPt * tai.total
+    // 莊家被胡時額外賠連莊台（連 N 拉 N = 2N+1 台 × 台點）
     const dealerPenalty = (!dealerWins && this.consecutiveDealer > 0)
-      ? (2 * this.consecutiveDealer + 1)
+      ? (this.taiPt * (2 * this.consecutiveDealer + 1))
       : 0
 
     for (const p of this.players) {

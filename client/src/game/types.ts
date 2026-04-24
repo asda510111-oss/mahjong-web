@@ -17,6 +17,8 @@ export interface RoomState {
   players: PlayerInfo[]
   phase: 'lobby' | 'playing' | 'ended'
   hostId: string
+  base: 300 | 200
+  taiPt: 100 | 50
 }
 
 // 公開的玩家狀態：手牌數、副子、棄牌（不含具體手牌）
@@ -46,6 +48,7 @@ export type ClientMessage =
   | { type: 'join_room'; code: string }
   | { type: 'quick_match' }
   | { type: 'list_rooms'; name: string }
+  | { type: 'set_settings'; base: 300 | 200; taiPt: 100 | 50 }
   | { type: 'leave_room' }
   | { type: 'add_bot' }
   | { type: 'start_game' }

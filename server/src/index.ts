@@ -104,10 +104,19 @@ function handleMessage(sess: Session, msg: ClientMessage) {
     }
 
     case 'list_rooms': {
-      // 儲存名字以便後續 join
       sess.name = msg.name
       const list = rooms.listJoinableRooms()
       sess.socket.send(JSON.stringify({ type: 'room_list', rooms: list }))
+      break
+    }
+
+    case 'set_settings': {
+      const room = rooms.getPlayerRoom(sess.id)
+      if (!room) return
+      if (room.hostId !== sess.id) return // 只有房主可改
+      if (room.phase !== 'lobby') return  // 開始後鎖定
+      room.setSettings(msg.base, msg.taiPt)
+      room.broadcast({ type: 'room_update', room: room.toState() })
       break
     }
 
