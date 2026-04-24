@@ -73,6 +73,16 @@ html, body, #root {
   text-align: center;
   margin-top: 0.5rem;
 }
+.settings-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 0.75rem;
+}
+.settings-confirm {
+  padding: 0.5rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 700;
+}
 
 /* ===== 房間清單彈窗 ===== */
 .room-list-overlay {

@@ -56,17 +56,30 @@ export default function GameRoom({
   // 用索引追蹤（同張牌可能有多張，不能只用 id）
   // key: "sorted-<idx>" 或 "drawn"
   const [selectedKey, setSelectedKey] = useState<string | null>(null)
-  // 設定（底/台）由 server 同步；只有房主且 lobby 時可改
+  // 設定（底/台）由 server 同步；只有房主且 lobby 時可改。打開彈窗時會先取得目前值作為草稿。
   const [settingsOpen, setSettingsOpen] = useState(false)
-  const base = room.base
-  const taiPt = room.taiPt
+  const [draftBase, setDraftBase] = useState<300 | 200>(room.base)
+  const [draftTai, setDraftTai] = useState<100 | 50>(room.taiPt)
+  // 開啟時同步草稿為目前 server 值
+  useEffect(() => {
+    if (settingsOpen) {
+      setDraftBase(room.base)
+      setDraftTai(room.taiPt)
+    }
+  }, [settingsOpen, room.base, room.taiPt])
+  const base = draftBase
+  const taiPt = draftTai
   const saveBase = (v: 200 | 300) => {
-    const newTai: 50 | 100 = v === 300 ? 100 : 50
-    gameClient.send({ type: 'set_settings', base: v, taiPt: newTai })
+    setDraftBase(v)
+    setDraftTai(v === 300 ? 100 : 50)
   }
   const saveTai = (v: 50 | 100) => {
-    const newBase: 200 | 300 = v === 100 ? 300 : 200
-    gameClient.send({ type: 'set_settings', base: newBase, taiPt: v })
+    setDraftTai(v)
+    setDraftBase(v === 100 ? 300 : 200)
+  }
+  const confirmSettings = () => {
+    gameClient.send({ type: 'set_settings', base: draftBase, taiPt: draftTai })
+    setSettingsOpen(false)
   }
   // 不是自己回合時清除選擇
   useEffect(() => {
@@ -268,6 +281,14 @@ export default function GameRoom({
                     onClick={() => saveTai(50)}
                   >50</button>
                 </div>
+              </div>
+
+              <div className="settings-actions">
+                <button
+                  className="settings-confirm"
+                  disabled={!isHost}
+                  onClick={confirmSettings}
+                >確認</button>
               </div>
 
             </div>
