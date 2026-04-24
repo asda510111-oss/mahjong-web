@@ -339,7 +339,7 @@ input:focus { border-color: var(--accent); }
 }
 .table-wrapper::after {
   bottom: 0 !important;
-  left: 0 !important;
+  left: -5px !important;  /* 左延 5 */
   right: -45px !important;
   clip-path: polygon(22px 0, calc(100% - 22px) 0, 100% 100%, 0 100%) !important;
 }
@@ -375,7 +375,7 @@ input:focus { border-color: var(--accent); }
 .wood-left {
   left: 148px !important;
   top: 0 !important;
-  bottom: 0 !important;
+  bottom: -5px !important; /* 向下延 5 */
   transform: rotate(14deg) !important;
   transform-origin: top left !important;
   clip-path: polygon(0 0, 100% 22px, 100% calc(100% - 22px), 0 100%) !important;
