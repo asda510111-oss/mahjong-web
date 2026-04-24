@@ -1,0 +1,12 @@
+{
+  "users": {
+    "阿明": {
+      "name": "阿明",
+      "hash": "68fd065591ffc15b477b0c79b1b9f95f0390d96d7f7e143a257d87e932efb8abba659a27a9544895e68ae672481358feaa35c88fba8ec6b4ade68e31e5b2e446",
+      "salt": "0dcf0968fa7a0137c9721768170cdbf6",
+      "avatar": 0,
+      "score": 0,
+      "createdAt": 1777051732974
+    }
+  }
+}

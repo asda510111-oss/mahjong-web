@@ -9,5 +9,5 @@ build/
 .idea/
 *.tsbuildinfo
 
-# 使用者資料
-server/data/users.json
+# 使用者資料（暫時允許進 git 以便 Render 拉取）
+# server/data/users.json
