@@ -83,6 +83,12 @@ html, body, #root {
   font-size: 1rem;
   font-weight: 700;
 }
+.settings-current {
+  font-size: 0.9rem;
+  line-height: 1.3;
+  color: var(--accent);
+  font-weight: 700;
+}
 
 /* ===== 房間清單彈窗 ===== */
 .room-list-overlay {
