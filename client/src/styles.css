@@ -1331,10 +1331,11 @@ input:focus { border-color: var(--accent); }
 }
 
 .hand-fixed {
+  display: none !important; /* 自家手牌暫時隱藏 */
   position: fixed;
   left: 0;
   right: 0;
-  bottom: 24px; /* 上移 24px（0.4×60） */
+  bottom: 24px;
   padding: 0.5rem;
   background: transparent;
   border-top: none;
