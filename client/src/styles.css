@@ -25,11 +25,23 @@ html, body, #root {
   touch-action: manipulation;
 }
 
-/* 三個畫面目前統一使用紅色毛氈（之後各自可獨立調整） */
+/* ===== 三個畫面背景（之後可各自調整） ===== */
+/* 主程式 + 大廳：暫統一紅色毛氈 */
 .menu,
-.room.lobby,
+.room.lobby {
+  min-height: 100vh;
+  background:
+    radial-gradient(ellipse at center, var(--felt) 0%, var(--bg-dark) 100%),
+    repeating-linear-gradient(45deg, rgba(0,0,0,0.02) 0 2px, transparent 2px 4px);
+  background-blend-mode: multiply;
+}
+/* 牌桌「外層」（木框外區塊）：深色（之後調整） */
 body.in-game .room:not(.lobby) {
   min-height: 100vh;
+  background: #1a1a1a;
+}
+/* 牌桌「桌面」（木框圈起區塊）：紅色毛氈 */
+body.in-game .table-wrapper {
   background:
     radial-gradient(ellipse at center, var(--felt) 0%, var(--bg-dark) 100%),
     repeating-linear-gradient(45deg, rgba(0,0,0,0.02) 0 2px, transparent 2px 4px);
