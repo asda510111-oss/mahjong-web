@@ -71,6 +71,7 @@ function handleMessage(sess: Session, msg: ClientMessage) {
       const room = rooms.createRoom()
       const p: ServerPlayer = {
         id: sess.id, name: sess.name, seat: 0 as SeatIndex, isBot: false, socket: sess.socket,
+        authedName: sess.authedName,
       }
       room.addPlayer(p)
       rooms.setPlayerRoom(sess.id, room.code)
@@ -86,6 +87,7 @@ function handleMessage(sess: Session, msg: ClientMessage) {
       if (room.phase !== 'lobby') return sendTo(sess.socket, { type: 'error', message: '對局已開始' })
       const p: ServerPlayer = {
         id: sess.id, name: sess.name, seat: 0 as SeatIndex, isBot: false, socket: sess.socket,
+        authedName: sess.authedName,
       }
       room.addPlayer(p)
       rooms.setPlayerRoom(sess.id, room.code)
@@ -98,6 +100,7 @@ function handleMessage(sess: Session, msg: ClientMessage) {
       const room = rooms.findOrCreateQuickMatchRoom()
       const p: ServerPlayer = {
         id: sess.id, name: sess.name, seat: 0 as SeatIndex, isBot: false, socket: sess.socket,
+        authedName: sess.authedName,
       }
       room.addPlayer(p)
       rooms.setPlayerRoom(sess.id, room.code)

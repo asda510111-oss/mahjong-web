@@ -25,6 +25,31 @@ html, body, #root {
   touch-action: manipulation;
 }
 
+/* ===== MainMenu 玩家 profile ===== */
+.profile-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem;
+  background: rgba(0,0,0,0.25);
+  border-radius: 10px;
+  border: 2px solid var(--accent-dark);
+}
+.profile-avatar {
+  width: 48px; height: 48px;
+  border-radius: 50%;
+  border: 2px solid var(--accent);
+  object-fit: cover;
+}
+.profile-info { flex: 1; display: flex; flex-direction: column; }
+.profile-name { font-weight: 700; font-size: 1.1rem; color: var(--accent); }
+.profile-score { font-size: 0.85rem; opacity: 0.85; }
+.profile-logout {
+  background: #555; color: #fff;
+  font-size: 0.85rem;
+  padding: 0.3rem 0.7rem;
+}
+
 /* ===== 設定彈窗（底/台） ===== */
 .settings-overlay {
   position: fixed; inset: 0;

@@ -317,6 +317,12 @@ export default function App() {
       ) : (
         <MainMenu
           status={status}
+          profile={profile}
+          onLogout={() => {
+            localStorage.removeItem('mahjong_token')
+            setProfile(null)
+            setGuestMode(false)
+          }}
           onCreateRoom={handleCreateRoom}
           onJoinRoom={handleJoinRoom}
           onQuickMatch={handleQuickMatch}

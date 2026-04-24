@@ -1,8 +1,16 @@
 import { useState } from 'react'
 import type { ConnectionStatus } from '../net/ws'
+import catAvatar from '../assets/avatars/cat.svg'
+import pandaAvatar from '../assets/avatars/panda.svg'
+import foxAvatar from '../assets/avatars/fox.svg'
+import bearAvatar from '../assets/avatars/bear.svg'
+
+const AVATARS = [catAvatar, pandaAvatar, foxAvatar, bearAvatar]
 
 interface Props {
   status: ConnectionStatus
+  profile?: { name: string; avatar: 0|1|2|3; score: number } | null
+  onLogout?: () => void
   onCreateRoom: (name: string) => void
   onJoinRoom: (name: string, code: string) => void
   onQuickMatch: (name: string) => void
@@ -12,9 +20,11 @@ interface Props {
 }
 
 export default function MainMenu({
-  status, onCreateRoom, onJoinRoom, onQuickMatch, onListRooms, roomList, onCloseRoomList,
+  status, profile, onLogout,
+  onCreateRoom, onJoinRoom, onQuickMatch, onListRooms, roomList, onCloseRoomList,
 }: Props) {
   const [name, setName] = useState(() => {
+    if (profile) return profile.name
     return localStorage.getItem('mahjong_name') ?? `玩家${Math.floor(Math.random() * 9000 + 1000)}`
   })
   const [code, setCode] = useState('')
@@ -32,14 +42,27 @@ export default function MainMenu({
       <div className="subtitle">Online · 16 張 · 支援 AI 補位</div>
 
       <div className="menu-card">
-        <label className="muted" style={{ fontSize: '0.9rem' }}>暱稱</label>
-        <input
-          value={name}
-          onChange={(e) => saveName(e.target.value)}
-          maxLength={12}
-          style={{ letterSpacing: 'normal', textTransform: 'none' }}
-          placeholder="你的名字"
-        />
+        {profile ? (
+          <div className="profile-row">
+            <img className="profile-avatar" src={AVATARS[profile.avatar]} alt="" />
+            <div className="profile-info">
+              <div className="profile-name">{profile.name}</div>
+              <div className="profile-score">累計分數：{profile.score}</div>
+            </div>
+            <button className="profile-logout" onClick={onLogout}>登出</button>
+          </div>
+        ) : (
+          <>
+            <label className="muted" style={{ fontSize: '0.9rem' }}>暱稱</label>
+            <input
+              value={name}
+              onChange={(e) => saveName(e.target.value)}
+              maxLength={12}
+              style={{ letterSpacing: 'normal', textTransform: 'none' }}
+              placeholder="你的名字"
+            />
+          </>
+        )}
 
         <button disabled={busy || !name.trim()} onClick={() => onCreateRoom(name.trim())}>
           建立房間

@@ -3,6 +3,7 @@ import type {
   PlayerInfo, RoomState, SeatIndex, ServerMessage, PublicPlayerState, ActionOptions,
 } from './game/types.js'
 import { buildFullWall, shuffle, getTileDef, type TileId } from './game/tiles.js'
+import { addScore as authAddScore } from './auth.js'
 import {
   canHu, canPeng, canGangExposed, canGangConcealed, canGangAdded, canChi, calculateTai,
   type Meld,
@@ -14,6 +15,7 @@ export interface ServerPlayer {
   seat: SeatIndex
   isBot: boolean
   socket: WebSocket | null
+  authedName?: string   // 已登入帳號名，用於累計分數
 }
 
 const BOT_DISCARD_MS = 800
@@ -950,6 +952,9 @@ export class Room {
 
   private addScore(pid: string, pts: number) {
     this.roundScores.set(pid, (this.roundScores.get(pid) ?? 0) + pts)
+    // 同時寫入持久化帳號（若有登入）
+    const p = this.getPlayer(pid)
+    if (p?.authedName) authAddScore(p.authedName, pts)
   }
 
   // 本局結束 → 決定下一局 / 結束整圈
