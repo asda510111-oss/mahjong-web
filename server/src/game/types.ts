@@ -45,6 +45,7 @@ export type ClientMessage =
   | { type: 'create_room' }
   | { type: 'join_room'; code: string }
   | { type: 'quick_match' }
+  | { type: 'list_rooms'; name: string }
   | { type: 'leave_room' }
   | { type: 'add_bot' }
   | { type: 'start_game' }
@@ -56,6 +57,7 @@ export type ServerMessage =
   | { type: 'welcome'; playerId: string }
   | { type: 'room_update'; room: RoomState }
   | { type: 'error'; message: string }
+  | { type: 'room_list'; rooms: Array<{ code: string; players: number; hostName: string }> }
   | { type: 'game_start'; seed: number; gameIndex: number; dealerSeat: SeatIndex; consecutiveDealer: number }
   | { type: 'round_end'; scores: Array<{ seat: SeatIndex; name: string; score: number }> }
   | { type: 'deal'; hand: TileId[]; dealerSeat: SeatIndex }

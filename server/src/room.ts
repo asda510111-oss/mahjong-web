@@ -1039,6 +1039,21 @@ export class RoomManager {
     for (const r of this.rooms.values()) if (r.phase === 'lobby' && !r.isFull()) return r
     return this.createRoom()
   }
+  // 列出可加入（lobby + 未滿）的房間
+  listJoinableRooms() {
+    const list: Array<{ code: string; players: number; hostName: string }> = []
+    for (const r of this.rooms.values()) {
+      if (r.phase !== 'lobby') continue
+      if (r.isFull()) continue
+      const host = r.players.find(p => p.id === r.hostId)
+      list.push({
+        code: r.code,
+        players: r.players.length,
+        hostName: host?.name ?? r.players[0]?.name ?? '?',
+      })
+    }
+    return list
+  }
   private genCode() {
     const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'
     let s = ''; for (let i = 0; i < 4; i++) s += chars[Math.floor(Math.random() * chars.length)]

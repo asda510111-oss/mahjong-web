@@ -14,6 +14,7 @@ const EMPTY_DISCARDS: DiscardMap = { 0: [], 1: [], 2: [], 3: [] }
 
 export default function App() {
   const [status, setStatus] = useState<ConnectionStatus>('disconnected')
+  const [roomList, setRoomList] = useState<Array<{ code: string; players: number; hostName: string }> | null>(null)
   const [room, setRoom] = useState<RoomState | null>(null)
   const [myId, setMyId] = useState<string>('')
   const [myHand, setMyHand] = useState<TileId[]>([])
@@ -69,6 +70,9 @@ export default function App() {
       switch (msg.type) {
         case 'welcome':
           setMyId(msg.playerId)
+          break
+        case 'room_list':
+          setRoomList(msg.rooms)
           break
         case 'room_update':
           setRoom(msg.room)
@@ -226,6 +230,10 @@ export default function App() {
     gameClient.send({ type: 'hello', name })
     gameClient.send({ type: 'quick_match' })
   }
+  const handleListRooms = (name: string) => {
+    gameClient.send({ type: 'hello', name })
+    gameClient.send({ type: 'list_rooms', name })
+  }
   const handleLeave = () => {
     gameClient.send({ type: 'leave_room' })
     setRoom(null)
@@ -280,6 +288,9 @@ export default function App() {
           onCreateRoom={handleCreateRoom}
           onJoinRoom={handleJoinRoom}
           onQuickMatch={handleQuickMatch}
+          onListRooms={handleListRooms}
+          roomList={roomList}
+          onCloseRoomList={() => setRoomList(null)}
         />
       )}
       {error && (

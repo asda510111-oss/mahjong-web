@@ -25,6 +25,43 @@ html, body, #root {
   touch-action: manipulation;
 }
 
+/* ===== 房間清單彈窗 ===== */
+.room-list-overlay {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.7);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 200;
+}
+.room-list-panel {
+  background: #2a1608;
+  border: 2px solid var(--accent);
+  border-radius: 12px;
+  padding: 1rem 1.2rem;
+  width: min(90vw, 420px);
+  max-height: 80vh;
+  overflow-y: auto;
+  color: var(--text);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.6);
+}
+.room-list-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; }
+.room-list-header h3 { margin: 0; color: var(--accent); }
+.room-list-close { background: transparent; border: none; color: var(--text); font-size: 1.2rem; cursor: pointer; box-shadow: none; padding: 0.25rem 0.5rem; }
+.room-list-refresh-row { margin-bottom: 0.5rem; }
+.room-list-refresh-row button { font-size: 0.85rem; padding: 0.3rem 0.6rem; }
+.room-list-empty { text-align: center; padding: 2rem 0; color: #999; }
+.room-list-items { display: flex; flex-direction: column; gap: 0.5rem; }
+.room-list-item {
+  display: flex; justify-content: space-between; align-items: center;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(245,197,66,0.3);
+  border-radius: 8px;
+  padding: 0.6rem 0.8rem;
+}
+.room-list-info { display: flex; flex-direction: column; }
+.room-list-code { font-size: 1.3rem; font-weight: 700; color: var(--accent); letter-spacing: 0.1em; }
+.room-list-sub { font-size: 0.85rem; opacity: 0.8; }
+.room-list-item button { padding: 0.4rem 0.9rem; font-size: 0.9rem; }
+
 /* ===== 三個畫面背景（之後可各自調整） ===== */
 /* 主程式 + 大廳：暫統一紅色毛氈 */
 .menu,

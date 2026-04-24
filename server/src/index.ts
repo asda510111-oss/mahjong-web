@@ -103,6 +103,14 @@ function handleMessage(sess: Session, msg: ClientMessage) {
       break
     }
 
+    case 'list_rooms': {
+      // 儲存名字以便後續 join
+      sess.name = msg.name
+      const list = rooms.listJoinableRooms()
+      sess.socket.send(JSON.stringify({ type: 'room_list', rooms: list }))
+      break
+    }
+
     case 'leave_room': {
       const room = rooms.getPlayerRoom(sess.id)
       if (!room) return

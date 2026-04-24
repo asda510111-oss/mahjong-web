@@ -6,9 +6,14 @@ interface Props {
   onCreateRoom: (name: string) => void
   onJoinRoom: (name: string, code: string) => void
   onQuickMatch: (name: string) => void
+  onListRooms: (name: string) => void
+  roomList: Array<{ code: string; players: number; hostName: string }> | null
+  onCloseRoomList: () => void
 }
 
-export default function MainMenu({ status, onCreateRoom, onJoinRoom, onQuickMatch }: Props) {
+export default function MainMenu({
+  status, onCreateRoom, onJoinRoom, onQuickMatch, onListRooms, roomList, onCloseRoomList,
+}: Props) {
   const [name, setName] = useState(() => {
     return localStorage.getItem('mahjong_name') ?? `玩家${Math.floor(Math.random() * 9000 + 1000)}`
   })
@@ -40,8 +45,16 @@ export default function MainMenu({ status, onCreateRoom, onJoinRoom, onQuickMatc
           建立房間
         </button>
 
-        <button disabled={busy || !name.trim()} onClick={() => onQuickMatch(name.trim())}>
+        <button disabled={busy || !name.trim()} onClick={() => onListRooms(name.trim())}>
           尋找房間
+        </button>
+
+        <button
+          disabled={busy || !name.trim()}
+          onClick={() => onQuickMatch(name.trim())}
+          style={{ background: '#555', color: 'white' }}
+        >
+          快速配對（自動加入 / 開新房）
         </button>
 
         <div className="row">
@@ -65,6 +78,36 @@ export default function MainMenu({ status, onCreateRoom, onJoinRoom, onQuickMatc
           {status === 'connected' && <span className="muted">已連線伺服器 ✓</span>}
         </div>
       </div>
+
+      {/* 房間清單彈窗 */}
+      {roomList !== null && (
+        <div className="room-list-overlay" onClick={onCloseRoomList}>
+          <div className="room-list-panel" onClick={(e) => e.stopPropagation()}>
+            <div className="room-list-header">
+              <h3>可加入的房間</h3>
+              <button className="room-list-close" onClick={onCloseRoomList}>✕</button>
+            </div>
+            <div className="room-list-refresh-row">
+              <button onClick={() => onListRooms(name.trim())}>↻ 重新整理</button>
+            </div>
+            {roomList.length === 0 ? (
+              <div className="room-list-empty">目前沒有等待中的房間</div>
+            ) : (
+              <div className="room-list-items">
+                {roomList.map((r) => (
+                  <div key={r.code} className="room-list-item">
+                    <div className="room-list-info">
+                      <div className="room-list-code">{r.code}</div>
+                      <div className="room-list-sub">房主：{r.hostName} · {r.players}/4</div>
+                    </div>
+                    <button onClick={() => onJoinRoom(name.trim(), r.code)}>加入</button>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   )
 }
