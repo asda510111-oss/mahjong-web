@@ -19,7 +19,10 @@ html, body, #root {
   padding: 0;
   min-height: 100%;
   width: 100%;
-  background: #1a1a1a; /* 木框外暗色背景 */
+  background:
+    radial-gradient(ellipse at center, var(--felt) 0%, var(--bg-dark) 100%),
+    repeating-linear-gradient(45deg, rgba(0,0,0,0.02) 0 2px, transparent 2px 4px);
+  background-blend-mode: multiply;
   color: var(--text);
   -webkit-tap-highlight-color: transparent;
   touch-action: manipulation;
@@ -259,11 +262,6 @@ input:focus { border-color: var(--accent); }
   display: flex;
   align-items: stretch;
   justify-content: center;
-  /* 紅色毛氈只覆蓋牌桌內 */
-  background:
-    radial-gradient(ellipse at center, var(--felt) 0%, var(--bg-dark) 100%),
-    repeating-linear-gradient(45deg, rgba(0,0,0,0.02) 0 2px, transparent 2px 4px);
-  background-blend-mode: multiply;
   min-height: 0;
   /* 第一人稱視角：坐在桌邊強烈前傾 */
   perspective: 1100px;
