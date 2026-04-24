@@ -71,7 +71,7 @@ html, body, #root {
     radial-gradient(ellipse at center, var(--felt) 0%, var(--bg-dark) 100%),
     repeating-linear-gradient(45deg, rgba(0,0,0,0.02) 0 2px, transparent 2px 4px);
   background-blend-mode: multiply;
-  padding-top: 1rem; /* 整體下移約一個「等待開始」字型大小 */
+  padding-top: 2rem; /* 再下移 1rem，累計 2rem */
 }
 /* 牌桌「外層」（木框外區塊）：深色（之後調整） */
 body.in-game .room:not(.lobby) {
