@@ -334,7 +334,7 @@ input:focus { border-color: var(--accent); }
   top: 0;
   left: 150px;
   right: 170px; /* 右邊再延 10px */
-  clip-path: polygon(0 0, 100% 0, calc(100% - 22px) 100%, 13px 100%); /* 左上角 60° */
+  clip-path: polygon(0 0, 100% 0, calc(100% - 13px) 100%, 13px 100%); /* 左右兩端 60° */
 }
 .table-wrapper::after {
   bottom: 0;
