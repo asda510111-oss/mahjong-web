@@ -339,9 +339,9 @@ input:focus { border-color: var(--accent); }
 }
 .table-wrapper::after {
   bottom: 0 !important;
-  left: -5px !important;  /* 左延 5 */
+  left: -8px !important;  /* 再延 3，累計 -8 */
   right: -45px !important;
-  clip-path: polygon(31px 0, calc(100% - 31px) 0, 100% 100%, 0 100%) !important; /* 左右下角 35° */
+  clip-path: polygon(26px 0, calc(100% - 31px) 0, 100% 100%, 0 100%) !important; /* 左下角 40°、右下角 35° */
 }
 
 /* 左右木頭桌緣（用 DOM 元素，pseudo 只有兩個不夠） */
