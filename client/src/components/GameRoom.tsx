@@ -61,9 +61,14 @@ export default function GameRoom({
   }, [isMyTurn])
 
   useEffect(() => {
+    // 只有正式開始遊戲（非 lobby）才鎖定畫面，避免大廳手機無法滑動
+    if (room.phase === 'lobby') {
+      document.body.classList.remove('in-game')
+      return
+    }
     document.body.classList.add('in-game')
     return () => { document.body.classList.remove('in-game') }
-  }, [])
+  }, [room.phase])
 
   // 整體遊戲畫面自適應：以 1280×760 為設計尺寸，等比縮放至視窗
   useEffect(() => {
