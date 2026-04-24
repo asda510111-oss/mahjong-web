@@ -45,10 +45,12 @@ body.in-game .table-wrapper { background: transparent; }
 /* 紅色毛氈：3D 傾斜後視覺左上對齊上木框最左點（寬度加大以補償透視縮小） */
 .felt-bg {
   position: absolute;
-  left: 0;
+  left: -176px;   /* 左上角向左延 4×44 */
   right: 0;
-  top: -960px;   /* 再上延 2×60，累計 -960 */
+  top: -960px;
   bottom: 0;
+  /* 左側斜切：左上在 (0,0) = 視覺 x=-176；左下在 (176px,100%) = 視覺 x=0 */
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 176px 100%);
   background:
     radial-gradient(ellipse at center, var(--felt) 0%, var(--bg-dark) 100%),
     repeating-linear-gradient(45deg, rgba(0,0,0,0.02) 0 2px, transparent 2px 4px);
