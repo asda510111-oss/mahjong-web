@@ -252,6 +252,8 @@ export default function GameRoom({
       </div>
 
       <div className="table-wrapper">
+        {/* 紅色毛氈背景層：左上角對齊上方木框最左點 */}
+        <div className="felt-bg" aria-hidden="true" />
         {/* 除錯用座標刻度尺（以 table-wrapper 中心為 0,0） */}
         <div className="debug-ruler" aria-hidden="true">
           <div className="ruler ruler-x">

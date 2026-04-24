@@ -40,12 +40,21 @@ body.in-game .room:not(.lobby) {
   min-height: 100vh;
   background: #1a1a1a;
 }
-/* 牌桌「桌面」（木框圈起區塊）：紅色毛氈 */
-body.in-game .table-wrapper {
+/* 牌桌外層 table-wrapper 本身不畫紅色，改由 .felt-bg 定位 */
+body.in-game .table-wrapper { background: transparent; }
+/* 紅色毛氈：左上角對齊上方木框最左點（left: 150px） */
+.felt-bg {
+  position: absolute;
+  left: 150px;              /* 對齊上木框 left */
+  right: 170px;             /* 對齊上木框 right */
+  top: 0;
+  bottom: 0;
   background:
     radial-gradient(ellipse at center, var(--felt) 0%, var(--bg-dark) 100%),
     repeating-linear-gradient(45deg, rgba(0,0,0,0.02) 0 2px, transparent 2px 4px);
   background-blend-mode: multiply;
+  pointer-events: none;
+  z-index: 0;
 }
 body { overflow-x: hidden; }
 #root { min-height: 100vh; min-height: 100dvh; }
