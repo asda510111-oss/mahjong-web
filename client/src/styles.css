@@ -25,6 +25,55 @@ html, body, #root {
   touch-action: manipulation;
 }
 
+/* ===== 設定彈窗（底/台） ===== */
+.settings-overlay {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.7);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 200;
+}
+.settings-panel {
+  background: #2a1608;
+  border: 2px solid var(--accent);
+  border-radius: 12px;
+  padding: 1rem 1.5rem;
+  width: min(90vw, 360px);
+  color: var(--text);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.6);
+}
+.settings-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; }
+.settings-header h3 { margin: 0; color: var(--accent); }
+.settings-close { background: transparent; border: none; color: var(--text); font-size: 1.2rem; cursor: pointer; box-shadow: none; padding: 0.25rem 0.5rem; }
+.settings-row { display: flex; align-items: center; gap: 1rem; margin-bottom: 0.75rem; }
+.settings-label { font-size: 1.1rem; font-weight: 700; color: var(--accent); width: 2.5rem; }
+.settings-options { display: flex; gap: 0.5rem; flex: 1; }
+.settings-opt {
+  flex: 1;
+  padding: 0.5rem 0;
+  font-size: 1rem;
+  font-weight: 700;
+  background: #444;
+  color: var(--text);
+  border-radius: 8px;
+  box-shadow: 0 2px 0 rgba(0,0,0,0.4);
+  border: 2px solid transparent;
+}
+.settings-opt.active {
+  background: var(--accent);
+  color: #1a1a1a;
+  border-color: var(--accent-dark);
+}
+.settings-opt.disabled, .settings-opt:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+.settings-note {
+  font-size: 0.85rem;
+  color: var(--accent);
+  text-align: center;
+  margin-top: 0.5rem;
+}
+
 /* ===== 房間清單彈窗 ===== */
 .room-list-overlay {
   position: fixed; inset: 0;

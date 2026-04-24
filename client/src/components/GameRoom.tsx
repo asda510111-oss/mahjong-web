@@ -55,6 +55,16 @@ export default function GameRoom({
   // 用索引追蹤（同張牌可能有多張，不能只用 id）
   // key: "sorted-<idx>" 或 "drawn"
   const [selectedKey, setSelectedKey] = useState<string | null>(null)
+  // 設定（底/台）
+  const [settingsOpen, setSettingsOpen] = useState(false)
+  const [base, setBase] = useState<300 | 200>(() => (Number(localStorage.getItem('mahjong_base')) as 200 | 300) || 200)
+  const [taiPt, setTaiPt] = useState<100 | 50>(() => (Number(localStorage.getItem('mahjong_tai')) as 50 | 100) || 50)
+  // 底 = 300 時強制 台 = 100
+  useEffect(() => {
+    if (base === 300 && taiPt !== 100) setTaiPt(100)
+  }, [base, taiPt])
+  const saveBase = (v: 200 | 300) => { setBase(v); localStorage.setItem('mahjong_base', String(v)) }
+  const saveTai = (v: 50 | 100) => { setTaiPt(v); localStorage.setItem('mahjong_tai', String(v)) }
   // 不是自己回合時清除選擇
   useEffect(() => {
     if (!isMyTurn) setSelectedKey(null)
@@ -208,7 +218,7 @@ export default function GameRoom({
         </div>
 
         <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
-          <button onClick={() => {/* TODO: 設定 */}} style={{ background: '#8a5930', color: 'white' }}>
+          <button onClick={() => setSettingsOpen(true)} style={{ background: '#8a5930', color: 'white' }}>
             設定
           </button>
           <div style={{ flex: 1 }} />
@@ -216,6 +226,48 @@ export default function GameRoom({
           {isHost && playerCount === 4 && <button onClick={onStart}>開始遊戲</button>}
           {!isHost && <span className="muted">等待房主開始...</span>}
         </div>
+
+        {settingsOpen && (
+          <div className="settings-overlay" onClick={() => setSettingsOpen(false)}>
+            <div className="settings-panel" onClick={(e) => e.stopPropagation()}>
+              <div className="settings-header">
+                <h3>遊戲設定</h3>
+                <button className="settings-close" onClick={() => setSettingsOpen(false)}>✕</button>
+              </div>
+
+              <div className="settings-row">
+                <div className="settings-label">底</div>
+                <div className="settings-options">
+                  <button
+                    className={`settings-opt ${base === 300 ? 'active' : ''}`}
+                    onClick={() => saveBase(300)}
+                  >300</button>
+                  <button
+                    className={`settings-opt ${base === 200 ? 'active' : ''}`}
+                    onClick={() => saveBase(200)}
+                  >200</button>
+                </div>
+              </div>
+
+              <div className="settings-row">
+                <div className="settings-label">台</div>
+                <div className="settings-options">
+                  <button
+                    className={`settings-opt ${taiPt === 100 ? 'active' : ''}`}
+                    onClick={() => saveTai(100)}
+                  >100</button>
+                  <button
+                    className={`settings-opt ${taiPt === 50 ? 'active' : ''} ${base === 300 ? 'disabled' : ''}`}
+                    disabled={base === 300}
+                    onClick={() => saveTai(50)}
+                  >50</button>
+                </div>
+              </div>
+
+              {base === 300 && <div className="settings-note">底 300 時，台鎖定為 100</div>}
+            </div>
+          </div>
+        )}
       </div>
     )
   }
