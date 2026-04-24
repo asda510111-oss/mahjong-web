@@ -330,16 +330,18 @@ input:focus { border-color: var(--accent); }
   border-radius: 3px;
 }
 /* 上木框：左右兩端 45° 斜切 + 長軸各縮 50px */
+/* 木框位置鎖定，除非手動改 */
 .table-wrapper::before {
-  top: 0;
-  left: 150px;
-  right: 170px; /* 右邊再延 10px */
-  clip-path: polygon(0 0, 100% 0, calc(100% - 13px) 100%, 13px 100%); /* 左右兩端 60° */
+  top: 0 !important;
+  left: 150px !important;
+  right: 170px !important;
+  clip-path: polygon(0 0, 100% 0, calc(100% - 13px) 100%, 13px 100%) !important;
 }
 .table-wrapper::after {
-  bottom: 0;
-  right: -45px;  /* 再延 5，累計 -45 */
-  clip-path: polygon(22px 0, calc(100% - 22px) 0, 100% 100%, 0 100%);
+  bottom: 0 !important;
+  left: 0 !important;
+  right: -45px !important;
+  clip-path: polygon(22px 0, calc(100% - 22px) 0, 100% 100%, 0 100%) !important;
 }
 
 /* 左右木頭桌緣（用 DOM 元素，pseudo 只有兩個不夠） */
@@ -371,21 +373,21 @@ input:focus { border-color: var(--accent); }
   border-radius: 3px;
 }
 .wood-left {
-  left: 148px;
-  top: 0;
-  bottom: 0;
-  transform: rotate(14deg);
-  transform-origin: top left;
-  clip-path: polygon(0 0, 100% 22px, 100% calc(100% - 22px), 0 100%);
+  left: 148px !important;
+  top: 0 !important;
+  bottom: 0 !important;
+  transform: rotate(14deg) !important;
+  transform-origin: top left !important;
+  clip-path: polygon(0 0, 100% 22px, 100% calc(100% - 22px), 0 100%) !important;
 }
 /* 右側木框調整與下家手牌綠框長軸平行（下家 rotate(94deg) 等同偏離垂直 4°） */
 .wood-right {
-  right: 167px;
-  top: -5px;      /* 再縮 5，累計 -5 */
-  bottom: -25px;  /* 再延 5，累計 -25 */
-  transform: rotate(-19deg);
-  transform-origin: top right;
-  clip-path: polygon(0 10px, 100% 0, 100% 100%, 0 calc(100% - 22px)); /* 上角斜度再縮小 */
+  right: 167px !important;
+  top: -5px !important;
+  bottom: -25px !important;
+  transform: rotate(-19deg) !important;
+  transform-origin: top right !important;
+  clip-path: polygon(0 10px, 100% 0, 100% 100%, 0 calc(100% - 22px)) !important;
 }
 .table-wrapper .table-grid {
   position: relative;
