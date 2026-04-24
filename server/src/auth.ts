@@ -101,3 +101,50 @@ export function addScore(name: string, delta: number) {
   u.score += delta
   save(db)
 }
+
+// ===== 管理 API =====
+export function listAllUsers(): UserRecord[] {
+  const db = load()
+  return Object.values(db.users)
+}
+
+export function setScore(name: string, score: number) {
+  const db = load()
+  const u = db.users[name]
+  if (!u) throw new Error(`帳號不存在: ${name}`)
+  u.score = score
+  save(db)
+  return u
+}
+
+export function resetScore(name: string) {
+  return setScore(name, 10000)
+}
+
+export function deleteUser(name: string) {
+  const db = load()
+  if (!db.users[name]) throw new Error(`帳號不存在: ${name}`)
+  delete db.users[name]
+  save(db)
+}
+
+export function setAvatar(name: string, avatar: 0 | 1 | 2 | 3) {
+  const db = load()
+  const u = db.users[name]
+  if (!u) throw new Error(`帳號不存在: ${name}`)
+  u.avatar = avatar
+  save(db)
+  return u
+}
+
+export function setPassword(name: string, newPassword: string) {
+  if (newPassword.length < 4) throw new Error('Password too short')
+  const db = load()
+  const u = db.users[name]
+  if (!u) throw new Error(`帳號不存在: ${name}`)
+  const salt = randomBytes(16).toString('hex')
+  u.salt = salt
+  u.hash = hashPassword(newPassword, salt)
+  save(db)
+  return u
+}
