@@ -341,7 +341,7 @@ input:focus { border-color: var(--accent); }
   bottom: 0 !important;
   left: -5px !important;  /* 左延 5 */
   right: -45px !important;
-  clip-path: polygon(22px 0, calc(100% - 18px) 0, 100% 100%, 0 100%) !important; /* 右下角 40° */
+  clip-path: polygon(6px 0, calc(100% - 6px) 0, 100% 100%, 0 100%) !important; /* 左右下角 75° */
 }
 
 /* 左右木頭桌緣（用 DOM 元素，pseudo 只有兩個不夠） */
