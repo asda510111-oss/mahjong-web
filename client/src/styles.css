@@ -385,7 +385,7 @@ input:focus { border-color: var(--accent); }
   bottom: -25px;  /* 再延 5，累計 -25 */
   transform: rotate(-19deg);
   transform-origin: top right;
-  clip-path: polygon(0 13px, 100% 0, 100% 100%, 0 calc(100% - 22px)); /* 上角 30° */
+  clip-path: polygon(0 10px, 100% 0, 100% 100%, 0 calc(100% - 22px)); /* 上角斜度再縮小 */
 }
 .table-wrapper .table-grid {
   position: relative;
