@@ -46,10 +46,10 @@ body.in-game .table-wrapper { background: transparent; }
 .felt-bg {
   position: absolute;
   left: -308px;
-  right: -220px;  /* 右上再延 4×44；右下保持舊視覺位置 */
+  right: -242px;  /* 再延 0.5×44，累計 4.5×44 */
   top: -960px;
   bottom: 0;
-  clip-path: polygon(0 0, 100% 0, calc(100% - 176px) 100%, 308px 100%);
+  clip-path: polygon(0 0, 100% 0, calc(100% - 198px) 100%, 308px 100%);
   background:
     radial-gradient(ellipse at center, var(--felt) 0%, var(--bg-dark) 100%),
     repeating-linear-gradient(45deg, rgba(0,0,0,0.02) 0 2px, transparent 2px 4px);
