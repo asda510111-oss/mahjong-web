@@ -207,7 +207,11 @@ export default function GameRoom({
           })}
         </div>
 
-        <div style={{ display: 'flex', gap: '0.5rem', justifyContent: 'center' }}>
+        <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+          <button onClick={() => {/* TODO: 設定 */}} style={{ background: '#8a5930', color: 'white' }}>
+            設定
+          </button>
+          <div style={{ flex: 1 }} />
           {isHost && playerCount < 4 && <button onClick={onAddBot}>加入 AI 🤖</button>}
           {isHost && playerCount === 4 && <button onClick={onStart}>開始遊戲</button>}
           {!isHost && <span className="muted">等待房主開始...</span>}
