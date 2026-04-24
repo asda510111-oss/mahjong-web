@@ -1332,7 +1332,6 @@ input:focus { border-color: var(--accent); }
 }
 
 .hand-fixed {
-  display: none !important; /* 自家手牌暫時隱藏 */
   position: fixed;
   left: 0;
   right: 0;
