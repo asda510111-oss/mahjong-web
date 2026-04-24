@@ -47,7 +47,7 @@ body.in-game .table-wrapper { background: transparent; }
   position: absolute;
   left: 0;
   right: 0;
-  top: -360px;   /* 向上延 6×60 */
+  top: -600px;   /* 再上延 4×60，累計 -600 */
   bottom: 0;
   background:
     radial-gradient(ellipse at center, var(--felt) 0%, var(--bg-dark) 100%),
