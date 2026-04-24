@@ -25,26 +25,11 @@ html, body, #root {
   touch-action: manipulation;
 }
 
-/* ===== 主程式畫面（MainMenu）：深藍紫漸層 ===== */
-.menu {
-  min-height: 100vh;
-  background:
-    radial-gradient(ellipse at center top, #2a2560 0%, #0d0722 100%),
-    repeating-linear-gradient(45deg, rgba(255,255,255,0.02) 0 2px, transparent 2px 6px);
-  background-blend-mode: screen;
-}
-
-/* ===== 遊戲大廳（.room.lobby）：木質棕色漸層 ===== */
-.room.lobby {
-  min-height: 100vh;
-  background:
-    radial-gradient(ellipse at center, #6b3e1f 0%, #2a1608 100%),
-    repeating-linear-gradient(45deg, rgba(0,0,0,0.04) 0 2px, transparent 2px 6px);
-  background-blend-mode: multiply;
-}
-
-/* ===== 牌桌（.room 非 lobby）：紅色毛氈 ===== */
+/* 三個畫面目前統一使用紅色毛氈（之後各自可獨立調整） */
+.menu,
+.room.lobby,
 body.in-game .room:not(.lobby) {
+  min-height: 100vh;
   background:
     radial-gradient(ellipse at center, var(--felt) 0%, var(--bg-dark) 100%),
     repeating-linear-gradient(45deg, rgba(0,0,0,0.02) 0 2px, transparent 2px 4px);
