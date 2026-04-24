@@ -5,10 +5,9 @@ interface Props {
   status: ConnectionStatus
   error: string
   onLogin: (name: string, password: string) => void
-  onGuest: () => void
 }
 
-export default function AuthScreen({ status, error, onLogin, onGuest }: Props) {
+export default function AuthScreen({ status, error, onLogin }: Props) {
   const [name, setName] = useState('')
   const [pw, setPw] = useState('')
   const busy = status !== 'connected'
@@ -42,13 +41,6 @@ export default function AuthScreen({ status, error, onLogin, onGuest }: Props) {
           onClick={() => onLogin(name, pw)}
         >
           登入
-        </button>
-
-        <button
-          onClick={onGuest}
-          style={{ background: '#555', color: 'white' }}
-        >
-          訪客進入（暫時開放）
         </button>
 
         {error && <div className="error" style={{ textAlign: 'center' }}>{error}</div>}

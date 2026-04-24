@@ -47,7 +47,6 @@ export default function App() {
   // 帳號
   const [profile, setProfile] = useState<{ name: string; avatar: 0|1|2|3; score: number } | null>(null)
   const [authError, setAuthError] = useState<string>('')
-  const [guestMode, setGuestMode] = useState<boolean>(false)
 
   const myIdRef = useRef('')
   const roomRef = useRef<RoomState | null>(null)
@@ -304,7 +303,7 @@ export default function App() {
           onDiscard={handleDiscard}
           onAction={handleAction}
         />
-      ) : (!profile && !guestMode) ? (
+      ) : !profile ? (
         <AuthScreen
           status={status}
           error={authError}
@@ -312,7 +311,6 @@ export default function App() {
             setAuthError('')
             gameClient.send({ type: 'login', name, password })
           }}
-          onGuest={() => setGuestMode(true)}
         />
       ) : (
         <MainMenu
@@ -321,7 +319,6 @@ export default function App() {
           onLogout={() => {
             localStorage.removeItem('mahjong_token')
             setProfile(null)
-            setGuestMode(false)
           }}
           onCreateRoom={handleCreateRoom}
           onJoinRoom={handleJoinRoom}
