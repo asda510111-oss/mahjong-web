@@ -61,11 +61,12 @@ export default function GameRoom({
   const base = room.base
   const taiPt = room.taiPt
   const saveBase = (v: 200 | 300) => {
-    const newTai: 50 | 100 = v === 300 ? 100 : taiPt
+    const newTai: 50 | 100 = v === 300 ? 100 : 50
     gameClient.send({ type: 'set_settings', base: v, taiPt: newTai })
   }
   const saveTai = (v: 50 | 100) => {
-    gameClient.send({ type: 'set_settings', base, taiPt: v })
+    const newBase: 200 | 300 = v === 100 ? 300 : 200
+    gameClient.send({ type: 'set_settings', base: newBase, taiPt: v })
   }
   // 不是自己回合時清除選擇
   useEffect(() => {
@@ -262,15 +263,13 @@ export default function GameRoom({
                     onClick={() => saveTai(100)}
                   >100</button>
                   <button
-                    className={`settings-opt ${taiPt === 50 ? 'active' : ''} ${base === 300 ? 'disabled' : ''}`}
-                    disabled={!isHost || base === 300}
+                    className={`settings-opt ${taiPt === 50 ? 'active' : ''}`}
+                    disabled={!isHost}
                     onClick={() => saveTai(50)}
                   >50</button>
                 </div>
               </div>
 
-              {base === 300 && <div className="settings-note">底 300 時，台鎖定為 100</div>}
-              {!isHost && <div className="settings-note">僅房主可修改設定</div>}
             </div>
           </div>
         )}

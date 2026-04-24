@@ -110,10 +110,10 @@ export class Room {
     return { code: this.code, players, phase: this.phase, hostId: this.hostId, base: this.base, taiPt: this.taiPt }
   }
 
-  setSettings(base: 300 | 200, taiPt: 100 | 50) {
+  setSettings(base: 300 | 200, _taiPt: 100 | 50) {
+    // 底 300 + 台 100 / 底 200 + 台 50 綁定
     this.base = base
-    // 底 300 → 台鎖定 100
-    this.taiPt = base === 300 ? 100 : taiPt
+    this.taiPt = base === 300 ? 100 : 50
   }
 
   broadcast(msg: ServerMessage) {
