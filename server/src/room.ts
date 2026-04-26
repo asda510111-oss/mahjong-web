@@ -69,6 +69,8 @@ export class Room {
   roundScores: Map<string, number> = new Map()
   // 抽東累計（一場 4 圈 16 局內累加，達上限後不再抽）
   zimoRakeTotal: number = 0
+  // 中途離開懲罰：一場僅第一位離場的真人玩家扣 100 點
+  firstLeaverPenalized: boolean = false
   nextGameTimer: NodeJS.Timeout | null = null
 
   constructor(code: string) { this.code = code }
@@ -89,6 +91,15 @@ export class Room {
   }
 
   removePlayer(id: string) {
+    // 中途離開懲罰：一場僅第一位離場的真人登入玩家扣 100 點
+    if (this.phase === 'playing' && !this.firstLeaverPenalized) {
+      const p = this.players.find(x => x.id === id)
+      if (p && !p.isBot && p.authedName) {
+        authAddScore(p.authedName, -100)
+        this.firstLeaverPenalized = true
+        console.log(`[Server] ${p.authedName} left mid-game, -100 score`)
+      }
+    }
     this.players = this.players.filter(p => p.id !== id)
     if (this.hostId === id && this.players.length > 0) {
       const next = this.players.find(p => !p.isBot)
@@ -140,6 +151,7 @@ export class Room {
     this.consecutiveDealer = 0
     this.dealerSeat = 0 // 東家開局
     this.zimoRakeTotal = 0
+    this.firstLeaverPenalized = false
     this.roundScores.clear()
     for (const p of this.players) this.roundScores.set(p.id, 0)
     if (this.nextGameTimer) clearTimeout(this.nextGameTimer)
