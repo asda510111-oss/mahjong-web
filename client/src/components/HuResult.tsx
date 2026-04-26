@@ -13,11 +13,15 @@ interface Props {
   tai: TaiResult
   hand: TileId[]
   melds: Meld[]
+  base?: number
+  taiPt?: number
   onClose: () => void
 }
 
 export default function HuResult({
-  winnerSeat, winnerName, loserSeat, loserName, winTile, tai, hand, melds, onClose,
+  winnerSeat, winnerName, loserSeat, loserName, winTile, tai, hand, melds,
+  base = 200, taiPt = 50,
+  onClose,
 }: Props) {
   // 將手牌排序但把胡牌那張放到最右
   const withoutWin = (() => {
@@ -27,7 +31,8 @@ export default function HuResult({
   })()
   const sorted = sortHand(withoutWin)
   const isZimo = loserSeat === undefined
-  const points = 1 + tai.total // 底1 + 台
+  const taiPoints = tai.total * taiPt
+  const points = base + taiPoints
 
   return (
     <div className="hu-overlay" onClick={onClose}>
@@ -60,7 +65,7 @@ export default function HuResult({
         {/* 台數明細 */}
         <div className="hu-tai-list">
           <div className="hu-row base">
-            <span>底</span><span>1</span>
+            <span>底</span><span>{base}</span>
           </div>
           {tai.items.length === 0 && (
             <div className="hu-row muted"><span>（無台）</span><span>0</span></div>
@@ -68,11 +73,14 @@ export default function HuResult({
           {tai.items.map((item, i) => (
             <div key={i} className="hu-row">
               <span>{item.name}</span>
-              <span>+{item.tai}</span>
+              <span>+{item.tai} 台</span>
             </div>
           ))}
+          <div className="hu-row subtotal">
+            <span>台數合計</span><span>{tai.total} 台 × {taiPt} = {taiPoints}</span>
+          </div>
           <div className="hu-row total">
-            <span>合計</span><span>{points} 點（底 1 + 台 {tai.total}）</span>
+            <span>共</span><span>{points} 分</span>
           </div>
         </div>
 

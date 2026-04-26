@@ -338,7 +338,12 @@ export default function App() {
         </div>
       )}
       {huResult && (
-        <HuResult {...huResult} onClose={() => setHuResult(null)} />
+        <HuResult
+          {...huResult}
+          base={room?.base}
+          taiPt={room?.taiPt}
+          onClose={() => setHuResult(null)}
+        />
       )}
       {roundEnd && !huResult && (
         <RoundEnd scores={roundEnd.scores} onClose={() => setRoundEnd(null)} />
