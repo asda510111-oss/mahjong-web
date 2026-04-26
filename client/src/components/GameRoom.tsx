@@ -97,12 +97,14 @@ export default function GameRoom({
   }, [room.phase])
 
   // 整體遊戲畫面自適應：以 1280×760 為設計尺寸，等比縮放至視窗
+  const gameScaleRef = useRef(1)
   useEffect(() => {
     const DESIGN_W = 1280
     const DESIGN_H = 760
     const update = () => {
       const s = Math.min(window.innerWidth / DESIGN_W, window.innerHeight / DESIGN_H)
       document.documentElement.style.setProperty('--game-scale', String(s))
+      gameScaleRef.current = s
     }
     update()
     window.addEventListener('resize', update)
@@ -141,13 +143,15 @@ export default function GameRoom({
     onPointerMove: (e: React.PointerEvent) => {
       const s = swipeRef.current
       if (!s || s.key !== key) return
-      setDragState({ key, dx: e.clientX - s.startX, dy: e.clientY - s.startY })
+      const sc = gameScaleRef.current || 1
+      setDragState({ key, dx: (e.clientX - s.startX) / sc, dy: (e.clientY - s.startY) / sc })
     },
     onPointerUp: (e: React.PointerEvent) => {
       const s = swipeRef.current
       if (!s) return
-      const dx = e.clientX - s.startX
-      const dy = e.clientY - s.startY
+      const sc = gameScaleRef.current || 1
+      const dx = (e.clientX - s.startX) / sc
+      const dy = (e.clientY - s.startY) / sc
       const dist = Math.hypot(dx, dy)
       swipeRef.current = null
       setDragState(null)
