@@ -127,7 +127,10 @@ export default function GameRoom({
   // 上滑出牌：按住手牌往上拖超過 SWIPE_UP_THRESHOLD 即丟出（與點兩次共存）
   const SWIPE_UP_THRESHOLD = 60
   const swipeRef = useRef<{ tile: TileId; key: string; startY: number; triggered: boolean } | null>(null)
-  const tileSwipeProps = (tile: TileId, key: string) => ({
+  // setPointerCapture 後 click 會落在 wrap 而非 inner Tile，因此把 onClick 也移到 wrap；
+  // 此 ref 用於區分本次互動是 swipe 還是純點擊，swipe 觸發時忽略隨後的 click
+  const swipeJustTriggeredRef = useRef(false)
+  const tileWrapProps = (tile: TileId, key: string) => ({
     onPointerDown: (e: React.PointerEvent) => {
       if (!isMyTurn) return
       swipeRef.current = { tile, key, startY: e.clientY, triggered: false }
@@ -138,12 +141,20 @@ export default function GameRoom({
       if (!s || s.triggered || s.key !== key) return
       if (e.clientY - s.startY < -SWIPE_UP_THRESHOLD) {
         s.triggered = true
+        swipeJustTriggeredRef.current = true
         onDiscard(s.tile)
         setSelectedKey(null)
       }
     },
     onPointerUp: () => { swipeRef.current = null },
     onPointerCancel: () => { swipeRef.current = null },
+    onClick: () => {
+      if (swipeJustTriggeredRef.current) {
+        swipeJustTriggeredRef.current = false
+        return
+      }
+      if (isMyTurn) handleTileClick(tile, key)
+    },
   })
 
   // 將手牌分成「已排序的」＋「剛摸的一張」放右邊
@@ -531,10 +542,9 @@ export default function GameRoom({
           {sortedHand.map((t, idx) => {
             const key = `s-${idx}`
             return (
-              <span key={`${t}-${idx}`} className="hand-tile-wrap" {...tileSwipeProps(t, key)}>
+              <span key={`${t}-${idx}`} className="hand-tile-wrap" {...tileWrapProps(t, key)}>
                 <Tile
                   id={t}
-                  onClick={isMyTurn ? () => handleTileClick(t, key) : undefined}
                   disabled={!isMyTurn}
                   selected={selectedKey === key}
                 />
@@ -544,10 +554,9 @@ export default function GameRoom({
           {drawnTile && (
             <>
               <div className="hand-gap" aria-hidden="true" />
-              <span key={`drawn-${drawnTile}`} className="hand-tile-wrap" {...tileSwipeProps(drawnTile, 'drawn')}>
+              <span key={`drawn-${drawnTile}`} className="hand-tile-wrap" {...tileWrapProps(drawnTile, 'drawn')}>
                 <Tile
                   id={drawnTile}
-                  onClick={isMyTurn ? () => handleTileClick(drawnTile!, 'drawn') : undefined}
                   disabled={!isMyTurn}
                   selected={selectedKey === 'drawn'}
                 />
