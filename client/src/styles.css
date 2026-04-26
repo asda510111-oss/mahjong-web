@@ -573,6 +573,12 @@ input:focus { border-color: var(--accent); }
   color: var(--accent);
   line-height: 1;
 }
+/* 上/下/對家：姓名與點數改為兩行；自家保持單行 */
+.table-seat:not(.me) .seat-card .seat-text {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+}
 .table-seat .seat-card .seat-sub { display: none; } /* 副資訊隱藏，只留 ID */
 /* 每家頭像移到該家棄牌區位置 + 自訂偏移（4 張棄牌） */
 .table-seat.pos-bottom .seat-card {
