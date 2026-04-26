@@ -168,7 +168,7 @@ export default function GameRoom({
       if (isMyTurn) handleTileClick(tile, key)
     },
     style: dragState?.key === key
-      ? { transform: `translateY(${dragState.dy}px)`, transition: 'none' as const }
+      ? { transform: `translateY(${dragState.dy}px)`, transition: 'none' as const, position: 'relative' as const, zIndex: 9999 }
       : { transition: 'transform 150ms ease-out' as const },
   })
 
