@@ -124,33 +124,34 @@ export default function GameRoom({
     }
   }
 
-  // 上滑出牌：拖動時牌跟手移動，鬆手時若上移超過 SWIPE_UP_THRESHOLD 則丟出，否則彈回
-  const SWIPE_UP_THRESHOLD = 60
-  const swipeRef = useRef<{ tile: TileId; key: string; startY: number } | null>(null)
+  // 拖曳出牌：拖動時牌跟手移動（任意方向），鬆手時若離開原位超過 SWIPE_THRESHOLD 則丟出，否則彈回
+  const SWIPE_THRESHOLD = 60
+  const swipeRef = useRef<{ tile: TileId; key: string; startX: number; startY: number } | null>(null)
   // setPointerCapture 後 click 會落在 wrap 而非 inner Tile，因此把 onClick 也移到 wrap；
   // 此 ref 用於區分本次互動是 swipe 還是純點擊，swipe 觸發時忽略隨後的 click
   const swipeJustTriggeredRef = useRef(false)
-  const [dragState, setDragState] = useState<{ key: string; dy: number } | null>(null)
+  const [dragState, setDragState] = useState<{ key: string; dx: number; dy: number } | null>(null)
   const tileWrapProps = (tile: TileId, key: string) => ({
     onPointerDown: (e: React.PointerEvent) => {
       if (!isMyTurn) return
-      swipeRef.current = { tile, key, startY: e.clientY }
-      setDragState({ key, dy: 0 })
+      swipeRef.current = { tile, key, startX: e.clientX, startY: e.clientY }
+      setDragState({ key, dx: 0, dy: 0 })
       try { (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId) } catch {}
     },
     onPointerMove: (e: React.PointerEvent) => {
       const s = swipeRef.current
       if (!s || s.key !== key) return
-      const dy = Math.min(0, e.clientY - s.startY) // 只跟著上移
-      setDragState({ key, dy })
+      setDragState({ key, dx: e.clientX - s.startX, dy: e.clientY - s.startY })
     },
     onPointerUp: (e: React.PointerEvent) => {
       const s = swipeRef.current
       if (!s) return
+      const dx = e.clientX - s.startX
       const dy = e.clientY - s.startY
+      const dist = Math.hypot(dx, dy)
       swipeRef.current = null
       setDragState(null)
-      if (dy < -SWIPE_UP_THRESHOLD) {
+      if (dist > SWIPE_THRESHOLD) {
         swipeJustTriggeredRef.current = true
         onDiscard(s.tile)
         setSelectedKey(null)
@@ -168,7 +169,7 @@ export default function GameRoom({
       if (isMyTurn) handleTileClick(tile, key)
     },
     style: dragState?.key === key
-      ? { transform: `translateY(${dragState.dy}px)`, transition: 'none' as const, position: 'relative' as const, zIndex: 9999 }
+      ? { transform: `translate(${dragState.dx}px, ${dragState.dy}px)`, transition: 'none' as const, position: 'relative' as const, zIndex: 9999 }
       : { transition: 'transform 150ms ease-out' as const },
   })
 
