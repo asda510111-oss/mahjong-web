@@ -69,8 +69,6 @@ export class Room {
   roundScores: Map<string, number> = new Map()
   // 抽東累計（一場 4 圈 16 局內累加，達上限後不再抽）
   zimoRakeTotal: number = 0
-  // 強制抽東模式：前 11 局無人自摸時觸發，之後每局都抽（自摸則替代）直到 cap
-  forceRakeMode: boolean = false
   nextGameTimer: NodeJS.Timeout | null = null
 
   constructor(code: string) { this.code = code }
@@ -142,7 +140,6 @@ export class Room {
     this.consecutiveDealer = 0
     this.dealerSeat = 0 // 東家開局
     this.zimoRakeTotal = 0
-    this.forceRakeMode = false
     this.roundScores.clear()
     for (const p of this.players) this.roundScores.set(p.id, 0)
     if (this.nextGameTimer) clearTimeout(this.nextGameTimer)
@@ -154,10 +151,6 @@ export class Room {
   private dealNewGame() {
     if (this.players.length !== 4) return
     this.phase = 'playing'
-    // 強制抽東觸發：首次進入第 12 局（gameIndex >= 11）時若仍無人自摸，啟動
-    if (this.gameIndex >= 11 && this.zimoRakeTotal === 0) {
-      this.forceRakeMode = true
-    }
     this.wall = shuffle(buildFullWall())
     this.discards = { 0: [], 1: [], 2: [], 3: [] }
     this.hands.clear()
@@ -917,10 +910,17 @@ export class Room {
       ? (this.taiPt * (2 * this.consecutiveDealer + 1))
       : 0
 
-    // 抽東：自摸或強制抽東模式時抽 100，整場累計上限（底 300→500、底 200→400）
+    // 抽東：自摸抽 100；若累計仍未達上限，依「已抽次數」動態 trigger 強制抽
+    //   底 300（cap 500，5 次）：N=0 南4(7), N=1 北1(12), N=2 北2(13), N=3 北3(14), N=4 北4(15)
+    //   底 200（cap 400，4 次）：N=0 北1(12), N=1 北2(13), N=2 北3(14), N=3 北4(15)
     const zimoRakeCap = this.base === 300 ? 500 : 400
     const zimoRakeRemaining = Math.max(0, zimoRakeCap - this.zimoRakeTotal)
-    const zimoRake = (isZimo || this.forceRakeMode) ? Math.min(100, zimoRakeRemaining) : 0
+    const rakedCount = Math.floor(this.zimoRakeTotal / 100)
+    const forceRakeTrigger = this.base === 300
+      ? (rakedCount === 0 ? 7 : 11 + rakedCount)
+      : (12 + rakedCount)
+    const inForceRakeRange = this.gameIndex >= forceRakeTrigger
+    const zimoRake = (isZimo || inForceRakeRange) ? Math.min(100, zimoRakeRemaining) : 0
     this.zimoRakeTotal += zimoRake
     for (const p of this.players) {
       if (p.seat === winnerSeat) {
