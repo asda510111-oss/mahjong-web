@@ -124,30 +124,42 @@ export default function GameRoom({
     }
   }
 
-  // 上滑出牌：按住手牌往上拖超過 SWIPE_UP_THRESHOLD 即丟出（與點兩次共存）
+  // 上滑出牌：拖動時牌跟手移動，鬆手時若上移超過 SWIPE_UP_THRESHOLD 則丟出，否則彈回
   const SWIPE_UP_THRESHOLD = 60
-  const swipeRef = useRef<{ tile: TileId; key: string; startY: number; triggered: boolean } | null>(null)
+  const swipeRef = useRef<{ tile: TileId; key: string; startY: number } | null>(null)
   // setPointerCapture 後 click 會落在 wrap 而非 inner Tile，因此把 onClick 也移到 wrap；
   // 此 ref 用於區分本次互動是 swipe 還是純點擊，swipe 觸發時忽略隨後的 click
   const swipeJustTriggeredRef = useRef(false)
+  const [dragState, setDragState] = useState<{ key: string; dy: number } | null>(null)
   const tileWrapProps = (tile: TileId, key: string) => ({
     onPointerDown: (e: React.PointerEvent) => {
       if (!isMyTurn) return
-      swipeRef.current = { tile, key, startY: e.clientY, triggered: false }
+      swipeRef.current = { tile, key, startY: e.clientY }
+      setDragState({ key, dy: 0 })
       try { (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId) } catch {}
     },
     onPointerMove: (e: React.PointerEvent) => {
       const s = swipeRef.current
-      if (!s || s.triggered || s.key !== key) return
-      if (e.clientY - s.startY < -SWIPE_UP_THRESHOLD) {
-        s.triggered = true
+      if (!s || s.key !== key) return
+      const dy = Math.min(0, e.clientY - s.startY) // 只跟著上移
+      setDragState({ key, dy })
+    },
+    onPointerUp: (e: React.PointerEvent) => {
+      const s = swipeRef.current
+      if (!s) return
+      const dy = e.clientY - s.startY
+      swipeRef.current = null
+      setDragState(null)
+      if (dy < -SWIPE_UP_THRESHOLD) {
         swipeJustTriggeredRef.current = true
         onDiscard(s.tile)
         setSelectedKey(null)
       }
     },
-    onPointerUp: () => { swipeRef.current = null },
-    onPointerCancel: () => { swipeRef.current = null },
+    onPointerCancel: () => {
+      swipeRef.current = null
+      setDragState(null)
+    },
     onClick: () => {
       if (swipeJustTriggeredRef.current) {
         swipeJustTriggeredRef.current = false
@@ -155,6 +167,9 @@ export default function GameRoom({
       }
       if (isMyTurn) handleTileClick(tile, key)
     },
+    style: dragState?.key === key
+      ? { transform: `translateY(${dragState.dy}px)`, transition: 'none' as const }
+      : { transition: 'transform 150ms ease-out' as const },
   })
 
   // 將手牌分成「已排序的」＋「剛摸的一張」放右邊
