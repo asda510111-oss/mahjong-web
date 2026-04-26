@@ -909,6 +909,12 @@ export class Room {
     const dealerPenalty = (!dealerWins && this.consecutiveDealer > 0)
       ? (this.taiPt * (2 * this.consecutiveDealer + 1))
       : 0
+    // 胡莊：贏家不是莊家時，莊家被胡的那份額外多 1 台
+    //   自摸：莊家本來就要付 → 多付 1*taiPt
+    //   放炮且莊家是放炮者：放炮那份多付 1*taiPt
+    //   放炮但放炮者非莊家：莊家本來不付 → 不適用
+    const huDealerExtra = !dealerWins && (isZimo || loserSeat === this.dealerSeat)
+      ? this.taiPt : 0
 
     // 抽東：自摸抽 100；若累計仍未達上限，依「已抽次數」動態 trigger 強制抽
     //   底 300（cap 500，5 次）：N=0 南4(7), N=1 北1(12), N=2 北2(13), N=3 北3(14), N=4 北4(15)
@@ -924,19 +930,17 @@ export class Room {
     this.zimoRakeTotal += zimoRake
     for (const p of this.players) {
       if (p.seat === winnerSeat) {
-        // 贏家得分：基本分 + 若莊家不是贏家，莊家那份額外加連莊賠償
-        const base = isZimo ? pts * 3 - zimoRake : pts
-        const extra = dealerPenalty
-        this.addScore(p.id, base + extra)
+        // 贏家得分：基本分 + 胡莊額外 + 連莊賠償 - 抽東
+        const base = isZimo ? pts * 3 : pts
+        this.addScore(p.id, base + huDealerExtra + dealerPenalty - zimoRake)
       } else if (isZimo || p.seat === loserSeat) {
-        // 放炮者（或自摸時每家）扣基本分
-        this.addScore(p.id, -pts)
+        // 付款者：閒家付 pts；莊家因胡莊多付 huDealerExtra
+        let pay = pts
+        if (p.seat === this.dealerSeat && !dealerWins) pay += huDealerExtra
+        this.addScore(p.id, -pay)
       }
-      // 莊家被胡（非贏家也非放炮者）→ 單獨扣連莊台
-      if (!dealerWins && p.seat === this.dealerSeat && p.seat !== winnerSeat && p.seat !== loserSeat) {
-        this.addScore(p.id, -dealerPenalty)
-      } else if (!dealerWins && p.seat === this.dealerSeat && p.seat === loserSeat) {
-        // 莊家自己放炮：基本分已扣，再扣連莊台
+      // 莊家被胡（非贏家）→ 獨自扣連莊台（含莊家自己放炮的情況）
+      if (!dealerWins && p.seat === this.dealerSeat && p.seat !== winnerSeat) {
         this.addScore(p.id, -dealerPenalty)
       }
     }
