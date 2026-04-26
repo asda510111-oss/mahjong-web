@@ -567,6 +567,12 @@ input:focus { border-color: var(--accent); }
   line-height: 1;
 }
 .table-seat .seat-card .seat-name { font-size: 2rem; font-weight: 700; }
+.table-seat .seat-card .seat-account-score {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--accent);
+  line-height: 1;
+}
 .table-seat .seat-card .seat-sub { display: none; } /* 副資訊隱藏，只留 ID */
 /* 每家頭像移到該家棄牌區位置 + 自訂偏移（4 張棄牌） */
 .table-seat.pos-bottom .seat-card {

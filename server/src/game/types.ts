@@ -27,6 +27,7 @@ export interface PublicPlayerState {
   handCount: number
   melds: Meld[]
   discards: TileId[]
+  accountScore?: number  // 該玩家帳號的現有點數
 }
 
 // 輪到我打牌時，若能做動作會帶這個

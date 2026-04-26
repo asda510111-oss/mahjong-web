@@ -3,7 +3,7 @@ import type {
   PlayerInfo, RoomState, SeatIndex, ServerMessage, PublicPlayerState, ActionOptions,
 } from './game/types.js'
 import { buildFullWall, shuffle, getTileDef, type TileId } from './game/tiles.js'
-import { addScore as authAddScore } from './auth.js'
+import { addScore as authAddScore, getProfile as authGetProfile } from './auth.js'
 import {
   canHu, canPeng, canGangExposed, canGangConcealed, canGangAdded, canChi, calculateTai,
   type Meld,
@@ -1001,14 +1001,18 @@ export class Room {
   }
 
   private broadcastPublicState() {
-    const states: PublicPlayerState[] = this.players.map(p => ({
-      seat: p.seat,
-      handCount: (this.hands.get(p.id) ?? []).length,
-      melds: (this.melds.get(p.id) ?? []).filter(m => m.type !== 'flower').concat(
-        (this.melds.get(p.id) ?? []).filter(m => m.type === 'flower')
-      ),
-      discards: this.discards[p.seat] ?? [],
-    }))
+    const states: PublicPlayerState[] = this.players.map(p => {
+      const u = p.authedName ? authGetProfile(p.authedName) : null
+      return {
+        seat: p.seat,
+        handCount: (this.hands.get(p.id) ?? []).length,
+        melds: (this.melds.get(p.id) ?? []).filter(m => m.type !== 'flower').concat(
+          (this.melds.get(p.id) ?? []).filter(m => m.type === 'flower')
+        ),
+        discards: this.discards[p.seat] ?? [],
+        accountScore: u?.score,
+      }
+    })
     this.broadcast({ type: 'public_state', states, wallRemaining: this.wall.length })
   }
 }

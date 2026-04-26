@@ -35,6 +35,9 @@ export default function TableSeat({
           <div className="seat-name">
             {player.name}{player.isBot && ' 🤖'}
           </div>
+          {publicState?.accountScore !== undefined && (
+            <div className="seat-account-score">{publicState.accountScore} 點</div>
+          )}
           <div className="seat-sub">
             <span className="seat-wind">{SEAT_LABELS[seat]}{isDealer && ' 莊'}</span>
             {!isMe && <span className="muted"> · {handCount}張</span>}

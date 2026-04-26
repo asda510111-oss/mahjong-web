@@ -23,6 +23,7 @@ export interface RoomState {
 
 // 公開的玩家狀態：手牌數、副子、棄牌（不含具體手牌）
 export interface PublicPlayerState {
+  accountScore?: number  // 該玩家帳號的現有點數
   seat: SeatIndex
   handCount: number
   melds: Meld[]
