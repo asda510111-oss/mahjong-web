@@ -463,10 +463,10 @@ export default function GameRoom({
         <div className="table-center-info">
           <div className="center-round">{dealerLabel}</div>
           <div className="center-wall-num">{`餘${String(wallRemaining).padStart(2, '0')}`}</div>
-          <span className={`wind-corner wind-bl ${dealerSeat === 0 ? 'dealer' : ''}`}>東</span>
-          <span className={`wind-corner wind-br ${dealerSeat === 1 ? 'dealer' : ''}`}>南</span>
-          <span className={`wind-corner wind-tr ${dealerSeat === 2 ? 'dealer' : ''}`}>西</span>
-          <span className={`wind-corner wind-tl ${dealerSeat === 3 ? 'dealer' : ''}`}>北</span>
+          <span className={`wind-corner wind-bl ${dealerSeat === bottomSeat ? 'dealer' : ''}`}>{SEAT_LABELS[bottomSeat]}</span>
+          <span className={`wind-corner wind-br ${dealerSeat === rightSeat ? 'dealer' : ''}`}>{SEAT_LABELS[rightSeat]}</span>
+          <span className={`wind-corner wind-tr ${dealerSeat === topSeat ? 'dealer' : ''}`}>{SEAT_LABELS[topSeat]}</span>
+          <span className={`wind-corner wind-tl ${dealerSeat === leftSeat ? 'dealer' : ''}`}>{SEAT_LABELS[leftSeat]}</span>
           {/* 回合光條：當前回合那家風 → 下家風之間顯示金色閃爍光條 */}
           {currentTurn !== null && (
             <div className={`turn-light-bar bar-${['bottom','right','top','left'][currentTurn]}`} aria-hidden="true" />
