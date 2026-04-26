@@ -547,7 +547,7 @@ export default function GameRoom({
         </div>
       )}
       {/* 固定底部手牌 */}
-      <div className={`hand-fixed ${isMyTurn ? 'my-turn' : ''}`}>
+      <div className={`hand-fixed ${isMyTurn ? 'my-turn' : ''} ${dragState ? 'dragging' : ''}`}>
         <div className="hand-hint">
           {mySeat !== null && `你是 ${SEAT_LABELS[mySeat]}家`}
           {' · '}

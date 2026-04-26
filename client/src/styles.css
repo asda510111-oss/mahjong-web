@@ -1483,6 +1483,8 @@ input:focus { border-color: var(--accent); }
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
 }
+/* 拖曳出牌時暫時把整個手牌容器抬到最上層，讓被拖的牌能蓋過中央 UI */
+.hand-fixed.dragging { z-index: 9999; overflow: visible; }
 /* 倒數計時：放在手牌最右邊（剛摸牌的右側），顯示思考秒+基礎秒兩個數字 */
 /* 計時框（timer-frame）：白色長方形，置於下家副子區 */
 .table-wrapper { --timer-x: 411px; --timer-y: -166px; } /* 再上移 24px（0.4×60） */
