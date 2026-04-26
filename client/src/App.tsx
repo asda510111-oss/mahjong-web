@@ -145,6 +145,9 @@ export default function App() {
         case 'turn_timer':
           setTurnTimer({ seat: msg.seat, thinkMs: msg.thinkMs, baseMs: msg.baseMs, startAt: msg.startAt })
           break
+        case 'score_update':
+          setProfile((p) => p ? { ...p, score: msg.score } : p)
+          break
         case 'tile_drawn':
           if (msg.tile) {
             setMyHand((h) => [...h, msg.tile!])

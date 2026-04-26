@@ -98,6 +98,9 @@ export class Room {
         authAddScore(p.authedName, -100)
         this.firstLeaverPenalized = true
         console.log(`[Server] ${p.authedName} left mid-game, -100 score`)
+        // 推送新點數給離開者（主動 leave 時 socket 還在；斷線時送會 noop）
+        const profile = authGetProfile(p.authedName)
+        if (profile) this.sendTo(id, { type: 'score_update', score: profile.score })
       }
     }
     this.players = this.players.filter(p => p.id !== id)
