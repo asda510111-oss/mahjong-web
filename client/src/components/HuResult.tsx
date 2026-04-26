@@ -79,6 +79,11 @@ export default function HuResult({
           <div className="hu-row subtotal">
             <span>台數合計</span><span>{tai.total} 台 × {taiPt} = {taiPoints}</span>
           </div>
+          {isZimo && (
+            <div className="hu-row">
+              <span>(抽東)</span><span>-100</span>
+            </div>
+          )}
           <div className="hu-row total">
             <span>共</span><span>{points} 分</span>
           </div>

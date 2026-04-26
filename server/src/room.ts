@@ -907,10 +907,12 @@ export class Room {
       ? (this.taiPt * (2 * this.consecutiveDealer + 1))
       : 0
 
+    // 抽東：自摸時從贏家得分扣 100（固定金額，視為抽頭）
+    const zimoRake = isZimo ? 100 : 0
     for (const p of this.players) {
       if (p.seat === winnerSeat) {
         // 贏家得分：基本分 + 若莊家不是贏家，莊家那份額外加連莊賠償
-        const base = isZimo ? pts * 3 : pts
+        const base = isZimo ? pts * 3 - zimoRake : pts
         const extra = dealerPenalty
         this.addScore(p.id, base + extra)
       } else if (isZimo || p.seat === loserSeat) {
