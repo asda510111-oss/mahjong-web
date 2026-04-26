@@ -41,6 +41,7 @@ export default function App() {
     tai: TaiResult
     hand: TileId[]
     melds: Meld[]
+    zimoRake?: number
   }>(null)
   const [error, setError] = useState<string>('')
   const [notice, setNotice] = useState<string>('')
@@ -227,6 +228,7 @@ export default function App() {
               tai: msg.tai,
               hand: msg.winnerHand,
               melds: msg.winnerMelds,
+              zimoRake: msg.zimoRake,
             })
           }
           break
@@ -342,6 +344,7 @@ export default function App() {
           {...huResult}
           base={room?.base}
           taiPt={room?.taiPt}
+          zimoRake={huResult.zimoRake}
           onClose={() => setHuResult(null)}
         />
       )}

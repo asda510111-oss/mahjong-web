@@ -67,6 +67,8 @@ export class Room {
   lastDrawWasGang: boolean = false                // 剛剛補槓牌（給槓上自摸判定）
   isQiangGangInProgress: boolean = false          // 搶槓胡進行中（加槓時被搶胡）
   roundScores: Map<string, number> = new Map()
+  // 抽東累計（一場 4 圈 16 局內累加，達上限後自摸不再抽）
+  zimoRakeTotal: number = 0
   nextGameTimer: NodeJS.Timeout | null = null
 
   constructor(code: string) { this.code = code }
@@ -137,6 +139,7 @@ export class Room {
     this.gameIndex = 0
     this.consecutiveDealer = 0
     this.dealerSeat = 0 // 東家開局
+    this.zimoRakeTotal = 0
     this.roundScores.clear()
     for (const p of this.players) this.roundScores.set(p.id, 0)
     if (this.nextGameTimer) clearTimeout(this.nextGameTimer)
@@ -907,8 +910,11 @@ export class Room {
       ? (this.taiPt * (2 * this.consecutiveDealer + 1))
       : 0
 
-    // 抽東：自摸時從贏家得分扣 100（固定金額，視為抽頭）
-    const zimoRake = isZimo ? 100 : 0
+    // 抽東：每次自摸抽 100，整場累計上限（底 300→500、底 200→400），達上限後不再抽
+    const zimoRakeCap = this.base === 300 ? 500 : 400
+    const zimoRakeRemaining = Math.max(0, zimoRakeCap - this.zimoRakeTotal)
+    const zimoRake = isZimo ? Math.min(100, zimoRakeRemaining) : 0
+    this.zimoRakeTotal += zimoRake
     for (const p of this.players) {
       if (p.seat === winnerSeat) {
         // 贏家得分：基本分 + 若莊家不是贏家，莊家那份額外加連莊賠償
@@ -937,6 +943,7 @@ export class Room {
       winnerHand: hand,
       winnerMelds: melds,
       scores: this.buildScoresPayload(),
+      zimoRake,
     })
     // 結算後重置搶槓標記與槓上自摸標記
     this.isQiangGangInProgress = false

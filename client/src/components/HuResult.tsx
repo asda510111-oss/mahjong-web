@@ -15,12 +15,13 @@ interface Props {
   melds: Meld[]
   base?: number
   taiPt?: number
+  zimoRake?: number
   onClose: () => void
 }
 
 export default function HuResult({
   winnerSeat, winnerName, loserSeat, loserName, winTile, tai, hand, melds,
-  base = 200, taiPt = 50,
+  base = 200, taiPt = 50, zimoRake = 0,
   onClose,
 }: Props) {
   // 將手牌排序但把胡牌那張放到最右
@@ -79,9 +80,9 @@ export default function HuResult({
           <div className="hu-row subtotal">
             <span>台數合計</span><span>{tai.total} 台 × {taiPt} = {taiPoints}</span>
           </div>
-          {isZimo && (
+          {isZimo && zimoRake > 0 && (
             <div className="hu-row">
-              <span>(抽東)</span><span>-100</span>
+              <span>(抽東)</span><span>-{zimoRake}</span>
             </div>
           )}
           <div className="hu-row total">

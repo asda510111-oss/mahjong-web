@@ -76,5 +76,5 @@ export type ServerMessage =
   | { type: 'public_state'; states: PublicPlayerState[]; wallRemaining: number }
   | { type: 'action_options'; options: ActionOptions }         // 給你動作選項
   | { type: 'action_taken'; seat: SeatIndex; action: 'hu' | 'peng' | 'gang' | 'chi' | 'pass' }
-  | { type: 'game_end'; reason: 'draw' | 'hu'; winnerSeat?: SeatIndex; loserSeat?: SeatIndex; winTile?: TileId; tai?: TaiResult; winnerHand?: TileId[]; winnerMelds?: Meld[]; scores?: Array<{ seat: SeatIndex; name: string; score: number }> }
+  | { type: 'game_end'; reason: 'draw' | 'hu'; winnerSeat?: SeatIndex; loserSeat?: SeatIndex; winTile?: TileId; tai?: TaiResult; winnerHand?: TileId[]; winnerMelds?: Meld[]; scores?: Array<{ seat: SeatIndex; name: string; score: number }>; zimoRake?: number }
   | { type: 'turn_timer'; seat: SeatIndex; thinkMs: number; baseMs: number; startAt: number }
