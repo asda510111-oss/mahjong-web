@@ -189,12 +189,13 @@ export default function GameRoom({
     sortedHand = sortHand(myHand)
   }
 
-  // 推算出「目前懸空」的牌 id —— 用來在中央高光相同牌
+  // 推算出「目前懸空」的牌 id —— 用來在中央高光相同牌；拖曳中也算選中
+  const activeKey = dragState?.key ?? selectedKey
   let selectedTileId: TileId | null = null
-  if (selectedKey) {
-    if (selectedKey === 'drawn' && drawnTile) selectedTileId = drawnTile
-    else if (selectedKey.startsWith('s-')) {
-      const idx = parseInt(selectedKey.slice(2), 10)
+  if (activeKey) {
+    if (activeKey === 'drawn' && drawnTile) selectedTileId = drawnTile
+    else if (activeKey.startsWith('s-')) {
+      const idx = parseInt(activeKey.slice(2), 10)
       if (idx >= 0 && idx < sortedHand.length) selectedTileId = sortedHand[idx]
     }
   }
