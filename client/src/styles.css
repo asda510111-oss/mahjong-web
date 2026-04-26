@@ -1603,6 +1603,12 @@ input:focus { border-color: var(--accent); }
   min-width: 4px;
 }
 
+/* 手牌包裝層：用於上滑出牌偵測；touch-action:none 阻止瀏覽器把上滑當成捲動 */
+.hand-tile-wrap {
+  display: inline-flex;
+  touch-action: none;
+}
+
 /* 聽牌預覽系統全部移除 */
 
 /* 聽牌預覽區（ting-preview-zone）：第一行「聽」+ 第二行聽的牌（1.5× 棄牌大小 = 66×90） */

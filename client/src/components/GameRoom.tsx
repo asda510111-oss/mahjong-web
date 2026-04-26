@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import Tile from './Tile'
 import TableSeat from './TableSeat'
 import CenterArea from './CenterArea'
@@ -123,6 +123,28 @@ export default function GameRoom({
       setSelectedKey(key)
     }
   }
+
+  // 上滑出牌：按住手牌往上拖超過 SWIPE_UP_THRESHOLD 即丟出（與點兩次共存）
+  const SWIPE_UP_THRESHOLD = 60
+  const swipeRef = useRef<{ tile: TileId; key: string; startY: number; triggered: boolean } | null>(null)
+  const tileSwipeProps = (tile: TileId, key: string) => ({
+    onPointerDown: (e: React.PointerEvent) => {
+      if (!isMyTurn) return
+      swipeRef.current = { tile, key, startY: e.clientY, triggered: false }
+      try { (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId) } catch {}
+    },
+    onPointerMove: (e: React.PointerEvent) => {
+      const s = swipeRef.current
+      if (!s || s.triggered || s.key !== key) return
+      if (e.clientY - s.startY < -SWIPE_UP_THRESHOLD) {
+        s.triggered = true
+        onDiscard(s.tile)
+        setSelectedKey(null)
+      }
+    },
+    onPointerUp: () => { swipeRef.current = null },
+    onPointerCancel: () => { swipeRef.current = null },
+  })
 
   // 將手牌分成「已排序的」＋「剛摸的一張」放右邊
   let sortedHand: TileId[]
@@ -503,31 +525,33 @@ export default function GameRoom({
           {mySeat !== null && `你是 ${SEAT_LABELS[mySeat]}家`}
           {' · '}
           手牌 {sortedHand.length + (drawnTile ? 1 : 0)} 張
-          {isMyTurn && ' · 點擊打出'}
+          {isMyTurn && ' · 點兩次或上滑打出'}
         </div>
         <div className="hand">
           {sortedHand.map((t, idx) => {
             const key = `s-${idx}`
             return (
-              <Tile
-                key={`${t}-${idx}`}
-                id={t}
-                onClick={isMyTurn ? () => handleTileClick(t, key) : undefined}
-                disabled={!isMyTurn}
-                selected={selectedKey === key}
-              />
+              <span key={`${t}-${idx}`} className="hand-tile-wrap" {...tileSwipeProps(t, key)}>
+                <Tile
+                  id={t}
+                  onClick={isMyTurn ? () => handleTileClick(t, key) : undefined}
+                  disabled={!isMyTurn}
+                  selected={selectedKey === key}
+                />
+              </span>
             )
           })}
           {drawnTile && (
             <>
               <div className="hand-gap" aria-hidden="true" />
-              <Tile
-                key={`drawn-${drawnTile}`}
-                id={drawnTile}
-                onClick={isMyTurn ? () => handleTileClick(drawnTile!, 'drawn') : undefined}
-                disabled={!isMyTurn}
-                selected={selectedKey === 'drawn'}
-              />
+              <span key={`drawn-${drawnTile}`} className="hand-tile-wrap" {...tileSwipeProps(drawnTile, 'drawn')}>
+                <Tile
+                  id={drawnTile}
+                  onClick={isMyTurn ? () => handleTileClick(drawnTile!, 'drawn') : undefined}
+                  disabled={!isMyTurn}
+                  selected={selectedKey === 'drawn'}
+                />
+              </span>
             </>
           )}
           {sortedHand.length === 0 && !drawnTile && <span className="muted">（尚未發牌）</span>}
