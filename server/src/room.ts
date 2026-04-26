@@ -67,8 +67,10 @@ export class Room {
   lastDrawWasGang: boolean = false                // 剛剛補槓牌（給槓上自摸判定）
   isQiangGangInProgress: boolean = false          // 搶槓胡進行中（加槓時被搶胡）
   roundScores: Map<string, number> = new Map()
-  // 抽東累計（一場 4 圈 16 局內累加，達上限後自摸不再抽）
+  // 抽東累計（一場 4 圈 16 局內累加，達上限後不再抽）
   zimoRakeTotal: number = 0
+  // 強制抽東模式：前 11 局無人自摸時觸發，之後每局都抽（自摸則替代）直到 cap
+  forceRakeMode: boolean = false
   nextGameTimer: NodeJS.Timeout | null = null
 
   constructor(code: string) { this.code = code }
@@ -140,6 +142,7 @@ export class Room {
     this.consecutiveDealer = 0
     this.dealerSeat = 0 // 東家開局
     this.zimoRakeTotal = 0
+    this.forceRakeMode = false
     this.roundScores.clear()
     for (const p of this.players) this.roundScores.set(p.id, 0)
     if (this.nextGameTimer) clearTimeout(this.nextGameTimer)
@@ -151,6 +154,10 @@ export class Room {
   private dealNewGame() {
     if (this.players.length !== 4) return
     this.phase = 'playing'
+    // 強制抽東觸發：首次進入第 12 局（gameIndex >= 11）時若仍無人自摸，啟動
+    if (this.gameIndex >= 11 && this.zimoRakeTotal === 0) {
+      this.forceRakeMode = true
+    }
     this.wall = shuffle(buildFullWall())
     this.discards = { 0: [], 1: [], 2: [], 3: [] }
     this.hands.clear()
@@ -910,10 +917,10 @@ export class Room {
       ? (this.taiPt * (2 * this.consecutiveDealer + 1))
       : 0
 
-    // 抽東：每次自摸抽 100，整場累計上限（底 300→500、底 200→400），達上限後不再抽
+    // 抽東：自摸或強制抽東模式時抽 100，整場累計上限（底 300→500、底 200→400）
     const zimoRakeCap = this.base === 300 ? 500 : 400
     const zimoRakeRemaining = Math.max(0, zimoRakeCap - this.zimoRakeTotal)
-    const zimoRake = isZimo ? Math.min(100, zimoRakeRemaining) : 0
+    const zimoRake = (isZimo || this.forceRakeMode) ? Math.min(100, zimoRakeRemaining) : 0
     this.zimoRakeTotal += zimoRake
     for (const p of this.players) {
       if (p.seat === winnerSeat) {
