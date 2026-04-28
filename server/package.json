@@ -17,7 +17,8 @@
     "delete-user": "tsx scripts/delete-user.ts",
     "set-avatar": "tsx scripts/set-avatar.ts",
     "set-password": "tsx scripts/set-password.ts",
-    "rename-user": "tsx scripts/rename-user.ts"
+    "rename-user": "tsx scripts/rename-user.ts",
+    "randomize-passwords": "tsx scripts/randomize-passwords.ts"
   },
   "dependencies": {
     "ws": "^8.18.0"

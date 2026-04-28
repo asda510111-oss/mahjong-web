@@ -1,13 +1,5 @@
 {
   "users": {
-    "阿明": {
-      "name": "阿明",
-      "hash": "1516d74eb1136198083bd7aa8e6a9b4144dd5d36b26b0aa902ee9a38fa817e9b8ce1a5111ba112184645a83efd1852bea1483fe2e87b9826d8db539ec598df1d",
-      "salt": "3489e3f586123b94b2c68c36ae9c52a1",
-      "avatar": 0,
-      "score": 10000,
-      "createdAt": 1777053820773
-    },
     "玩家03": {
       "name": "玩家03",
       "hash": "f8a8b82fc72cba5f6688c4f13da253e11cbc0807af1160a5eb6b6c7f877a43123089836dcae8145bc4b29711d52e6120e36628e989fdd39993301e68b0e87314",
@@ -15,6 +7,22 @@
       "avatar": 1,
       "score": 10000,
       "createdAt": 1777055523748
+    },
+    "文林": {
+      "name": "文林",
+      "hash": "c3e894984f923c75ab98c6a6ff7e9e2eabc4ed3a8c4c55c575ab3674a70dc31fa3187785d45cfe2025bc03b09f35da72a602e58ff626098cfa2431354d83a035",
+      "salt": "79947923948028b814d311ff7a699c57",
+      "avatar": 0,
+      "score": 10000,
+      "createdAt": 1777055523186
+    },
+    "阿志": {
+      "name": "阿志",
+      "hash": "1516d74eb1136198083bd7aa8e6a9b4144dd5d36b26b0aa902ee9a38fa817e9b8ce1a5111ba112184645a83efd1852bea1483fe2e87b9826d8db539ec598df1d",
+      "salt": "3489e3f586123b94b2c68c36ae9c52a1",
+      "avatar": 0,
+      "score": 10000,
+      "createdAt": 1777053820773
     },
     "玩家04": {
       "name": "玩家04",
@@ -151,14 +159,6 @@
       "avatar": 2,
       "score": 10000,
       "createdAt": 1777055533467
-    },
-    "文林": {
-      "name": "文林",
-      "hash": "c3e894984f923c75ab98c6a6ff7e9e2eabc4ed3a8c4c55c575ab3674a70dc31fa3187785d45cfe2025bc03b09f35da72a602e58ff626098cfa2431354d83a035",
-      "salt": "79947923948028b814d311ff7a699c57",
-      "avatar": 0,
-      "score": 10000,
-      "createdAt": 1777055523186
     }
   }
 }
