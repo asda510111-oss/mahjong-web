@@ -74,6 +74,8 @@ export class Room {
   nextGameTimer: NodeJS.Timeout | null = null
   // 結算畫面已按關閉的玩家集合（每局重置，bot 自動加入）
   resultClosed: Set<string> = new Set()
+  // Bot 的 in-memory 點數（每個 bot id → 分數），起始 10000，不持久化
+  botScores: Map<string, number> = new Map()
 
   constructor(code: string) { this.code = code }
 
@@ -88,6 +90,7 @@ export class Room {
     }
     this.players.push(p)
     this.melds.set(p.id, [])
+    if (p.isBot) this.botScores.set(p.id, 10000)
     if (!this.hostId) this.hostId = p.id
     return true
   }
@@ -1000,9 +1003,12 @@ export class Room {
 
   private addScore(pid: string, pts: number) {
     this.roundScores.set(pid, (this.roundScores.get(pid) ?? 0) + pts)
-    // 同時寫入持久化帳號（若有登入）
+    // 同時寫入持久化帳號（若有登入）；bot 累計到 in-memory botScores
     const p = this.getPlayer(pid)
     if (p?.authedName) authAddScore(p.authedName, pts)
+    if (p?.isBot) {
+      this.botScores.set(pid, (this.botScores.get(pid) ?? 10000) + pts)
+    }
   }
 
   // 本局結束 → 決定下一局 / 結束整圈
@@ -1086,8 +1092,8 @@ export class Room {
           (this.melds.get(p.id) ?? []).filter(m => m.type === 'flower')
         ),
         discards: this.discards[p.seat] ?? [],
-        // bot 給固定 10000（測試用，不持久化）；登入玩家用帳號 score
-        accountScore: p.isBot ? 10000 : u?.score,
+        // bot 用 in-memory 分數（起始 10000，每局累計，不持久化）；登入玩家用帳號 score
+        accountScore: p.isBot ? (this.botScores.get(p.id) ?? 10000) : u?.score,
       }
     })
     this.broadcast({ type: 'public_state', states, wallRemaining: this.wall.length })
