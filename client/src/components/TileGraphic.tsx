@@ -149,38 +149,7 @@ function Bamboo({ x, y, len, width, red, angle = 0 }: { x: number; y: number; le
   )
 }
 
-// 二條專用：兩個垂直堆疊的「啞鈴」形（綠色描邊白底，三球兩段棍）
-function SouTwoDumbbell({ cx, cy }: { cx: number; cy: number }) {
-  const stroke = '#2e7d32'
-  const sw = 2
-  const r = 4.6
-  const stickW = 4
-  // 三球的 y 位置（上、中、下），相對 cy
-  const yTop = cy - 11
-  const yMid = cy
-  const yBot = cy + 11
-  return (
-    <g fill="#fdfaec" stroke={stroke} strokeWidth={sw} strokeLinejoin="round">
-      {/* 兩段連接棍 */}
-      <rect x={cx - stickW / 2} y={yTop + r - 0.5} width={stickW} height={yMid - yTop - 2 * r + 1} />
-      <rect x={cx - stickW / 2} y={yMid + r - 0.5} width={stickW} height={yBot - yMid - 2 * r + 1} />
-      {/* 三顆球（上、中、下）*/}
-      <circle cx={cx} cy={yTop} r={r} />
-      <circle cx={cx} cy={yMid} r={r} />
-      <circle cx={cx} cy={yBot} r={r} />
-    </g>
-  )
-}
-
 function SouGraphic({ rank }: { rank: number }) {
-  if (rank === 2) {
-    return (
-      <g>
-        <SouTwoDumbbell cx={30} cy={22} />
-        <SouTwoDumbbell cx={30} cy={58} />
-      </g>
-    )
-  }
   if (rank === 1) {
     // 保留原本的卡通雀鳥
     return (
@@ -228,7 +197,7 @@ function SouGraphic({ rank }: { rank: number }) {
   return (
     <g>
       {positions.map(([x, y], i) => {
-        let useRed = rank === 4
+        let useRed = rank === 4 || rank === 2
         if (rank === 7) useRed = i === 0  // 最上方那根紅
         if (rank === 5) useRed = i === 2  // 中間那根紅
         return (
