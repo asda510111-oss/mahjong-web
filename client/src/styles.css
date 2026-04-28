@@ -572,6 +572,23 @@ input:focus { border-color: var(--accent); }
   font-weight: 700;
   color: var(--accent);
   line-height: 1;
+  position: relative;
+  display: inline-block;
+}
+/* 結算 delta 飄字：白色 +N / -N 從現有點數右側升起、淡出 */
+.score-delta {
+  display: inline-block;
+  margin-left: 0.4em;
+  color: #ffffff;
+  font-weight: 800;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.6), 0 0 6px rgba(255,255,255,0.35);
+  animation: score-delta-pop 1.8s ease-out forwards;
+}
+@keyframes score-delta-pop {
+  0%   { transform: translateY(0)     scale(1.0); opacity: 0; }
+  15%  { transform: translateY(-2px)  scale(1.15); opacity: 1; }
+  70%  { transform: translateY(-14px) scale(1.0); opacity: 1; }
+  100% { transform: translateY(-26px) scale(0.95); opacity: 0; }
 }
 /* 上/下/對家：姓名與點數改為兩行；自家保持單行 */
 .table-seat:not(.me) .seat-card .seat-text {

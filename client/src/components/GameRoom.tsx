@@ -34,6 +34,7 @@ interface Props {
   gameIndex: number
   consecutiveDealer: number
   roundScores: Array<{ seat: SeatIndex; name: string; score: number }> | null
+  scoreDeltas: Array<{ seat: SeatIndex; delta: number }> | null
   onLeave: () => void
   onAddBot: () => void
   onStart: () => void
@@ -46,7 +47,7 @@ const SEAT_AVATARS = [catAvatar, pandaAvatar, foxAvatar, bearAvatar]
 export default function GameRoom({
   room, myPlayerId, mySeat, myHand, discards, publicStates = [], wallRemaining,
   currentTurn, dealerSeat, isMyTurn, actionOptions, lastDrawn, lastDiscardSeat, turnTimer,
-  gameIndex, consecutiveDealer, roundScores,
+  gameIndex, consecutiveDealer, roundScores, scoreDeltas,
   onLeave, onAddBot, onStart, onDiscard, onAction,
 }: Props) {
   const isHost = room.hostId === myPlayerId
@@ -372,6 +373,7 @@ export default function GameRoom({
         isTurn={currentTurn === seat}
         isMe={seat === mySeat}
         score={getScore(seat)}
+        delta={scoreDeltas?.find(d => d.seat === seat)?.delta ?? null}
       />
     )
   }

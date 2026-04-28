@@ -933,6 +933,9 @@ export class Room {
     const huDealerExtra = !dealerWins && (isZimo || loserSeat === this.dealerSeat)
       ? this.taiPt : 0
 
+    // 記錄結算前各家累計分（後面減 before 算本局 delta，給前端動畫）
+    const beforeScore = new Map<SeatIndex, number>()
+    for (const p of this.players) beforeScore.set(p.seat, this.roundScores.get(p.id) ?? 0)
     // 抽東：自摸抽 100；若累計仍未達上限，依「已抽次數」動態 trigger 強制抽
     //   底 300（cap 500，5 次）：N=0 南4(7), N=1 北1(12), N=2 北2(13), N=3 北3(14), N=4 北4(15)
     //   底 200（cap 400，4 次）：N=0 北1(12), N=1 北2(13), N=2 北3(14), N=3 北4(15)
@@ -961,6 +964,13 @@ export class Room {
         this.addScore(p.id, -dealerPenalty)
       }
     }
+    // 算本局每家 delta（給前端動畫顯示 +N/-N）
+    const deltas = this.players.map(p => ({
+      seat: p.seat,
+      delta: (this.roundScores.get(p.id) ?? 0) - (beforeScore.get(p.seat) ?? 0),
+    }))
+    // 結算後立刻廣播 public_state，讓 TableSeat.accountScore 同步更新
+    this.broadcastPublicState()
     this.broadcast({
       type: 'game_end',
       reason: 'hu',
@@ -972,6 +982,7 @@ export class Room {
       winnerMelds: melds,
       scores: this.buildScoresPayload(),
       zimoRake,
+      deltas,
     })
     // 結算後重置搶槓標記與槓上自摸標記
     this.isQiangGangInProgress = false
@@ -1035,11 +1046,12 @@ export class Room {
     }
     this.nextGameAdvance = advance
     if (this.nextGameTimer) clearTimeout(this.nextGameTimer)
+    // 動畫約 2 秒後 + 5 秒等待 = 7 秒上限
     this.nextGameTimer = setTimeout(() => {
       this.nextGameAdvance = null
       this.nextGameTimer = null
       advance()
-    }, 10000)
+    }, 7000)
     // 若全部都是 bot（人類已全部離開）則立即觸發
     this.tryAdvanceIfAllClosed()
   }

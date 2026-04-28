@@ -30,6 +30,8 @@ export default function App() {
   const [turnTimer, setTurnTimer] = useState<null | { seat: SeatIndex; thinkMs: number; baseMs: number; startAt: number }>(null)
   const [gameIndex, setGameIndex] = useState<number>(0)
   const [consecutiveDealer, setConsecutiveDealer] = useState<number>(0)
+  // 本局得失分（用於 TableSeat 飄字動畫，game_end 時設定，下一局 game_start 重置）
+  const [scoreDeltas, setScoreDeltas] = useState<Array<{ seat: SeatIndex; delta: number }> | null>(null)
   const [roundScores, setRoundScores] = useState<Array<{ seat: SeatIndex; name: string; score: number }> | null>(null)
   const [roundEnd, setRoundEnd] = useState<null | { scores: Array<{ seat: SeatIndex; name: string; score: number }> }>(null)
   const [huResult, setHuResult] = useState<null | {
@@ -126,6 +128,7 @@ export default function App() {
           setDealerSeat(msg.dealerSeat)
           setConsecutiveDealer(msg.consecutiveDealer)
           setRoundEnd(null)
+          setScoreDeltas(null)
           setNotice(`第 ${msg.gameIndex + 1} 局開始！`)
           setTimeout(() => setNotice(''), 2000)
           break
@@ -216,6 +219,7 @@ export default function App() {
           setCurrentTurn(null)
           setActionOptions(null)
           if (msg.scores) setRoundScores(msg.scores)
+          if (msg.deltas) setScoreDeltas(msg.deltas)
           if (msg.reason === 'draw') {
             setNotice('流局')
           } else if (msg.winnerSeat !== undefined && msg.tai && msg.winnerHand && msg.winnerMelds && msg.winTile) {
@@ -298,6 +302,7 @@ export default function App() {
           gameIndex={gameIndex}
           consecutiveDealer={consecutiveDealer}
           roundScores={roundScores}
+          scoreDeltas={scoreDeltas}
           currentTurn={currentTurn}
           dealerSeat={dealerSeat}
           isMyTurn={isMyTurn}

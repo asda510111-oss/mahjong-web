@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import type { PublicPlayerState, PlayerInfo, SeatIndex } from '../game/types'
 import { SEAT_LABELS } from '../game/types'
 import catAvatar from '../assets/avatars/cat.svg'
@@ -16,16 +17,28 @@ interface Props {
   isTurn: boolean
   isMe: boolean
   score: number | null
+  delta?: number | null  // 本局得失分（觸發飄字動畫）
 }
 
 const SEAT_AVATARS = [catAvatar, pandaAvatar, foxAvatar, bearAvatar] as const
 const SEAT_AVATAR_ALT = ['貓', '熊貓', '狐狸', '熊'] as const
 
 export default function TableSeat({
-  position, player, seat, publicState, isDealer, isTurn, isMe, score,
+  position, player, seat, publicState, isDealer, isTurn, isMe, score, delta = null,
 }: Props) {
   const handCount = publicState?.handCount ?? 0
   const avatar = SEAT_AVATARS[seat]
+  // delta 飄字動畫：當 delta 變化時顯示一段時間後消失
+  const [showDelta, setShowDelta] = useState<number | null>(null)
+  useEffect(() => {
+    if (delta === null || delta === 0) {
+      setShowDelta(null)
+      return
+    }
+    setShowDelta(delta)
+    const t = setTimeout(() => setShowDelta(null), 1800)
+    return () => clearTimeout(t)
+  }, [delta])
 
   return (
     <div className={`table-seat pos-${position} ${isTurn ? 'turn' : ''} ${isMe ? 'me' : ''}`}>
@@ -36,7 +49,14 @@ export default function TableSeat({
             {player.name}{player.isBot && ' 🤖'}
           </div>
           {publicState?.accountScore !== undefined && (
-            <div className="seat-account-score">{publicState.accountScore} 點</div>
+            <div className="seat-account-score">
+              {publicState.accountScore} 點
+              {showDelta !== null && (
+                <span key={showDelta} className={`score-delta ${showDelta >= 0 ? 'pos' : 'neg'}`}>
+                  {showDelta >= 0 ? '+' : ''}{showDelta}
+                </span>
+              )}
+            </div>
           )}
           <div className="seat-sub">
             <span className="seat-wind">{SEAT_LABELS[seat]}{isDealer && ' 莊'}</span>
