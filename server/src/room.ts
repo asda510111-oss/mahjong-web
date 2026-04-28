@@ -713,7 +713,7 @@ export class Room {
       if (!t) {
         this.dealerKeepNext = true // 流局連莊
         this.broadcast({ type: 'game_end', reason: 'draw', scores: this.buildScoresPayload() })
-        this.scheduleNextGame()
+        this.scheduleNextGame({ isDraw: true })
         this.broadcast({ type: 'room_update', room: this.toState() })
         return
       }
@@ -728,7 +728,7 @@ export class Room {
           if (!rep) {
             this.dealerKeepNext = true // 流局連莊
             this.broadcast({ type: 'game_end', reason: 'draw', scores: this.buildScoresPayload() })
-            this.scheduleNextGame()
+            this.scheduleNextGame({ isDraw: true })
             return
           }
           if (!getTileDef(rep).isFlower) break
@@ -1012,7 +1012,7 @@ export class Room {
   }
 
   // 本局結束 → 決定下一局 / 結束整圈
-  private scheduleNextGame() {
+  private scheduleNextGame(opts?: { isDraw?: boolean }) {
     this.stopTurnTimer()
     for (const pid of this.responseTimerIds.keys()) this.clearResponseTimer(pid)
     this.responseStartAt.clear()
@@ -1037,10 +1037,6 @@ export class Room {
       return
     }
 
-    // 兩階段：
-    //   階段 1（等四家關 HuResult，最多 7 秒）→ 通知 client 開始跑分數動畫
-    //   階段 2（動畫 ~2 秒 + 等 5 秒，固定 7 秒）→ 真正進下一局
-    this.resultClosed = new Set(this.players.filter(p => p.isBot).map(p => p.id))
     const advance = () => {
       if (this.players.length !== 4) return
       if (willKeep) {
@@ -1052,6 +1048,21 @@ export class Room {
       }
       this.dealNewGame()
     }
+
+    // 流局：跳過 HuResult 等待與動畫，固定 3 秒後直接進下一局
+    if (opts?.isDraw) {
+      if (this.nextGameTimer) clearTimeout(this.nextGameTimer)
+      this.nextGameTimer = setTimeout(() => {
+        this.nextGameTimer = null
+        advance()
+      }, 3000)
+      return
+    }
+
+    // 胡牌：兩階段
+    //   階段 1（等四家關 HuResult，最多 10 秒）→ 通知 client 開始跑分數動畫
+    //   階段 2（動畫 ~2 秒 + 等 5 秒，固定 7 秒）→ 真正進下一局
+    this.resultClosed = new Set(this.players.filter(p => p.isBot).map(p => p.id))
     const startAnimationPhase = () => {
       this.broadcast({ type: 'result_closed_all' })
       if (this.nextGameTimer) clearTimeout(this.nextGameTimer)
