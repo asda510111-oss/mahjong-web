@@ -1066,7 +1066,7 @@ export class Room {
       this.nextGameAdvance = null
       this.nextGameTimer = null
       startAnimationPhase()
-    }, 7000)
+    }, 10000)
     // 若全部都是 bot（人類已全部離開）則立即進階段 2
     this.tryAdvanceIfAllClosed()
   }

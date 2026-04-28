@@ -25,12 +25,12 @@ export default function HuResult({
   base = 200, taiPt = 50, zimoRake = 0,
   onClose,
 }: Props) {
-  // 7 秒倒數（與 server timer 同步），歸零自動關閉
-  const [secondsLeft, setSecondsLeft] = useState(7)
+  // 10 秒倒數（與 server 階段 1 timer 同步），歸零自動關閉
+  const [secondsLeft, setSecondsLeft] = useState(10)
   useEffect(() => {
     const startAt = Date.now()
     const tick = setInterval(() => {
-      const left = Math.max(0, 7 - Math.floor((Date.now() - startAt) / 1000))
+      const left = Math.max(0, 10 - Math.floor((Date.now() - startAt) / 1000))
       setSecondsLeft(left)
       if (left <= 0) {
         clearInterval(tick)
