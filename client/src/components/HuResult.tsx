@@ -105,10 +105,7 @@ export default function HuResult({
           </div>
         </div>
 
-        <div className="hu-close-row">
-          <span className="hu-countdown" aria-label={`${secondsLeft} 秒後自動關閉`}>{secondsLeft}s</span>
-          <button className="hu-close" onClick={onClose}>關閉</button>
-        </div>
+        <button className="hu-close" onClick={onClose}>關閉 ({secondsLeft})</button>
       </div>
     </div>
   )
