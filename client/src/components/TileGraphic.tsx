@@ -197,7 +197,7 @@ function SouGraphic({ rank }: { rank: number }) {
   return (
     <g>
       {positions.map(([x, y], i) => {
-        let useRed = rank === 4 || rank === 2
+        let useRed = rank === 4
         if (rank === 7) useRed = i === 0  // 最上方那根紅
         if (rank === 5) useRed = i === 2  // 中間那根紅
         return (
