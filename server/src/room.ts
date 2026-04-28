@@ -1037,7 +1037,9 @@ export class Room {
       return
     }
 
-    // 結算畫面：等四家都按關閉 OR 10 秒上限後進下一局；bot 自動視為已關閉
+    // 兩階段：
+    //   階段 1（等四家關 HuResult，最多 7 秒）→ 通知 client 開始跑分數動畫
+    //   階段 2（動畫 ~2 秒 + 等 5 秒，固定 7 秒）→ 真正進下一局
     this.resultClosed = new Set(this.players.filter(p => p.isBot).map(p => p.id))
     const advance = () => {
       if (this.players.length !== 4) return
@@ -1050,15 +1052,22 @@ export class Room {
       }
       this.dealNewGame()
     }
-    this.nextGameAdvance = advance
+    const startAnimationPhase = () => {
+      this.broadcast({ type: 'result_closed_all' })
+      if (this.nextGameTimer) clearTimeout(this.nextGameTimer)
+      this.nextGameTimer = setTimeout(() => {
+        this.nextGameTimer = null
+        advance()
+      }, 7000)
+    }
+    this.nextGameAdvance = startAnimationPhase
     if (this.nextGameTimer) clearTimeout(this.nextGameTimer)
-    // 動畫約 2 秒後 + 5 秒等待 = 7 秒上限
     this.nextGameTimer = setTimeout(() => {
       this.nextGameAdvance = null
       this.nextGameTimer = null
-      advance()
+      startAnimationPhase()
     }, 7000)
-    // 若全部都是 bot（人類已全部離開）則立即觸發
+    // 若全部都是 bot（人類已全部離開）則立即進階段 2
     this.tryAdvanceIfAllClosed()
   }
 

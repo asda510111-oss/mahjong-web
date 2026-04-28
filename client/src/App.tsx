@@ -30,8 +30,9 @@ export default function App() {
   const [turnTimer, setTurnTimer] = useState<null | { seat: SeatIndex; thinkMs: number; baseMs: number; startAt: number }>(null)
   const [gameIndex, setGameIndex] = useState<number>(0)
   const [consecutiveDealer, setConsecutiveDealer] = useState<number>(0)
-  // 本局得失分（用於 TableSeat 飄字動畫，game_end 時設定，下一局 game_start 重置）
+  // 本局得失分（用於 TableSeat 飄字動畫，等四家關 HuResult / 倒數結束才觸發）
   const [scoreDeltas, setScoreDeltas] = useState<Array<{ seat: SeatIndex; delta: number }> | null>(null)
+  const pendingDeltasRef = useRef<Array<{ seat: SeatIndex; delta: number }> | null>(null)
   const [roundScores, setRoundScores] = useState<Array<{ seat: SeatIndex; name: string; score: number }> | null>(null)
   const [roundEnd, setRoundEnd] = useState<null | { scores: Array<{ seat: SeatIndex; name: string; score: number }> }>(null)
   const [huResult, setHuResult] = useState<null | {
@@ -129,6 +130,7 @@ export default function App() {
           setConsecutiveDealer(msg.consecutiveDealer)
           setRoundEnd(null)
           setScoreDeltas(null)
+          pendingDeltasRef.current = null
           setNotice(`第 ${msg.gameIndex + 1} 局開始！`)
           setTimeout(() => setNotice(''), 2000)
           break
@@ -150,6 +152,13 @@ export default function App() {
           break
         case 'score_update':
           setProfile((p) => p ? { ...p, score: msg.score } : p)
+          break
+        case 'result_closed_all':
+          // 四家都關了 HuResult（或倒數完）→ 開始播放分數動畫
+          if (pendingDeltasRef.current) {
+            setScoreDeltas(pendingDeltasRef.current)
+            pendingDeltasRef.current = null
+          }
           break
         case 'tile_drawn':
           if (msg.tile) {
@@ -219,7 +228,8 @@ export default function App() {
           setCurrentTurn(null)
           setActionOptions(null)
           if (msg.scores) setRoundScores(msg.scores)
-          if (msg.deltas) setScoreDeltas(msg.deltas)
+          // 暫存 deltas，等 result_closed_all 訊號才觸發 TableSeat 動畫
+          if (msg.deltas) pendingDeltasRef.current = msg.deltas
           if (msg.reason === 'draw') {
             setNotice('流局')
           } else if (msg.winnerSeat !== undefined && msg.tai && msg.winnerHand && msg.winnerMelds && msg.winTile) {

@@ -80,3 +80,4 @@ export type ServerMessage =
   | { type: 'game_end'; reason: 'draw' | 'hu'; winnerSeat?: SeatIndex; loserSeat?: SeatIndex; winTile?: TileId; tai?: TaiResult; winnerHand?: TileId[]; winnerMelds?: Meld[]; scores?: Array<{ seat: SeatIndex; name: string; score: number }>; zimoRake?: number; deltas?: Array<{ seat: SeatIndex; delta: number }> }
   | { type: 'turn_timer'; seat: SeatIndex; thinkMs: number; baseMs: number; startAt: number }
   | { type: 'score_update'; score: number }
+  | { type: 'result_closed_all' }
