@@ -232,6 +232,13 @@ function handleMessage(sess: Session, msg: ClientMessage) {
       break
     }
 
+    case 'result_close': {
+      const room = rooms.getPlayerRoom(sess.id)
+      if (!room) return
+      room.markResultClosed(sess.id)
+      break
+    }
+
     default:
       break
   }

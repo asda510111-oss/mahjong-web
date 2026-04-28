@@ -57,6 +57,7 @@ export type ClientMessage =
   | { type: 'start_game' }
   | { type: 'discard'; tile: TileId }
   | { type: 'action'; action: 'pass' | 'hu' | 'peng' | 'gang' | 'chi'; chiIndex?: number; gangTile?: TileId }
+  | { type: 'result_close' }
 
 // ========== 伺服器 → 客戶端 ==========
 export type ServerMessage =

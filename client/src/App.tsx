@@ -348,7 +348,10 @@ export default function App() {
           base={room?.base}
           taiPt={room?.taiPt}
           zimoRake={huResult.zimoRake}
-          onClose={() => setHuResult(null)}
+          onClose={() => {
+            gameClient.send({ type: 'result_close' })
+            setHuResult(null)
+          }}
         />
       )}
       {roundEnd && !huResult && (

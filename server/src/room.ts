@@ -72,6 +72,8 @@ export class Room {
   // 中途離開懲罰：一場僅第一位離場的真人玩家扣 100 點
   firstLeaverPenalized: boolean = false
   nextGameTimer: NodeJS.Timeout | null = null
+  // 結算畫面已按關閉的玩家集合（每局重置，bot 自動加入）
+  resultClosed: Set<string> = new Set()
 
   constructor(code: string) { this.code = code }
 
@@ -1018,21 +1020,48 @@ export class Room {
       return
     }
 
-    // 延遲 6 秒讓玩家看胡牌 / 流局結果，再開下一局
-    if (this.nextGameTimer) clearTimeout(this.nextGameTimer)
-    this.nextGameTimer = setTimeout(() => {
+    // 結算畫面：等四家都按關閉 OR 10 秒上限後進下一局；bot 自動視為已關閉
+    this.resultClosed = new Set(this.players.filter(p => p.isBot).map(p => p.id))
+    const advance = () => {
       if (this.players.length !== 4) return
       if (willKeep) {
-        // 連莊：gameIndex 與 dealerSeat 不變，連莊次數 +1
         this.consecutiveDealer++
       } else {
-        // 下莊：gameIndex++，莊家順推下一家，連莊歸零
         this.gameIndex++
         this.dealerSeat = ((this.dealerSeat + 1) % 4) as SeatIndex
         this.consecutiveDealer = 0
       }
       this.dealNewGame()
-    }, 6000)
+    }
+    this.nextGameAdvance = advance
+    if (this.nextGameTimer) clearTimeout(this.nextGameTimer)
+    this.nextGameTimer = setTimeout(() => {
+      this.nextGameAdvance = null
+      this.nextGameTimer = null
+      advance()
+    }, 10000)
+    // 若全部都是 bot（人類已全部離開）則立即觸發
+    this.tryAdvanceIfAllClosed()
+  }
+
+  private nextGameAdvance: (() => void) | null = null
+
+  // 玩家按下結算關閉
+  markResultClosed(playerId: string) {
+    if (!this.nextGameAdvance) return
+    this.resultClosed.add(playerId)
+    this.tryAdvanceIfAllClosed()
+  }
+
+  private tryAdvanceIfAllClosed() {
+    if (!this.nextGameAdvance) return
+    const allClosed = this.players.every(p => this.resultClosed.has(p.id))
+    if (allClosed) {
+      const fn = this.nextGameAdvance
+      this.nextGameAdvance = null
+      if (this.nextGameTimer) { clearTimeout(this.nextGameTimer); this.nextGameTimer = null }
+      fn()
+    }
   }
 
   private broadcastPublicState() {

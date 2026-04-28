@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import Tile from './Tile'
 import type { TileId } from '../game/tiles'
 import { sortHand } from '../game/tiles'
@@ -24,6 +25,20 @@ export default function HuResult({
   base = 200, taiPt = 50, zimoRake = 0,
   onClose,
 }: Props) {
+  // 10 秒倒數，歸零自動關閉
+  const [secondsLeft, setSecondsLeft] = useState(10)
+  useEffect(() => {
+    const startAt = Date.now()
+    const tick = setInterval(() => {
+      const left = Math.max(0, 10 - Math.floor((Date.now() - startAt) / 1000))
+      setSecondsLeft(left)
+      if (left <= 0) {
+        clearInterval(tick)
+        onClose()
+      }
+    }, 200)
+    return () => clearInterval(tick)
+  }, [onClose])
   // 將手牌排序但把胡牌那張放到最右
   const withoutWin = (() => {
     const idx = hand.indexOf(winTile)
@@ -90,7 +105,10 @@ export default function HuResult({
           </div>
         </div>
 
-        <button className="hu-close" onClick={onClose}>關閉</button>
+        <div className="hu-close-row">
+          <span className="hu-countdown" aria-label={`${secondsLeft} 秒後自動關閉`}>{secondsLeft}s</span>
+          <button className="hu-close" onClick={onClose}>關閉</button>
+        </div>
       </div>
     </div>
   )
