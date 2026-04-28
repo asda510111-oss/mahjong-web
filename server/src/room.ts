@@ -1086,7 +1086,8 @@ export class Room {
           (this.melds.get(p.id) ?? []).filter(m => m.type === 'flower')
         ),
         discards: this.discards[p.seat] ?? [],
-        accountScore: u?.score,
+        // bot 給固定 10000（測試用，不持久化）；登入玩家用帳號 score
+        accountScore: p.isBot ? 10000 : u?.score,
       }
     })
     this.broadcast({ type: 'public_state', states, wallRemaining: this.wall.length })
