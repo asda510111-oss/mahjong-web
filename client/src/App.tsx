@@ -227,6 +227,7 @@ export default function App() {
         case 'game_end':
           setCurrentTurn(null)
           setActionOptions(null)
+          setTurnTimer(null)
           if (msg.scores) setRoundScores(msg.scores)
           // 暫存 deltas，等 result_closed_all 訊號才觸發 TableSeat 動畫
           if (msg.deltas) pendingDeltasRef.current = msg.deltas
