@@ -76,6 +76,8 @@ export class Room {
   resultClosed: Set<string> = new Set()
   // Bot 的 in-memory 點數（每個 bot id → 分數），起始 10000，不持久化
   botScores: Map<string, number> = new Map()
+  // 斷線重連寬限 timer（player id → timeout）；到期才真正 removePlayer
+  reconnectTimers: Map<string, NodeJS.Timeout> = new Map()
 
   constructor(code: string) { this.code = code }
 
@@ -117,9 +119,76 @@ export class Room {
     this.melds.delete(id)
   }
 
-  setDisconnected(id: string) {
+  // 回傳是否「應該立即 removePlayer」：對局中的登入玩家給 60 秒重連寬限
+  setDisconnected(id: string): { shouldRemoveNow: boolean } {
     const p = this.players.find(x => x.id === id)
-    if (p) p.socket = null
+    if (!p) return { shouldRemoveNow: true }
+    p.socket = null
+    if (this.phase === 'playing' && p.authedName) {
+      // 啟動 60 秒重連寬限：到期未接回才移除
+      const existing = this.reconnectTimers.get(id)
+      if (existing) clearTimeout(existing)
+      const timer = setTimeout(() => {
+        this.reconnectTimers.delete(id)
+        this.removePlayer(id)
+        if (this.isEmpty()) return
+        this.broadcast({ type: 'room_update', room: this.toState() })
+      }, 60000)
+      this.reconnectTimers.set(id, timer)
+      return { shouldRemoveNow: false }
+    }
+    return { shouldRemoveNow: true }
+  }
+
+  // 重連嘗試：在所有「對局中且有同 authedName 斷線位」中找回該玩家
+  // 找到 → 接回 socket、清重連 timer，回傳原 player.id 與 room（caller 重發 state）
+  tryReclaim(authedName: string, newSocket: WebSocket): { ok: boolean; playerId?: string } {
+    if (this.phase !== 'playing') return { ok: false }
+    const p = this.players.find(x => x.authedName === authedName && x.socket === null)
+    if (!p) return { ok: false }
+    p.socket = newSocket
+    const timer = this.reconnectTimers.get(p.id)
+    if (timer) {
+      clearTimeout(timer)
+      this.reconnectTimers.delete(p.id)
+    }
+    this.broadcast({ type: 'room_update', room: this.toState() })
+    return { ok: true, playerId: p.id }
+  }
+
+  // 重連後重發必要 state：手牌、座位、副子、棄牌、目前回合
+  resendStateForReclaim(playerId: string) {
+    const p = this.getPlayer(playerId)
+    if (!p) return
+    // 1. room_update
+    this.sendTo(p.id, { type: 'room_update', room: this.toState() })
+    // 2. game_start（讓 client 知道 gameIndex / dealerSeat / consecutiveDealer）
+    this.sendTo(p.id, {
+      type: 'game_start',
+      seed: 0,
+      gameIndex: this.gameIndex,
+      dealerSeat: this.dealerSeat,
+      consecutiveDealer: this.consecutiveDealer,
+    })
+    // 3. 自家手牌
+    const hand = this.hands.get(p.id) ?? []
+    this.sendTo(p.id, { type: 'deal', hand, dealerSeat: this.dealerSeat })
+    // 4. 公開狀態（含所有人手牌數、副子、棄牌、accountScore）
+    const states: PublicPlayerState[] = this.players.map(pp => {
+      const u = pp.authedName ? authGetProfile(pp.authedName) : null
+      return {
+        seat: pp.seat,
+        handCount: (this.hands.get(pp.id) ?? []).length,
+        melds: (this.melds.get(pp.id) ?? []).filter(m => m.type !== 'flower').concat(
+          (this.melds.get(pp.id) ?? []).filter(m => m.type === 'flower')
+        ),
+        discards: this.discards[pp.seat] ?? [],
+        accountScore: pp.isBot ? (this.botScores.get(pp.id) ?? 10000) : u?.score,
+      }
+    })
+    this.sendTo(p.id, { type: 'public_state', states, wallRemaining: this.wall.length })
+    // 5. 目前回合
+    this.sendTo(p.id, { type: 'turn', seat: this.currentTurnSeat })
   }
 
   getPlayer(id: string) { return this.players.find(p => p.id === id) }
@@ -160,6 +229,8 @@ export class Room {
     this.dealerSeat = 0 // 東家開局
     this.zimoRakeTotal = 0
     this.firstLeaverPenalized = false
+    for (const t of this.reconnectTimers.values()) clearTimeout(t)
+    this.reconnectTimers.clear()
     this.roundScores.clear()
     for (const p of this.players) this.roundScores.set(p.id, 0)
     if (this.nextGameTimer) clearTimeout(this.nextGameTimer)
@@ -1160,6 +1231,17 @@ export class RoomManager {
     for (const r of this.rooms.values()) if (r.phase === 'lobby' && !r.isFull()) return r
     return this.createRoom()
   }
+  // 嘗試以 authedName 接回正在「對局中、斷線中」的位置
+  tryReclaimByAuth(authedName: string, newSocket: WebSocket): { room: Room; playerId: string } | null {
+    for (const r of this.rooms.values()) {
+      const result = r.tryReclaim(authedName, newSocket)
+      if (result.ok && result.playerId) {
+        return { room: r, playerId: result.playerId }
+      }
+    }
+    return null
+  }
+
   // 列出可加入（lobby + 未滿）的房間
   listJoinableRooms() {
     const list: Array<{ code: string; players: number; hostName: string }> = []

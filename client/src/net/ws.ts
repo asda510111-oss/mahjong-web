@@ -7,11 +7,23 @@ export class GameClient {
   private handlers: Set<Handler> = new Set()
   private statusHandlers: Set<(status: ConnectionStatus) => void> = new Set()
   private _status: ConnectionStatus = 'disconnected'
+  // 自動重連狀態
+  private url: string | null = null
+  private autoReconnect = true
+  private reconnectAttempts = 0
+  private reconnectTimer: ReturnType<typeof setTimeout> | null = null
 
   get status(): ConnectionStatus { return this._status }
 
   connect(url: string): Promise<void> {
+    this.url = url
+    this.autoReconnect = true
+    return this.openOnce()
+  }
+
+  private openOnce(): Promise<void> {
     return new Promise((resolve, reject) => {
+      const url = this.url!
       // 已經有可用連線就直接 resolve（防止 StrictMode 雙重掛載製造兩條連線）
       if (this.ws) {
         const state = this.ws.readyState
@@ -30,6 +42,7 @@ export class GameClient {
       this.ws = ws
       ws.onopen = () => {
         this.setStatus('connected')
+        this.reconnectAttempts = 0
         resolve()
       }
       ws.onmessage = (ev) => {
@@ -41,11 +54,19 @@ export class GameClient {
         }
       }
       ws.onclose = () => {
-        // 只有在 this.ws 仍是當前這個 socket 時才清掉狀態
-        // 避免 StrictMode 雙重掛載時，舊 socket 的 close 把新 socket 誤清
         if (this.ws === ws) {
           this.setStatus('disconnected')
           this.ws = null
+          // 自動重連（exponential backoff，最多 30s）
+          if (this.autoReconnect && this.url) {
+            const delay = Math.min(30000, 500 * Math.pow(2, this.reconnectAttempts))
+            this.reconnectAttempts++
+            console.log(`[WS] reconnecting in ${delay}ms (attempt ${this.reconnectAttempts})`)
+            if (this.reconnectTimer) clearTimeout(this.reconnectTimer)
+            this.reconnectTimer = setTimeout(() => {
+              this.openOnce().catch(() => { /* 失敗會由 onclose 觸發下一輪 */ })
+            }, delay)
+          }
         }
       }
       ws.onerror = (ev) => {
@@ -78,6 +99,8 @@ export class GameClient {
   }
 
   close(): void {
+    this.autoReconnect = false
+    if (this.reconnectTimer) { clearTimeout(this.reconnectTimer); this.reconnectTimer = null }
     this.ws?.close()
   }
 

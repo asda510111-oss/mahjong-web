@@ -298,6 +298,16 @@ export default function App() {
 
   return (
     <>
+      {status !== 'connected' && (
+        <div style={{
+          position: 'fixed', top: 0, left: 0, right: 0,
+          background: 'rgba(217, 75, 75, 0.9)', color: '#fff',
+          padding: '0.4rem', textAlign: 'center', fontSize: '0.9rem',
+          zIndex: 99999,
+        }}>
+          {status === 'connecting' ? '重連中…' : '與伺服器斷線，正在重試…'}
+        </div>
+      )}
       {room ? (
         <GameRoom
           room={room}

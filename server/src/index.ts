@@ -43,19 +43,43 @@ wss.on('connection', (socket) => {
     console.log(`[Server] - ${session.id} disconnected`)
     const room = rooms.getPlayerRoom(session.id)
     if (room) {
-      room.setDisconnected(session.id)
-      room.removePlayer(session.id)
-      rooms.clearPlayerRoom(session.id)
-      if (room.isEmpty()) {
-        console.log(`[Server] room ${room.code} empty, removing`)
-        rooms.deleteRoom(room.code)
+      const { shouldRemoveNow } = room.setDisconnected(session.id)
+      if (shouldRemoveNow) {
+        room.removePlayer(session.id)
+        rooms.clearPlayerRoom(session.id)
+        if (room.isEmpty()) {
+          console.log(`[Server] room ${room.code} empty, removing`)
+          rooms.deleteRoom(room.code)
+        } else {
+          room.broadcast({ type: 'room_update', room: room.toState() })
+        }
       } else {
+        // 對局中且玩家已登入：保留位置 60 秒，等重連
+        console.log(`[Server] ${session.id} held for reconnect (60s)`)
         room.broadcast({ type: 'room_update', room: room.toState() })
       }
     }
     sessions.delete(socket)
   })
 })
+
+// 認證成功後，若該玩家有「對局中、斷線中」的位置 → 接回並補發 state
+function tryReclaimAfterAuth(sess: Session) {
+  if (!sess.authedName) return
+  const result = rooms.tryReclaimByAuth(sess.authedName, sess.socket)
+  if (!result) return
+  // 把 session id 變成原 player.id（後續所有 sess.id 操作就能對應到原座位）
+  const oldId = result.playerId
+  // 清掉舊 session 的 mapping（若有）
+  rooms.clearPlayerRoom(sess.id)
+  sess.id = oldId
+  rooms.setPlayerRoom(oldId, result.room.code)
+  console.log(`[Server] ${sess.authedName} reclaimed seat in room ${result.room.code}`)
+  // 重發 welcome（讓 client.myId 對齊到原 player.id）
+  sendTo(sess.socket, { type: 'welcome', playerId: oldId })
+  // 重發必要 state 給該玩家
+  result.room.resendStateForReclaim(oldId)
+}
 
 function sendTo(socket: WebSocket, msg: ServerMessage) {
   if (socket.readyState === socket.OPEN) socket.send(JSON.stringify(msg))
@@ -130,6 +154,7 @@ function handleMessage(sess: Session, msg: ClientMessage) {
         type: 'auth_result', ok: true, token,
         profile: { name: u.name, avatar: u.avatar, score: u.score },
       }))
+      tryReclaimAfterAuth(sess)
       break
     }
 
@@ -151,6 +176,7 @@ function handleMessage(sess: Session, msg: ClientMessage) {
         type: 'auth_result', ok: true,
         profile: { name: u.name, avatar: u.avatar, score: u.score },
       }))
+      tryReclaimAfterAuth(sess)
       break
     }
 
