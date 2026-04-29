@@ -138,6 +138,15 @@ html, body, #root {
 .room-list-close { background: transparent; border: none; color: var(--text); font-size: 1.2rem; cursor: pointer; box-shadow: none; padding: 0.25rem 0.5rem; }
 .room-list-refresh-row { margin-bottom: 0.5rem; }
 .room-list-refresh-row button { font-size: 0.85rem; padding: 0.3rem 0.6rem; }
+.room-list-join-by-code {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid rgba(255,255,255,0.15);
+}
+.room-list-join-by-code input { flex: 1; }
+.room-list-join-by-code button { white-space: nowrap; }
 .room-list-empty { text-align: center; padding: 2rem 0; color: #999; }
 .room-list-items { display: flex; flex-direction: column; gap: 0.5rem; }
 .room-list-item {

@@ -13,7 +13,7 @@ interface Props {
   onLogout?: () => void
   onCreateRoom: (name: string) => void
   onJoinRoom: (name: string, code: string) => void
-  onQuickMatch: (name: string) => void
+  onQuickMatch?: (name: string) => void
   onListRooms: (name: string) => void
   roomList: Array<{ code: string; players: number; hostName: string }> | null
   onCloseRoomList: () => void
@@ -21,7 +21,7 @@ interface Props {
 
 export default function MainMenu({
   status, profile, onLogout,
-  onCreateRoom, onJoinRoom, onQuickMatch, onListRooms, roomList, onCloseRoomList,
+  onCreateRoom, onJoinRoom, onListRooms, roomList, onCloseRoomList,
 }: Props) {
   const [name, setName] = useState(() => {
     if (profile) return profile.name
@@ -73,29 +73,6 @@ export default function MainMenu({
           尋找房間
         </button>
 
-        <button
-          disabled={busy || !name.trim()}
-          onClick={() => onQuickMatch(name.trim())}
-          style={{ background: '#555', color: 'white' }}
-        >
-          快速配對（自動加入 / 開新房）
-        </button>
-
-        <div className="row">
-          <input
-            value={code}
-            onChange={(e) => setCode(e.target.value.toUpperCase().slice(0, 4))}
-            maxLength={4}
-            placeholder="房號"
-          />
-          <button
-            disabled={busy || !name.trim() || code.length !== 4}
-            onClick={() => onJoinRoom(name.trim(), code)}
-          >
-            加入
-          </button>
-        </div>
-
         <div className="menu-status">
           {status === 'connecting' && '連線中...'}
           {status === 'disconnected' && <span className="error">未連線（請確認伺服器已啟動）</span>}
@@ -114,6 +91,20 @@ export default function MainMenu({
             </div>
             <div className="room-list-refresh-row">
               <button onClick={() => onListRooms(name.trim())}>↻ 重新整理</button>
+            </div>
+            <div className="room-list-join-by-code">
+              <input
+                value={code}
+                onChange={(e) => setCode(e.target.value.toUpperCase().slice(0, 4))}
+                maxLength={4}
+                placeholder="輸入房號"
+              />
+              <button
+                disabled={busy || !name.trim() || code.length !== 4}
+                onClick={() => onJoinRoom(name.trim(), code)}
+              >
+                加入
+              </button>
             </div>
             {roomList.length === 0 ? (
               <div className="room-list-empty">目前沒有等待中的房間</div>
