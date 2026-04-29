@@ -28,6 +28,7 @@ export default function MainMenu({
     return localStorage.getItem('mahjong_name') ?? `玩家${Math.floor(Math.random() * 9000 + 1000)}`
   })
   const [code, setCode] = useState('')
+  const [createOpen, setCreateOpen] = useState(false)
 
   const saveName = (v: string) => {
     setName(v)
@@ -73,7 +74,7 @@ export default function MainMenu({
         <button
           className="menu-action-card create"
           disabled={busy || !name.trim()}
-          onClick={() => onCreateRoom(name.trim())}
+          onClick={() => setCreateOpen(true)}
         >
           <div className="menu-action-icon">＋</div>
           <div className="menu-action-label">建立房間</div>
@@ -88,6 +89,33 @@ export default function MainMenu({
           <div className="menu-action-label">尋找房間</div>
         </button>
       </div>
+
+      {/* 建立房間設定彈窗 */}
+      {createOpen && (
+        <div className="room-create-overlay" onClick={() => setCreateOpen(false)}>
+          <div className="room-create-panel" onClick={(e) => e.stopPropagation()}>
+            <div className="room-list-header">
+              <h3>建立房間</h3>
+              <button className="room-list-close" onClick={() => setCreateOpen(false)}>✕</button>
+            </div>
+            <div className="room-create-body">
+              {/* 開房設定區（待補：底/台、人數限制、其他規則） */}
+              <div className="muted" style={{ fontSize: '0.9rem' }}>開房設定（待補）</div>
+            </div>
+            <div className="room-create-footer">
+              <button
+                disabled={busy || !name.trim()}
+                onClick={() => {
+                  onCreateRoom(name.trim())
+                  setCreateOpen(false)
+                }}
+              >
+                確認建立
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* 房間清單彈窗 */}
       {roomList !== null && (
