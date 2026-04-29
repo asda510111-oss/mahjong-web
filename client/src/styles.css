@@ -355,6 +355,11 @@ input:focus { border-color: var(--accent); }
   padding: 2rem;
   box-sizing: border-box;
 }
+/* 登入畫面整體縮小 10% */
+.menu.auth-menu {
+  transform: scale(0.9);
+  transform-origin: top center;
+}
 .menu-header {
   display: flex;
   flex-direction: column;

@@ -13,7 +13,7 @@ export default function AuthScreen({ status, error, onLogin }: Props) {
   const busy = status !== 'connected'
 
   return (
-    <div className="menu">
+    <div className="menu auth-menu">
       <h1><span className="emoji">🀄</span>台灣麻將</h1>
       <div className="subtitle">登入帳號</div>
 
