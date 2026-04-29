@@ -61,25 +61,23 @@ export default function GameRoom({
   const [settingsOpen, setSettingsOpen] = useState(false)
   const [draftBase, setDraftBase] = useState<300 | 200>(room.base)
   const [draftTai, setDraftTai] = useState<100 | 50>(room.taiPt)
+  const [draftJiang, setDraftJiang] = useState<1 | 2>(room.jiang)
   // 開啟時同步草稿為目前 server 值
   useEffect(() => {
     if (settingsOpen) {
       setDraftBase(room.base)
       setDraftTai(room.taiPt)
+      setDraftJiang(room.jiang)
     }
-  }, [settingsOpen, room.base, room.taiPt])
+  }, [settingsOpen, room.base, room.taiPt, room.jiang])
   const base = draftBase
   const taiPt = draftTai
   const saveBase = (v: 200 | 300) => {
     setDraftBase(v)
     setDraftTai(v === 300 ? 100 : 50)
   }
-  const saveTai = (v: 50 | 100) => {
-    setDraftTai(v)
-    setDraftBase(v === 100 ? 300 : 200)
-  }
   const confirmSettings = () => {
-    gameClient.send({ type: 'set_settings', base: draftBase, taiPt: draftTai })
+    gameClient.send({ type: 'set_settings', base: draftBase, taiPt: draftTai, jiang: draftJiang })
     setSettingsOpen(false)
   }
   // 不是自己回合時清除選擇
@@ -292,6 +290,7 @@ export default function GameRoom({
             <div className="settings-current">
               <div>底：{room.base}</div>
               <div>台：{room.taiPt}</div>
+              <div>{room.jiang} 將（{room.jiang * 4} 圈）</div>
             </div>
           </div>
           <div style={{ flex: 1 }} />
@@ -312,31 +311,33 @@ export default function GameRoom({
                 <div className="settings-label">底</div>
                 <div className="settings-options">
                   <button
-                    className={`settings-opt ${base === 300 ? 'active' : ''}`}
-                    disabled={!isHost}
-                    onClick={() => saveBase(300)}
-                  >300</button>
-                  <button
                     className={`settings-opt ${base === 200 ? 'active' : ''}`}
                     disabled={!isHost}
                     onClick={() => saveBase(200)}
                   >200</button>
+                  <button
+                    className={`settings-opt ${base === 300 ? 'active' : ''}`}
+                    disabled={!isHost}
+                    onClick={() => saveBase(300)}
+                  >300</button>
+                </div>
+                <div className="settings-label" style={{ marginLeft: '0.5rem' }}>台</div>
+                <div className="settings-options">
+                  <button className="settings-opt active" disabled>{taiPt}</button>
                 </div>
               </div>
 
               <div className="settings-row">
-                <div className="settings-label">台</div>
+                <div className="settings-label">將數</div>
                 <div className="settings-options">
-                  <button
-                    className={`settings-opt ${taiPt === 100 ? 'active' : ''}`}
-                    disabled={!isHost}
-                    onClick={() => saveTai(100)}
-                  >100</button>
-                  <button
-                    className={`settings-opt ${taiPt === 50 ? 'active' : ''}`}
-                    disabled={!isHost}
-                    onClick={() => saveTai(50)}
-                  >50</button>
+                  {([1, 2] as const).map((j) => (
+                    <button
+                      key={j}
+                      className={`settings-opt ${draftJiang === j ? 'active' : ''}`}
+                      disabled={!isHost}
+                      onClick={() => setDraftJiang(j)}
+                    >{j} 將 ({j * 4} 圈)</button>
+                  ))}
                 </div>
               </div>
 

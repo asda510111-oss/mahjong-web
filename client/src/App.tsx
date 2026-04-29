@@ -292,9 +292,9 @@ export default function App() {
     }
   }, [])
 
-  const handleCreateRoom = (name: string) => {
+  const handleCreateRoom = (name: string, settings?: { base: 200|300; taiPt: 50|100; jiang: 1|2 }) => {
     gameClient.send({ type: 'hello', name })
-    gameClient.send({ type: 'create_room' })
+    gameClient.send({ type: 'create_room', settings })
   }
   const handleJoinRoom = (name: string, code: string) => {
     gameClient.send({ type: 'hello', name })

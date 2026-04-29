@@ -19,6 +19,7 @@ export interface RoomState {
   hostId: string
   base: 300 | 200
   taiPt: 100 | 50
+  jiang: 1 | 2  // 將數：1 將=4 圈=16 局；2 將=8 圈=32 局
 }
 
 // 公開的玩家狀態：手牌數、副子、棄牌（不含具體手牌）
@@ -45,11 +46,11 @@ export interface ActionOptions {
 // ========== 客戶端 → 伺服器 ==========
 export type ClientMessage =
   | { type: 'hello'; name: string }
-  | { type: 'create_room' }
+  | { type: 'create_room'; settings?: { base: 300 | 200; taiPt: 100 | 50; jiang: 1 | 2 } }
   | { type: 'join_room'; code: string }
   | { type: 'quick_match' }
   | { type: 'list_rooms'; name: string }
-  | { type: 'set_settings'; base: 300 | 200; taiPt: 100 | 50 }
+  | { type: 'set_settings'; base: 300 | 200; taiPt: 100 | 50; jiang: 1 | 2 }
   | { type: 'login'; name: string; password: string }
   | { type: 'auth'; token: string }
   | { type: 'leave_room' }

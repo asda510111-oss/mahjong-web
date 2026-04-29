@@ -40,9 +40,10 @@ export class Room {
   players: ServerPlayer[] = []
   phase: 'lobby' | 'playing' | 'ended' = 'lobby'
   hostId = ''
-  // 房間設定（底/台）
+  // 房間設定（底/台/將數）
   base: 300 | 200 = 200
   taiPt: 100 | 50 = 50
+  jiang: 1 | 2 = 1  // 1 將=4 圈=16 局；2 將=8 圈=32 局
 
   wall: TileId[] = []
   hands: Map<string, TileId[]> = new Map()
@@ -199,13 +200,14 @@ export class Room {
       id: p.id, name: p.name, seat: p.seat, isBot: p.isBot,
       isConnected: p.isBot ? true : p.socket !== null,
     }))
-    return { code: this.code, players, phase: this.phase, hostId: this.hostId, base: this.base, taiPt: this.taiPt }
+    return { code: this.code, players, phase: this.phase, hostId: this.hostId, base: this.base, taiPt: this.taiPt, jiang: this.jiang }
   }
 
-  setSettings(base: 300 | 200, _taiPt: 100 | 50) {
+  setSettings(base: 300 | 200, _taiPt: 100 | 50, jiang?: 1 | 2) {
     // 底 300 + 台 100 / 底 200 + 台 50 綁定
     this.base = base
     this.taiPt = base === 300 ? 100 : 50
+    if (jiang === 1 || jiang === 2) this.jiang = jiang
   }
 
   broadcast(msg: ServerMessage) {
@@ -1093,8 +1095,8 @@ export class Room {
     const willKeep = this.dealerKeepNext
     this.dealerKeepNext = false // reset flag for next round
 
-    // 非連莊 + 已是最後一局 → 整場結束
-    if (!willKeep && this.gameIndex >= 15) {
+    // 非連莊 + 已是最後一局 → 整場結束（1 將=16 局，2 將=32 局）
+    if (!willKeep && this.gameIndex >= this.jiang * 16 - 1) {
       this.phase = 'ended'
       this.broadcast({
         type: 'round_end',
