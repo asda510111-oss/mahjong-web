@@ -32,7 +32,7 @@ export default function MainMenu({
   // 開房設定
   const [createBase, setCreateBase] = useState<200 | 300>(200)
   const createTai = createBase === 300 ? 100 : 50  // 底/台連動鎖定
-  const [createRounds, setCreateRounds] = useState<1 | 2 | 4>(4)
+  const [createJiang, setCreateJiang] = useState<1 | 2>(1)  // 將數：1將=4圈、2將=8圈
 
   const saveName = (v: string) => {
     setName(v)
@@ -103,29 +103,39 @@ export default function MainMenu({
               <button className="room-list-close" onClick={() => setCreateOpen(false)}>✕</button>
             </div>
             <div className="room-create-body">
-              {/* 第二行：底 / 台（台依底鎖定） */}
+              {/* 第二行：底 / 台（連動鎖定，底 200↔台 50、底 300↔台 100） */}
               <div className="create-row">
                 <label>底</label>
-                <select
-                  value={createBase}
-                  onChange={(e) => setCreateBase(parseInt(e.target.value, 10) as 200 | 300)}
-                >
-                  <option value={200}>200</option>
-                  <option value={300}>300</option>
-                </select>
-                <label>台</label>
-                <input value={createTai} disabled readOnly />
-              </div>
-              {/* 第三行：圈數 */}
-              <div className="create-row">
-                <label>圈數</label>
-                {([1, 2, 4] as const).map((r) => (
+                {([200, 300] as const).map((b) => (
                   <button
-                    key={r}
-                    className={`create-rounds-btn ${createRounds === r ? 'active' : ''}`}
-                    onClick={() => setCreateRounds(r)}
+                    key={b}
+                    className={`create-rounds-btn ${createBase === b ? 'active' : ''}`}
+                    onClick={() => setCreateBase(b)}
                   >
-                    {r} 圈
+                    {b}
+                  </button>
+                ))}
+                <label>台</label>
+                {([50, 100] as const).map((t) => (
+                  <button
+                    key={t}
+                    className={`create-rounds-btn ${createTai === t ? 'active' : ''}`}
+                    onClick={() => setCreateBase(t === 100 ? 300 : 200)}
+                  >
+                    {t}
+                  </button>
+                ))}
+              </div>
+              {/* 第三行：將數 */}
+              <div className="create-row">
+                <label>將數</label>
+                {([1, 2] as const).map((j) => (
+                  <button
+                    key={j}
+                    className={`create-rounds-btn ${createJiang === j ? 'active' : ''}`}
+                    onClick={() => setCreateJiang(j)}
+                  >
+                    {j} 將 ({j * 4} 圈)
                   </button>
                 ))}
               </div>
