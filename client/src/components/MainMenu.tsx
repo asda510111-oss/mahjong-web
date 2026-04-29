@@ -32,7 +32,7 @@ export default function MainMenu({
   // 開房設定
   const [createBase, setCreateBase] = useState<200 | 300>(200)
   const createTai = createBase === 300 ? 100 : 50  // 底/台連動鎖定
-  const [createJiang, setCreateJiang] = useState<1 | 2>(1)  // 將數：1將=4圈、2將=8圈
+  const createJiang: 1 | 2 = 1  // 將數固定 1 將（4 圈），未來支援 2 將時改回 useState
 
   const saveName = (v: string) => {
     setName(v)
