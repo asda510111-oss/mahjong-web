@@ -97,10 +97,8 @@ export default function MainMenu({
               <h3>可加入的房間</h3>
               <button className="room-list-close" onClick={onCloseRoomList}>✕</button>
             </div>
-            <div className="room-list-refresh-row">
+            <div className="room-list-top-row">
               <button onClick={() => onListRooms(name.trim())}>↻ 重新整理</button>
-            </div>
-            <div className="room-list-join-by-code">
               <input
                 value={code}
                 onChange={(e) => setCode(e.target.value.toUpperCase().slice(0, 4))}
@@ -121,7 +119,6 @@ export default function MainMenu({
                 {roomList.map((r) => (
                   <div key={r.code} className="room-list-item">
                     <div className="room-list-info">
-                      <div className="room-list-code">{r.code}</div>
                       <div className="room-list-sub">房主：{r.hostName} · {r.players}/4</div>
                     </div>
                     <button onClick={() => onJoinRoom(name.trim(), r.code)}>加入</button>

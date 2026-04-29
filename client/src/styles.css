@@ -136,17 +136,17 @@ html, body, #root {
 .room-list-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; }
 .room-list-header h3 { margin: 0; color: var(--accent); }
 .room-list-close { background: transparent; border: none; color: var(--text); font-size: 1.2rem; cursor: pointer; box-shadow: none; padding: 0.25rem 0.5rem; }
-.room-list-refresh-row { margin-bottom: 0.5rem; }
-.room-list-refresh-row button { font-size: 0.85rem; padding: 0.3rem 0.6rem; }
-.room-list-join-by-code {
+/* 重新整理 + 輸入房號 + 加入 同一行 */
+.room-list-top-row {
   display: flex;
+  align-items: center;
   gap: 0.5rem;
   margin-bottom: 0.75rem;
   padding-bottom: 0.75rem;
   border-bottom: 1px solid rgba(255,255,255,0.15);
 }
-.room-list-join-by-code input { flex: 1; }
-.room-list-join-by-code button { white-space: nowrap; }
+.room-list-top-row > button { white-space: nowrap; padding: 0.4rem 0.7rem; font-size: 0.9rem; }
+.room-list-top-row > input { flex: 1; min-width: 0; }
 .room-list-empty { text-align: center; padding: 2rem 0; color: #999; }
 .room-list-items { display: flex; flex-direction: column; gap: 0.5rem; }
 .room-list-item {
@@ -362,7 +362,7 @@ input:focus { border-color: var(--accent); }
 }
 /* 中、右動作卡片（建立房間 / 尋找房間） */
 .menu-action-card {
-  flex: 0 1 360px;
+  flex: 1 1 0;          /* 兩個按鈕等寬 */
   max-width: 360px;
   align-self: flex-start;     /* 頂端對齊 profile（視覺 top 同步） */
   margin-top: -12px;          /* 與 profile 上移 0.2 張棄牌（12px）對齊 */
