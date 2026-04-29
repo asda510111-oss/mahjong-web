@@ -38,20 +38,21 @@ export default function MainMenu({
 
   return (
     <div className="menu">
-      <h1><span className="emoji">🀄</span>台灣麻將</h1>
-      <div className="subtitle">Online · 16 張 · 支援 AI 補位</div>
+      {profile && (
+        <aside className="menu-profile-side">
+          <img className="profile-avatar big" src={AVATARS[profile.avatar]} alt="" />
+          <div className="profile-name">{profile.name}</div>
+          <div className="profile-score">現有點數：{profile.score}</div>
+          <button className="profile-logout" onClick={onLogout}>登出</button>
+        </aside>
+      )}
+
+      <div className="menu-main">
+        <h1><span className="emoji">🀄</span>台灣麻將</h1>
+        <div className="subtitle">Online · 16 張 · 支援 AI 補位</div>
 
       <div className="menu-card">
-        {profile ? (
-          <div className="profile-row">
-            <img className="profile-avatar" src={AVATARS[profile.avatar]} alt="" />
-            <div className="profile-info">
-              <div className="profile-name">{profile.name}</div>
-              <div className="profile-score">現有點數：{profile.score}</div>
-            </div>
-            <button className="profile-logout" onClick={onLogout}>登出</button>
-          </div>
-        ) : (
+        {!profile && (
           <>
             <label className="muted" style={{ fontSize: '0.9rem' }}>暱稱</label>
             <input
@@ -100,6 +101,7 @@ export default function MainMenu({
           {status === 'disconnected' && <span className="error">未連線（請確認伺服器已啟動）</span>}
           {status === 'connected' && <span className="muted">已連線伺服器 ✓</span>}
         </div>
+      </div>
       </div>
 
       {/* 房間清單彈窗 */}
