@@ -38,22 +38,27 @@ export default function MainMenu({
 
   return (
     <div className="menu">
-      {profile && (
-        <aside className="menu-profile-side">
-          <img className="profile-avatar big" src={AVATARS[profile.avatar]} alt="" />
-          <div className="profile-name">{profile.name}</div>
-          <div className="profile-score">現有點數：{profile.score}</div>
-          <button className="profile-logout" onClick={onLogout}>登出</button>
-        </aside>
-      )}
-
-      <div className="menu-main">
+      <div className="menu-header">
         <h1><span className="emoji">🀄</span>台灣麻將</h1>
-        <div className="subtitle">Online · 16 張 · 支援 AI 補位</div>
+        <div className="subtitle">
+          {status === 'connecting' && '連線中...'}
+          {status === 'disconnected' && <span className="error">未連線（請確認伺服器已啟動）</span>}
+          {status === 'connected' && <span className="muted">已連線伺服器 ✓</span>}
+        </div>
+      </div>
 
-      <div className="menu-card">
+      <div className="menu-cols">
+        {profile && (
+          <aside className="menu-profile-side">
+            <img className="profile-avatar big" src={AVATARS[profile.avatar]} alt="" />
+            <div className="profile-name">{profile.name}</div>
+            <div className="profile-score">現有點數：{profile.score}</div>
+            <button className="profile-logout" onClick={onLogout}>登出</button>
+          </aside>
+        )}
+
         {!profile && (
-          <>
+          <div className="menu-card">
             <label className="muted" style={{ fontSize: '0.9rem' }}>暱稱</label>
             <input
               value={name}
@@ -62,23 +67,26 @@ export default function MainMenu({
               style={{ letterSpacing: 'normal', textTransform: 'none' }}
               placeholder="你的名字"
             />
-          </>
+          </div>
         )}
 
-        <button disabled={busy || !name.trim()} onClick={() => onCreateRoom(name.trim())}>
-          建立房間
+        <button
+          className="menu-action-card create"
+          disabled={busy || !name.trim()}
+          onClick={() => onCreateRoom(name.trim())}
+        >
+          <div className="menu-action-icon">＋</div>
+          <div className="menu-action-label">建立房間</div>
         </button>
 
-        <button disabled={busy || !name.trim()} onClick={() => onListRooms(name.trim())}>
-          尋找房間
+        <button
+          className="menu-action-card find"
+          disabled={busy || !name.trim()}
+          onClick={() => onListRooms(name.trim())}
+        >
+          <div className="menu-action-icon">🔍</div>
+          <div className="menu-action-label">尋找房間</div>
         </button>
-
-        <div className="menu-status">
-          {status === 'connecting' && '連線中...'}
-          {status === 'disconnected' && <span className="error">未連線（請確認伺服器已啟動）</span>}
-          {status === 'connected' && <span className="muted">已連線伺服器 ✓</span>}
-        </div>
-      </div>
       </div>
 
       {/* 房間清單彈窗 */}
