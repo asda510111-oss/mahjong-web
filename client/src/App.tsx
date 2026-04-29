@@ -13,6 +13,21 @@ import { playSound, unlockAudio } from './utils/sounds'
 export type DiscardMap = Record<number, TileId[]>
 const EMPTY_DISCARDS: DiscardMap = { 0: [], 1: [], 2: [], 3: [] }
 
+// 嘗試進入全螢幕並鎖定橫向（需要使用者手勢觸發，Android Chrome 支援；iOS Safari 不支援）
+async function tryLockLandscape() {
+  try {
+    const el = document.documentElement as any
+    const fs = el.requestFullscreen ?? el.webkitRequestFullscreen ?? el.mozRequestFullScreen
+    if (fs) await fs.call(el)
+    const orient = (screen as any).orientation
+    if (orient && typeof orient.lock === 'function') {
+      await orient.lock('landscape')
+    }
+  } catch (e) {
+    console.log('[orientation] lock failed (fallback to .rotate-hint)', e)
+  }
+}
+
 export default function App() {
   const [status, setStatus] = useState<ConnectionStatus>('disconnected')
   const [roomList, setRoomList] = useState<Array<{ code: string; players: number; hostName: string }> | null>(null)
@@ -286,7 +301,11 @@ export default function App() {
     setActionOptions(null)
   }
   const handleAddBot = () => gameClient.send({ type: 'add_bot' })
-  const handleStart = () => gameClient.send({ type: 'start_game' })
+  const handleStart = () => {
+    // 嘗試進 fullscreen 並鎖定橫向（Android Chrome 等支援；iOS 失敗後會 fallback 到 .rotate-hint）
+    tryLockLandscape()
+    gameClient.send({ type: 'start_game' })
+  }
   const handleDiscard = (tile: TileId) => gameClient.send({ type: 'discard', tile })
   const handleAction = (action: 'pass' | 'hu' | 'peng' | 'gang' | 'chi', chiIndex?: number) => {
     gameClient.send({ type: 'action', action, chiIndex })
@@ -298,6 +317,11 @@ export default function App() {
 
   return (
     <>
+      <div className="rotate-hint">
+        <div className="icon">📱</div>
+        <div>請將手機轉為橫向</div>
+        <div style={{ fontSize: '0.9rem', opacity: 0.7 }}>橫向遊玩視野更好</div>
+      </div>
       {status !== 'connected' && (
         <div style={{
           position: 'fixed', top: 0, left: 0, right: 0,

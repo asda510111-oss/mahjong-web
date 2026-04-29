@@ -380,11 +380,6 @@ export default function GameRoom({
 
   return (
     <div className="room">
-      <div className="rotate-hint">
-        <div className="icon">📱</div>
-        <div>請將手機轉為橫向</div>
-        <div style={{ fontSize: '0.9rem', opacity: 0.7 }}>橫向遊玩視野更好</div>
-      </div>
       <div className="room-header">
         <div>
           <div className="small">房號</div>
