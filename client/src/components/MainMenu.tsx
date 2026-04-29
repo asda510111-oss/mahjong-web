@@ -98,7 +98,6 @@ export default function MainMenu({
               <button className="room-list-close" onClick={onCloseRoomList}>✕</button>
             </div>
             <div className="room-list-top-row">
-              <button onClick={() => onListRooms(name.trim())}>↻ 重新整理</button>
               <input
                 value={code}
                 onChange={(e) => setCode(e.target.value.toUpperCase().slice(0, 4))}
@@ -111,6 +110,7 @@ export default function MainMenu({
               >
                 加入
               </button>
+              <button onClick={() => onListRooms(name.trim())}>↻ 重新整理</button>
             </div>
             {roomList.length === 0 ? (
               <div className="room-list-empty">目前沒有等待中的房間</div>
