@@ -72,6 +72,24 @@ export default function App() {
   useEffect(() => { myIdRef.current = myId }, [myId])
   useEffect(() => { roomRef.current = room }, [room])
 
+  // 全域畫面自適應：所有畫面（主選單/登入/房間/遊戲）都用 1280×760 設計尺寸 + scale
+  useEffect(() => {
+    const DESIGN_W = 1280
+    const DESIGN_H = 760
+    const update = () => {
+      const s = Math.min(window.innerWidth / DESIGN_W, window.innerHeight / DESIGN_H)
+      document.documentElement.style.setProperty('--app-scale', String(s))
+    }
+    update()
+    window.addEventListener('resize', update)
+    window.addEventListener('orientationchange', update)
+    return () => {
+      window.removeEventListener('resize', update)
+      window.removeEventListener('orientationchange', update)
+      document.documentElement.style.removeProperty('--app-scale')
+    }
+  }, [])
+
   useEffect(() => {
     // iOS Safari 需要使用者互動後才能播放音效：第一次點擊/觸控時解鎖
     const unlock = () => {
@@ -322,6 +340,7 @@ export default function App() {
         <div>請將手機轉為橫向</div>
         <div style={{ fontSize: '0.9rem', opacity: 0.7 }}>橫向遊玩視野更好</div>
       </div>
+      <div className="app-stage">
       {status !== 'connected' && (
         <div style={{
           position: 'fixed', top: 0, left: 0, right: 0,
@@ -417,6 +436,7 @@ export default function App() {
           {notice}
         </div>
       )}
+      </div>
     </>
   )
 }

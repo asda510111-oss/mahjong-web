@@ -97,15 +97,12 @@ export default function GameRoom({
     return () => { document.body.classList.remove('in-game') }
   }, [room.phase])
 
-  // 整體遊戲畫面自適應：以 1280×760 為設計尺寸，等比縮放至視窗
+  // scale 由 App.tsx 全局計算成 --app-scale；此處只同步到 ref 用於拖牌座標補正
   const gameScaleRef = useRef(1)
   useEffect(() => {
-    const DESIGN_W = 1280
-    const DESIGN_H = 760
     const update = () => {
-      const s = Math.min(window.innerWidth / DESIGN_W, window.innerHeight / DESIGN_H)
-      document.documentElement.style.setProperty('--game-scale', String(s))
-      gameScaleRef.current = s
+      const v = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--app-scale'))
+      gameScaleRef.current = Number.isFinite(v) && v > 0 ? v : 1
     }
     update()
     window.addEventListener('resize', update)
@@ -113,7 +110,6 @@ export default function GameRoom({
     return () => {
       window.removeEventListener('resize', update)
       window.removeEventListener('orientationchange', update)
-      document.documentElement.style.removeProperty('--game-scale')
     }
   }, [])
 

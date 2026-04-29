@@ -192,7 +192,8 @@ body { overflow-x: hidden; }
 
 /* 遊玩中鎖定畫面，不可上下滑動 */
 html:has(body.in-game),
-body.in-game {
+/* 全域：所有畫面都鎖定 viewport，避免 scale 後溢出造成可滾動 */
+body {
   overflow: hidden;
   overscroll-behavior: none;
   height: 100vh;
@@ -200,23 +201,31 @@ body.in-game {
   position: fixed;
   width: 100%;
   inset: 0;
+  margin: 0;
 }
-body.in-game #root {
+#root {
   height: 100vh;
   height: 100dvh;
   overflow: hidden;
 }
 
-/* 整體遊戲畫面等比自適應：以 1280×760 固定設計尺寸，外層縮放 */
-body.in-game .room:not(.lobby) {
+/* 全域 app-stage：所有畫面（主選單/登入/房間/遊戲）都以 1280×760 設計尺寸顯示 + 等比 scale */
+.app-stage {
   width: 1280px;
   height: 760px;
-  transform: scale(var(--game-scale, 1));
+  transform: scale(var(--app-scale, 1));
   transform-origin: top center;
   position: absolute;
   left: 50%;
   margin-left: -640px;
   top: 0;
+  overflow: visible;
+}
+
+/* 遊戲中 .room 需填滿 stage */
+body.in-game .room:not(.lobby) {
+  width: 1280px;
+  height: 760px;
 }
 
 /* in-game 強制覆蓋手機 media query 的字體縮小，保持設計尺寸 */
