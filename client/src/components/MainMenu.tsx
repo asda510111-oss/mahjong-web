@@ -29,6 +29,10 @@ export default function MainMenu({
   })
   const [code, setCode] = useState('')
   const [createOpen, setCreateOpen] = useState(false)
+  // 開房設定
+  const [createBase, setCreateBase] = useState<200 | 300>(200)
+  const createTai = createBase === 300 ? 100 : 50  // 底/台連動鎖定
+  const [createRounds, setCreateRounds] = useState<1 | 2 | 4>(4)
 
   const saveName = (v: string) => {
     setName(v)
@@ -95,12 +99,40 @@ export default function MainMenu({
         <div className="room-create-overlay" onClick={() => setCreateOpen(false)}>
           <div className="room-create-panel" onClick={(e) => e.stopPropagation()}>
             <div className="room-list-header">
-              <h3>建立房間</h3>
+              <h3>創設房間</h3>
               <button className="room-list-close" onClick={() => setCreateOpen(false)}>✕</button>
             </div>
             <div className="room-create-body">
-              {/* 開房設定區（待補：底/台、人數限制、其他規則） */}
-              <div className="muted" style={{ fontSize: '0.9rem' }}>開房設定（待補）</div>
+              {/* 第二行：底 / 台（台依底鎖定） */}
+              <div className="create-row">
+                <label>底</label>
+                <select
+                  value={createBase}
+                  onChange={(e) => setCreateBase(parseInt(e.target.value, 10) as 200 | 300)}
+                >
+                  <option value={200}>200</option>
+                  <option value={300}>300</option>
+                </select>
+                <label>台</label>
+                <input value={createTai} disabled readOnly />
+              </div>
+              {/* 第三行：圈數 */}
+              <div className="create-row">
+                <label>圈數</label>
+                {([1, 2, 4] as const).map((r) => (
+                  <button
+                    key={r}
+                    className={`create-rounds-btn ${createRounds === r ? 'active' : ''}`}
+                    onClick={() => setCreateRounds(r)}
+                  >
+                    {r} 圈
+                  </button>
+                ))}
+              </div>
+              {/* 第四行：預設保留 */}
+              <div className="create-row">
+                <label className="muted">（保留）</label>
+              </div>
             </div>
             <div className="room-create-footer">
               <button
@@ -110,7 +142,7 @@ export default function MainMenu({
                   setCreateOpen(false)
                 }}
               >
-                確認建立
+                建立
               </button>
             </div>
           </div>

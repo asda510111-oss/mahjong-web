@@ -137,6 +137,30 @@ html, body, #root {
 }
 .room-create-body { display: flex; flex-direction: column; gap: 0.75rem; padding: 0.5rem 0; }
 .room-create-footer { display: flex; justify-content: flex-end; gap: 0.5rem; margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid rgba(255,255,255,0.15); }
+.create-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+.create-row > label { min-width: 2.4em; font-weight: 700; }
+.create-row > select,
+.create-row > input { padding: 0.3rem 0.5rem; }
+.create-row > input[disabled] { opacity: 0.7; width: 4em; text-align: center; }
+.create-rounds-btn {
+  padding: 0.3rem 0.7rem;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.2);
+  color: var(--text);
+  border-radius: 6px;
+  font-size: 0.9rem;
+}
+.create-rounds-btn.active {
+  background: var(--accent);
+  color: #1a0a0a;
+  border-color: var(--accent);
+  font-weight: 800;
+}
 .room-list-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; }
 .room-list-header h3 { margin: 0; color: var(--accent); }
 .room-list-close { background: transparent; border: none; color: var(--text); font-size: 1.2rem; cursor: pointer; box-shadow: none; padding: 0.25rem 0.5rem; }
