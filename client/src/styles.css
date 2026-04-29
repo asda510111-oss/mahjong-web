@@ -209,8 +209,16 @@ body {
   overflow: hidden;
 }
 
-/* 全域 app-stage：所有畫面（主選單/登入/房間/遊戲）都以 1280×760 設計尺寸顯示 + 等比 scale */
+/* app-stage：
+ *   預設（主選單/登入/房間 lobby）→ 填滿視窗，往四角延伸
+ *   遊戲中（body.in-game）→ 1280×760 設計尺寸 + 等比 scale 置中 */
 .app-stage {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  overflow: visible;
+}
+body.in-game .app-stage {
   width: 1280px;
   height: 760px;
   transform: scale(var(--app-scale, 1));
@@ -219,10 +227,7 @@ body {
   left: 50%;
   margin-left: -640px;
   top: 0;
-  overflow: visible;
 }
-
-/* 遊戲中 .room 需填滿 stage */
 body.in-game .room:not(.lobby) {
   width: 1280px;
   height: 760px;
