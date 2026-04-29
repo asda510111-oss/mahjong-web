@@ -335,7 +335,7 @@ input:focus { border-color: var(--accent); }
   justify-content: center;
   gap: 1.5rem;
 }
-/* 左側獨立 profile 區（已登入才顯示）*/
+/* 左側獨立 profile 區（已登入才顯示）：整體縮 0.8 + 右移 44px（一張棄牌寬）*/
 .menu-profile-side {
   width: 220px;
   flex-shrink: 0;
@@ -348,6 +348,8 @@ input:focus { border-color: var(--accent); }
   border: 2px solid var(--accent-dark);
   border-radius: 20px;
   padding: 1.5rem 1rem;
+  transform: translateX(44px) scale(0.8);
+  transform-origin: top left;
 }
 .profile-avatar.big {
   width: 110px;
