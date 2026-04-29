@@ -290,7 +290,7 @@ export default function GameRoom({
             <div className="settings-current">
               <div>底：{room.base}</div>
               <div>台：{room.taiPt}</div>
-              <div>{room.jiang} 將（{room.jiang * 4} 圈）</div>
+              <div>{room.jiang} 將 ({room.jiang * 4} 圈)</div>
             </div>
           </div>
           <div style={{ flex: 1 }} />
@@ -330,14 +330,7 @@ export default function GameRoom({
               <div className="settings-row">
                 <div className="settings-label">將數</div>
                 <div className="settings-options">
-                  {([1, 2] as const).map((j) => (
-                    <button
-                      key={j}
-                      className={`settings-opt ${draftJiang === j ? 'active' : ''}`}
-                      disabled={!isHost}
-                      onClick={() => setDraftJiang(j)}
-                    >{j} 將 ({j * 4} 圈)</button>
-                  ))}
+                  <button className="settings-opt active" disabled>1 將 (4 圈)</button>
                 </div>
               </div>
 

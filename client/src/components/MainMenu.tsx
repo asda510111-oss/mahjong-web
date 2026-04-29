@@ -118,18 +118,10 @@ export default function MainMenu({
                 <label>台</label>
                 <button className="create-rounds-btn active" disabled>{createTai}</button>
               </div>
-              {/* 第三行：將數 */}
+              {/* 第三行：將數（目前只支援 1 將） */}
               <div className="create-row">
                 <label>將數</label>
-                {([1, 2] as const).map((j) => (
-                  <button
-                    key={j}
-                    className={`create-rounds-btn ${createJiang === j ? 'active' : ''}`}
-                    onClick={() => setCreateJiang(j)}
-                  >
-                    {j} 將 ({j * 4} 圈)
-                  </button>
-                ))}
+                <button className="create-rounds-btn active" disabled>1 將 (4 圈)</button>
               </div>
               {/* 第四行：預設保留 */}
               <div className="create-row">
