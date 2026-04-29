@@ -116,15 +116,7 @@ export default function MainMenu({
                   </button>
                 ))}
                 <label>台</label>
-                {([50, 100] as const).map((t) => (
-                  <button
-                    key={t}
-                    className={`create-rounds-btn ${createTai === t ? 'active' : ''}`}
-                    onClick={() => setCreateBase(t === 100 ? 300 : 200)}
-                  >
-                    {t}
-                  </button>
-                ))}
+                <button className="create-rounds-btn active" disabled>{createTai}</button>
               </div>
               {/* 第三行：將數 */}
               <div className="create-row">
