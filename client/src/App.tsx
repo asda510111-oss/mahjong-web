@@ -64,7 +64,7 @@ export default function App() {
   const [error, setError] = useState<string>('')
   const [notice, setNotice] = useState<string>('')
   // 帳號
-  const [profile, setProfile] = useState<{ name: string; avatar: 0|1|2|3; score: number } | null>(null)
+  const [profile, setProfile] = useState<{ name: string; avatar: 0|1|2|3; score: number; cards: number } | null>(null)
   const [authError, setAuthError] = useState<string>('')
 
   const myIdRef = useRef('')

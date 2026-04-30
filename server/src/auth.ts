@@ -11,6 +11,7 @@ export interface UserRecord {
   salt: string    // hex
   avatar: 0 | 1 | 2 | 3
   score: number
+  cards?: number  // 房卡（未設定視為 0）
   createdAt: number
 }
 
@@ -84,7 +85,7 @@ export function adminAddUser(name: string, password: string, avatar: 0 | 1 | 2 |
   if (db.users[name]) throw new Error('Name already exists')
   const salt = randomBytes(16).toString('hex')
   const hash = hashPassword(password, salt)
-  const rec: UserRecord = { name, hash, salt, avatar, score: 10000, createdAt: Date.now() }
+  const rec: UserRecord = { name, hash, salt, avatar, score: 10000, cards: 0, createdAt: Date.now() }
   db.users[name] = rec
   save(db)
   return rec

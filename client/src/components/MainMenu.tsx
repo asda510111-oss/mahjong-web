@@ -9,7 +9,7 @@ const AVATARS = [catAvatar, pandaAvatar, foxAvatar, bearAvatar]
 
 interface Props {
   status: ConnectionStatus
-  profile?: { name: string; avatar: 0|1|2|3; score: number } | null
+  profile?: { name: string; avatar: 0|1|2|3; score: number; cards: number } | null
   onLogout?: () => void
   onCreateRoom: (name: string, settings?: { base: 200|300; taiPt: 50|100; jiang: 1|2 }) => void
   onJoinRoom: (name: string, code: string) => void
@@ -43,6 +43,13 @@ export default function MainMenu({
 
   return (
     <div className="menu">
+      {profile && (
+        <div className="menu-cards-badge">
+          <span className="menu-cards-icon">🎴</span>
+          <span className="menu-cards-label">房卡</span>
+          <span className="menu-cards-num">{profile.cards}</span>
+        </div>
+      )}
       <div className="menu-header">
         <h1><span className="emoji">🀄</span>台灣麻將</h1>
         <div className="subtitle">

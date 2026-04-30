@@ -344,6 +344,26 @@ input {
 }
 input:focus { border-color: var(--accent); }
 
+/* 主畫面左上角：房卡數量框 */
+.menu-cards-badge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.5rem 0.9rem;
+  background: rgba(0, 0, 0, 0.45);
+  border: 2px solid var(--accent);
+  border-radius: 12px;
+  color: var(--accent);
+  font-weight: 700;
+  z-index: 10;
+}
+.menu-cards-icon { font-size: 1.2rem; }
+.menu-cards-label { font-size: 0.9rem; opacity: 0.9; }
+.menu-cards-num { font-size: 1.2rem; min-width: 1.5em; text-align: right; }
+
 /* ===== Main Menu ===== */
 .menu {
   height: 100%;

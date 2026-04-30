@@ -156,7 +156,7 @@ function handleMessage(sess: Session, msg: ClientMessage) {
       const token = makeToken(u.name)
       sess.socket.send(JSON.stringify({
         type: 'auth_result', ok: true, token,
-        profile: { name: u.name, avatar: u.avatar, score: u.score },
+        profile: { name: u.name, avatar: u.avatar, score: u.score, cards: u.cards ?? 0 },
       }))
       tryReclaimAfterAuth(sess)
       break
@@ -178,7 +178,7 @@ function handleMessage(sess: Session, msg: ClientMessage) {
       sess.avatar = u.avatar
       sess.socket.send(JSON.stringify({
         type: 'auth_result', ok: true,
-        profile: { name: u.name, avatar: u.avatar, score: u.score },
+        profile: { name: u.name, avatar: u.avatar, score: u.score, cards: u.cards ?? 0 },
       }))
       tryReclaimAfterAuth(sess)
       break
