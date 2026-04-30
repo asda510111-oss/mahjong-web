@@ -220,17 +220,25 @@ export class Room {
 
   // 圈尾扣卡：每圈 4 張，依 cardsCharge 決定平分或房主獨扣
   private deductCardsForRound() {
+    console.log(`[Cards] room ${this.code} round-end gameIndex=${this.gameIndex} charge=${this.cardsCharge}`)
     if (this.cardsCharge === 'host') {
       const host = this.getPlayer(this.hostId)
       if (host && !host.isBot && host.authedName) {
         const newCards = authAddCards(host.authedName, -4)
+        console.log(`[Cards]   host ${host.authedName} -4 → ${newCards}`)
         this.sendTo(host.id, { type: 'cards_update', cards: newCards })
+      } else {
+        console.log(`[Cards]   host skipped (bot or no authedName)`)
       }
     } else {
       // split：四家各扣 1 張（bot 跳過）
       for (const p of this.players) {
-        if (p.isBot || !p.authedName) continue
+        if (p.isBot || !p.authedName) {
+          console.log(`[Cards]   skip ${p.name} (bot=${p.isBot} auth=${!!p.authedName})`)
+          continue
+        }
         const newCards = authAddCards(p.authedName, -1)
+        console.log(`[Cards]   ${p.authedName} -1 → ${newCards}`)
         this.sendTo(p.id, { type: 'cards_update', cards: newCards })
       }
     }
