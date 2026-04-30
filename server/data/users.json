@@ -6,6 +6,7 @@
       "salt": "7ce997b00332252353ead03351083f7b",
       "avatar": 0,
       "score": 10000,
+      "cards": 999999,
       "createdAt": 1777055523186
     },
     "阿志": {
@@ -14,6 +15,7 @@
       "salt": "6d6af46875e017f2a0c0bc0e20e6aed8",
       "avatar": 0,
       "score": 10000,
+      "cards": 999999,
       "createdAt": 1777053820773
     },
     "玩家04": {
@@ -158,6 +160,7 @@
       "salt": "4cbdf2d5ee9c7e2d46ae427b827ecf7e",
       "avatar": 1,
       "score": 10000,
+      "cards": 999999,
       "createdAt": 1777055523748
     }
   }
