@@ -12,7 +12,7 @@ export interface PlayerInfo {
   isConnected: boolean
   accountScore?: number
   cards?: number
-  firstPurchaseDone?: boolean
+  firstPurchasedPlans?: string[]
 }
 
 export interface RoomState {
@@ -69,7 +69,7 @@ export type ServerMessage =
   | { type: 'room_update'; room: RoomState }
   | { type: 'error'; message: string }
   | { type: 'room_list'; rooms: Array<{ code: string; players: number; hostName: string }> }
-  | { type: 'auth_result'; ok: boolean; error?: string; token?: string; profile?: { name: string; avatar: 0|1|2|3; score: number; cards: number; firstPurchaseDone: boolean } }
+  | { type: 'auth_result'; ok: boolean; error?: string; token?: string; profile?: { name: string; avatar: 0|1|2|3; score: number; cards: number; firstPurchasedPlans: string[] } }
   | { type: 'game_start'; seed: number; gameIndex: number; dealerSeat: SeatIndex; consecutiveDealer: number }
   | { type: 'round_end'; scores: Array<{ seat: SeatIndex; name: string; score: number }> }
   | { type: 'deal'; hand: TileId[]; dealerSeat: SeatIndex }

@@ -17,12 +17,16 @@ const PLANS: Plan[] = [
 interface Props {
   open: boolean
   currentCards: number
-  firstPurchaseDone: boolean
+  firstPurchasedPlans: string[]
   onClose: () => void
 }
 
-export default function BuyCardsDialog({ open, currentCards, firstPurchaseDone, onClose }: Props) {
+export default function BuyCardsDialog({ open, currentCards, firstPurchasedPlans, onClose }: Props) {
   if (!open) return null
+  // 是否還有任何方案的首儲贈送可拿（用來決定上方 banner 是否顯示）
+  const anyBonusAvailable = PLANS.some(
+    p => p.bonus > 0 && !firstPurchasedPlans.includes(p.id),
+  )
   return (
     <div className="buy-cards-overlay" onClick={onClose}>
       <div className="buy-cards-panel" onClick={(e) => e.stopPropagation()}>
@@ -35,13 +39,14 @@ export default function BuyCardsDialog({ open, currentCards, firstPurchaseDone, 
           目前持有：<strong>{currentCards}</strong> 張
         </div>
 
-        {!firstPurchaseDone && (
-          <div className="buy-cards-firstbuy-banner">🎉 首儲限定贈送中</div>
+        {anyBonusAvailable && (
+          <div className="buy-cards-firstbuy-banner">🎉 首次購買各方案享贈送</div>
         )}
 
         <div className="buy-cards-plans">
           {PLANS.map(p => {
-            const showBonus = !firstPurchaseDone && p.bonus > 0
+            const usedFirstBuy = firstPurchasedPlans.includes(p.id)
+            const showBonus = p.bonus > 0 && !usedFirstBuy
             return (
               <button
                 key={p.id}

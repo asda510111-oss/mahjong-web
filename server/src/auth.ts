@@ -12,7 +12,7 @@ export interface UserRecord {
   avatar: 0 | 1 | 2 | 3
   score: number
   cards?: number  // 房卡（未設定視為 0）
-  firstPurchaseDone?: boolean  // 是否完成首儲（用於決定首儲贈送）
+  firstPurchasedPlans?: string[]  // 已享受首儲贈送的方案 id 清單（每方案各一次）
   createdAt: number
 }
 
