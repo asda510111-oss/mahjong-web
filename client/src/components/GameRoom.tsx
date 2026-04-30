@@ -282,9 +282,9 @@ export default function GameRoom({
           })}
         </div>
 
-        <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'flex-start' }}>
+        <div className="lobby-actions" style={{ display: 'flex', gap: '0.5rem', alignItems: 'flex-start' }}>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
-            <button onClick={() => setSettingsOpen(true)} style={{ background: '#8a5930', color: 'white' }}>
+            <button className="lobby-settings-btn" onClick={() => setSettingsOpen(true)} style={{ background: '#8a5930', color: 'white' }}>
               設定
             </button>
             <div className="settings-current">
