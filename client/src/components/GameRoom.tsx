@@ -257,6 +257,16 @@ export default function GameRoom({
   if (!inGame) {
     return (
       <div className="room lobby">
+        {(() => {
+          const me = room.players.find(p => p.id === myPlayerId)
+          return me && me.cards !== undefined ? (
+            <div className="menu-cards-badge">
+              <span className="menu-cards-icon">🎴</span>
+              <span className="menu-cards-label">房卡</span>
+              <span className="menu-cards-num">{me.cards}</span>
+            </div>
+          ) : null
+        })()}
         <div className="room-header">
           <div style={{ textAlign: 'center' }}>
             <div className="small">房號</div>

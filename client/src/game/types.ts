@@ -11,6 +11,7 @@ export interface PlayerInfo {
   isBot: boolean
   isConnected: boolean
   accountScore?: number
+  cards?: number
 }
 
 export interface RoomState {
