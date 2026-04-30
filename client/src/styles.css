@@ -344,11 +344,11 @@ input {
 }
 input:focus { border-color: var(--accent); }
 
-/* 主畫面左上角：房卡數量框 */
+/* 左上角：房卡數量框（主畫面 + 大廳共用，水平位置 6% 對齊） */
 .menu-cards-badge {
   position: absolute;
   top: 12px;
-  left: 12px;
+  left: 6%;
   display: flex;
   align-items: center;
   gap: 0.4rem;
@@ -517,10 +517,6 @@ input:focus { border-color: var(--accent); }
 
 /* ===== Lobby ===== */
 .room.lobby { position: relative; }
-/* 大廳房卡框：跟「設定」按鈕（lobby-actions 88% 寬範圍的左邊 = 視窗 6%）垂直對齊 */
-.room.lobby .menu-cards-badge {
-  left: 6%;
-}
 /* room-header 寬度縮成「房號區塊」自然寬度，水平置中 */
 .room.lobby .room-header {
   width: fit-content;
