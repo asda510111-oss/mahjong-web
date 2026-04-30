@@ -164,7 +164,13 @@ export default function App() {
           setRoundEnd(null)
           setScoreDeltas(null)
           pendingDeltasRef.current = null
-          setNotice(`第 ${msg.gameIndex + 1} 局開始！`)
+          {
+            const ROUND_WINDS = ['東','南','西','北'] as const
+            const wind = ROUND_WINDS[Math.floor(msg.gameIndex / 4) % 4]
+            const inRound = (msg.gameIndex % 4) + 1
+            const lian = msg.consecutiveDealer > 0 ? ` 連${msg.consecutiveDealer}` : ''
+            setNotice(`${wind}${inRound}局${lian} 開始`)
+          }
           setTimeout(() => setNotice(''), 2000)
           break
         case 'round_end':
