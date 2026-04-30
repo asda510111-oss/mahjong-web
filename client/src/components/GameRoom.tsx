@@ -583,8 +583,8 @@ export default function GameRoom({
       <button
         onClick={() => setMockHuOpen(v => !v)}
         style={{
-          position: 'fixed', top: 4, right: 4, zIndex: 100000,
-          padding: '0.3rem 0.6rem', fontSize: '0.75rem',
+          position: 'fixed', top: 184, right: 4, zIndex: 100000,
+          padding: '0.9rem 1.8rem', fontSize: '2.25rem',
           background: '#444', color: '#fff', border: '1px solid #888',
         }}
       >
