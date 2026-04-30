@@ -362,9 +362,9 @@ input:focus { border-color: var(--accent); }
   align-items: center;
   text-align: center;
 }
-/* menu-card 上移 2 張棄牌再下移 1 張，淨值 -60px */
+/* menu-card 上移 -60px + 上下方向縮 0.8（scaleY） */
 .menu.auth-menu .menu-card {
-  transform: translateY(-60px);
+  transform: translateY(-60px) scaleY(0.8);
 }
 .menu-header {
   display: flex;
