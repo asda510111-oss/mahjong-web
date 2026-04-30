@@ -67,14 +67,16 @@ export default function GameRoom({
   const [draftBase, setDraftBase] = useState<300 | 200>(room.base)
   const [draftTai, setDraftTai] = useState<100 | 50>(room.taiPt)
   const [draftJiang, setDraftJiang] = useState<1 | 2>(room.jiang)
+  const [draftCardsCharge, setDraftCardsCharge] = useState<'split' | 'host'>(room.cardsCharge)
   // 開啟時同步草稿為目前 server 值
   useEffect(() => {
     if (settingsOpen) {
       setDraftBase(room.base)
       setDraftTai(room.taiPt)
       setDraftJiang(room.jiang)
+      setDraftCardsCharge(room.cardsCharge)
     }
-  }, [settingsOpen, room.base, room.taiPt, room.jiang])
+  }, [settingsOpen, room.base, room.taiPt, room.jiang, room.cardsCharge])
   const base = draftBase
   const taiPt = draftTai
   const saveBase = (v: 200 | 300) => {
@@ -82,7 +84,7 @@ export default function GameRoom({
     setDraftTai(v === 300 ? 100 : 50)
   }
   const confirmSettings = () => {
-    gameClient.send({ type: 'set_settings', base: draftBase, taiPt: draftTai, jiang: draftJiang })
+    gameClient.send({ type: 'set_settings', base: draftBase, taiPt: draftTai, jiang: draftJiang, cardsCharge: draftCardsCharge })
     setSettingsOpen(false)
   }
   // 不是自己回合時清除選擇
@@ -316,6 +318,7 @@ export default function GameRoom({
             <div>底：{room.base}</div>
             <div>台：{room.taiPt}</div>
             <div>{room.jiang} 將 ({room.jiang * 4} 圈)</div>
+            <div>房卡：{room.cardsCharge === 'host' ? '房主獨扣' : '四家平分'}</div>
           </div>
           <div style={{ flex: 1 }} />
           {isHost && playerCount < 4 && <button className="lobby-action-btn" onClick={onAddBot}>加入 AI 🤖</button>}
@@ -355,6 +358,22 @@ export default function GameRoom({
                 <div className="settings-label">將數</div>
                 <div className="settings-options">
                   <button className="settings-opt active" disabled>1 將 (4 圈)</button>
+                </div>
+              </div>
+
+              <div className="settings-row">
+                <div className="settings-label">房卡</div>
+                <div className="settings-options">
+                  <button
+                    className={`settings-opt ${draftCardsCharge === 'split' ? 'active' : ''}`}
+                    disabled={!isHost}
+                    onClick={() => setDraftCardsCharge('split')}
+                  >四家平分</button>
+                  <button
+                    className={`settings-opt ${draftCardsCharge === 'host' ? 'active' : ''}`}
+                    disabled={!isHost}
+                    onClick={() => setDraftCardsCharge('host')}
+                  >房主獨扣</button>
                 </div>
               </div>
 

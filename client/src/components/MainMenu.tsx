@@ -12,7 +12,7 @@ interface Props {
   status: ConnectionStatus
   profile?: { name: string; avatar: 0|1|2|3; score: number; cards: number; firstPurchasedPlans: string[] } | null
   onLogout?: () => void
-  onCreateRoom: (name: string, settings?: { base: 200|300; taiPt: 50|100; jiang: 1|2 }) => void
+  onCreateRoom: (name: string, settings?: { base: 200|300; taiPt: 50|100; jiang: 1|2; cardsCharge: 'split'|'host' }) => void
   onJoinRoom: (name: string, code: string) => void
   onQuickMatch?: (name: string) => void
   onListRooms: (name: string) => void
@@ -164,7 +164,7 @@ export default function MainMenu({
               <button
                 disabled={busy || !name.trim()}
                 onClick={() => {
-                  onCreateRoom(name.trim(), { base: createBase, taiPt: createTai, jiang: createJiang })
+                  onCreateRoom(name.trim(), { base: createBase, taiPt: createTai, jiang: createJiang, cardsCharge: createCardsCharge })
                   setCreateOpen(false)
                 }}
               >

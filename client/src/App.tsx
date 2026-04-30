@@ -186,6 +186,9 @@ export default function App() {
         case 'score_update':
           setProfile((p) => p ? { ...p, score: msg.score } : p)
           break
+        case 'cards_update':
+          setProfile((p) => p ? { ...p, cards: msg.cards } : p)
+          break
         case 'result_closed_all':
           // 四家都關了 HuResult（或倒數完）→ 開始播放分數動畫
           if (pendingDeltasRef.current) {
@@ -292,7 +295,7 @@ export default function App() {
     }
   }, [])
 
-  const handleCreateRoom = (name: string, settings?: { base: 200|300; taiPt: 50|100; jiang: 1|2 }) => {
+  const handleCreateRoom = (name: string, settings?: { base: 200|300; taiPt: 50|100; jiang: 1|2; cardsCharge: 'split'|'host' }) => {
     gameClient.send({ type: 'hello', name })
     gameClient.send({ type: 'create_room', settings })
   }

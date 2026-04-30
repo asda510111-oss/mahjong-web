@@ -3,7 +3,7 @@ import type {
   PlayerInfo, RoomState, SeatIndex, ServerMessage, PublicPlayerState, ActionOptions,
 } from './game/types.js'
 import { buildFullWall, shuffle, getTileDef, type TileId } from './game/tiles.js'
-import { addScore as authAddScore, getProfile as authGetProfile } from './auth.js'
+import { addScore as authAddScore, addCards as authAddCards, getProfile as authGetProfile } from './auth.js'
 import {
   canHu, canPeng, canGangExposed, canGangConcealed, canGangAdded, canChi, calculateTai,
   type Meld,
@@ -40,10 +40,11 @@ export class Room {
   players: ServerPlayer[] = []
   phase: 'lobby' | 'playing' | 'ended' = 'lobby'
   hostId = ''
-  // 房間設定（底/台/將數）
+  // 房間設定（底/台/將數/扣卡規則）
   base: 300 | 200 = 200
   taiPt: 100 | 50 = 50
   jiang: 1 | 2 = 1  // 1 將=4 圈=16 局；2 將=8 圈=32 局
+  cardsCharge: 'split' | 'host' = 'split'  // 圈尾扣卡規則
 
   wall: TileId[] = []
   hands: Map<string, TileId[]> = new Map()
@@ -206,14 +207,35 @@ export class Room {
         firstPurchasedPlans: p.isBot ? [] : (u?.firstPurchasedPlans ?? []),
       }
     })
-    return { code: this.code, players, phase: this.phase, hostId: this.hostId, base: this.base, taiPt: this.taiPt, jiang: this.jiang }
+    return { code: this.code, players, phase: this.phase, hostId: this.hostId, base: this.base, taiPt: this.taiPt, jiang: this.jiang, cardsCharge: this.cardsCharge }
   }
 
-  setSettings(base: 300 | 200, _taiPt: 100 | 50, jiang?: 1 | 2) {
+  setSettings(base: 300 | 200, _taiPt: 100 | 50, jiang?: 1 | 2, cardsCharge?: 'split' | 'host') {
     // 底 300 + 台 100 / 底 200 + 台 50 綁定
     this.base = base
     this.taiPt = base === 300 ? 100 : 50
     if (jiang === 1 || jiang === 2) this.jiang = jiang
+    if (cardsCharge === 'split' || cardsCharge === 'host') this.cardsCharge = cardsCharge
+  }
+
+  // 圈尾扣卡：每圈 4 張，依 cardsCharge 決定平分或房主獨扣
+  private deductCardsForRound() {
+    if (this.cardsCharge === 'host') {
+      const host = this.getPlayer(this.hostId)
+      if (host && !host.isBot && host.authedName) {
+        const newCards = authAddCards(host.authedName, -4)
+        this.sendTo(host.id, { type: 'cards_update', cards: newCards })
+      }
+    } else {
+      // split：四家各扣 1 張（bot 跳過）
+      for (const p of this.players) {
+        if (p.isBot || !p.authedName) continue
+        const newCards = authAddCards(p.authedName, -1)
+        this.sendTo(p.id, { type: 'cards_update', cards: newCards })
+      }
+    }
+    // 廣播 room_update 讓 lobby 顯示也同步（PlayerInfo.cards）
+    this.broadcast({ type: 'room_update', room: this.toState() })
   }
 
   broadcast(msg: ServerMessage) {
@@ -1100,6 +1122,11 @@ export class Room {
     // 連莊判斷（由 endGameWithHu/draw 設定 dealerKeepNext 後呼叫本函式）
     const willKeep = this.dealerKeepNext
     this.dealerKeepNext = false // reset flag for next round
+
+    // 圈尾扣卡：非連莊 + 剛打完這局是該圈最後一局（gameIndex % 4 === 3）
+    if (!willKeep && this.gameIndex % 4 === 3) {
+      this.deductCardsForRound()
+    }
 
     // 非連莊 + 已是最後一局 → 整場結束（1 將=16 局，2 將=32 局）
     if (!willKeep && this.gameIndex >= this.jiang * 16 - 1) {

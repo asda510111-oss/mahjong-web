@@ -104,6 +104,15 @@ export function addScore(name: string, delta: number) {
   save(db)
 }
 
+export function addCards(name: string, delta: number): number {
+  const db = load()
+  const u = db.users[name]
+  if (!u) return 0
+  u.cards = Math.max(0, (u.cards ?? 0) + delta)
+  save(db)
+  return u.cards
+}
+
 // ===== 管理 API =====
 export function listAllUsers(): UserRecord[] {
   const db = load()

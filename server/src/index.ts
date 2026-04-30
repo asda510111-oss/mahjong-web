@@ -95,7 +95,7 @@ function handleMessage(sess: Session, msg: ClientMessage) {
       const room = rooms.createRoom()
       // 套用建房時的設定（底/台/將數）
       if (msg.settings) {
-        room.setSettings(msg.settings.base, msg.settings.taiPt, msg.settings.jiang)
+        room.setSettings(msg.settings.base, msg.settings.taiPt, msg.settings.jiang, msg.settings.cardsCharge)
       }
       const p: ServerPlayer = {
         id: sess.id, name: sess.name, seat: 0 as SeatIndex, isBot: false, socket: sess.socket,
@@ -189,7 +189,7 @@ function handleMessage(sess: Session, msg: ClientMessage) {
       if (!room) return
       if (room.hostId !== sess.id) return // 只有房主可改
       if (room.phase !== 'lobby') return  // 開始後鎖定
-      room.setSettings(msg.base, msg.taiPt, msg.jiang)
+      room.setSettings(msg.base, msg.taiPt, msg.jiang, msg.cardsCharge)
       room.broadcast({ type: 'room_update', room: room.toState() })
       break
     }
