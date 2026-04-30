@@ -203,6 +203,7 @@ export class Room {
         isConnected: p.isBot ? true : p.socket !== null,
         accountScore: p.isBot ? (this.botScores.get(p.id) ?? 10000) : u?.score,
         cards: p.isBot ? 0 : (u?.cards ?? 0),
+        firstPurchaseDone: p.isBot ? false : (u?.firstPurchaseDone ?? false),
       }
     })
     return { code: this.code, players, phase: this.phase, hostId: this.hostId, base: this.base, taiPt: this.taiPt, jiang: this.jiang }

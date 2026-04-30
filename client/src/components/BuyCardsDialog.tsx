@@ -6,21 +6,22 @@ interface Plan {
   priceTwd: number
 }
 
-// 每張基本價 $4，階梯式贈送讓大包單價更便宜
+// 每張基本價 $4；首儲贈送階梯（首儲後 bonus 全部清零）
 const PLANS: Plan[] = [
-  { id: 'small',  name: '小包',   cards: 50,   bonus: 0,   priceTwd: 200 },  // $4.00/張
-  { id: 'medium', name: '中包',   cards: 100,  bonus: 10,  priceTwd: 400 },  // $3.64/張
-  { id: 'large',  name: '大包',   cards: 300,  bonus: 60,  priceTwd: 1200 }, // $3.33/張
-  { id: 'xl',     name: '超大包', cards: 1500, bonus: 500, priceTwd: 6000 }, // $3.00/張
+  { id: 'small',  name: '小包',   cards: 50,   bonus: 0,   priceTwd: 200 },
+  { id: 'medium', name: '中包',   cards: 100,  bonus: 10,  priceTwd: 400 },
+  { id: 'large',  name: '大包',   cards: 300,  bonus: 60,  priceTwd: 1200 },
+  { id: 'xl',     name: '超大包', cards: 1500, bonus: 500, priceTwd: 6000 },
 ]
 
 interface Props {
   open: boolean
   currentCards: number
+  firstPurchaseDone: boolean
   onClose: () => void
 }
 
-export default function BuyCardsDialog({ open, currentCards, onClose }: Props) {
+export default function BuyCardsDialog({ open, currentCards, firstPurchaseDone, onClose }: Props) {
   if (!open) return null
   return (
     <div className="buy-cards-overlay" onClick={onClose}>
@@ -34,21 +35,28 @@ export default function BuyCardsDialog({ open, currentCards, onClose }: Props) {
           目前持有：<strong>{currentCards}</strong> 張
         </div>
 
+        {!firstPurchaseDone && (
+          <div className="buy-cards-firstbuy-banner">🎉 首儲限定贈送中</div>
+        )}
+
         <div className="buy-cards-plans">
-          {PLANS.map(p => (
-            <button
-              key={p.id}
-              className="buy-cards-plan"
-              onClick={() => alert(`${p.name}：金流串接尚未上線`)}
-            >
-              <div className="buy-cards-plan-name">{p.name}</div>
-              <div className="buy-cards-plan-cards">
-                {p.cards} 張
-                {p.bonus > 0 && <span className="buy-cards-plan-bonus"> +{p.bonus} 贈送</span>}
-              </div>
-              <div className="buy-cards-plan-price">NT$ {p.priceTwd}</div>
-            </button>
-          ))}
+          {PLANS.map(p => {
+            const showBonus = !firstPurchaseDone && p.bonus > 0
+            return (
+              <button
+                key={p.id}
+                className="buy-cards-plan"
+                onClick={() => alert(`${p.name}：金流串接尚未上線`)}
+              >
+                <div className="buy-cards-plan-name">{p.name}</div>
+                <div className="buy-cards-plan-cards">
+                  {p.cards} 張
+                  {showBonus && <span className="buy-cards-plan-bonus"> +{p.bonus} 贈送</span>}
+                </div>
+                <div className="buy-cards-plan-price">NT$ {p.priceTwd}</div>
+              </button>
+            )
+          })}
         </div>
 
         <div className="buy-cards-note">

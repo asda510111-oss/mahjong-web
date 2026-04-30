@@ -275,6 +275,7 @@ export default function GameRoom({
               <BuyCardsDialog
                 open={buyCardsOpen}
                 currentCards={me.cards}
+                firstPurchaseDone={me.firstPurchaseDone ?? false}
                 onClose={() => setBuyCardsOpen(false)}
               />
             </>
