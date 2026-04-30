@@ -417,7 +417,7 @@ export default function App() {
         <div style={{
           position: 'fixed', bottom: 20, left: '50%', transform: 'translateX(-50%)',
           background: 'rgba(217, 75, 75, 0.95)', padding: '0.75rem 1.25rem',
-          borderRadius: 10, maxWidth: '90vw', textAlign: 'center', zIndex: 100,
+          borderRadius: 10, maxWidth: '90vw', textAlign: 'center', zIndex: 100000,
         }}>
           {error}
         </div>
