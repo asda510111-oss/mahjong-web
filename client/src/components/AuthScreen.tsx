@@ -17,6 +17,12 @@ export default function AuthScreen({ status, error, onLogin }: Props) {
       <h1><span className="emoji">🀄</span>台灣麻將</h1>
 
       <div className="menu-card">
+        <div className="menu-status">
+          {status === 'connecting' && '連線中...'}
+          {status === 'disconnected' && <span className="error">未連線</span>}
+          {status === 'connected' && <span className="muted">已連線伺服器 ✓</span>}
+        </div>
+
         <input
           value={name}
           onChange={(e) => setName(e.target.value.trim())}
@@ -41,12 +47,6 @@ export default function AuthScreen({ status, error, onLogin }: Props) {
         </button>
 
         {error && <div className="error" style={{ textAlign: 'center' }}>{error}</div>}
-
-        <div className="menu-status">
-          {status === 'connecting' && '連線中...'}
-          {status === 'disconnected' && <span className="error">未連線</span>}
-          {status === 'connected' && <span className="muted">已連線伺服器 ✓</span>}
-        </div>
       </div>
     </div>
   )
