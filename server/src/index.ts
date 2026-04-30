@@ -236,6 +236,27 @@ function handleMessage(sess: Session, msg: ClientMessage) {
       if (room.players.length !== 4) {
         return sendTo(sess.socket, { type: 'error', message: '需要 4 人（可加 AI 補位）' })
       }
+      // 房卡檢查：依 cardsCharge 規則確保足夠開完整場（jiang*16 張）
+      const required = room.jiang * 16
+      if (room.cardsCharge === 'host') {
+        const host = room.getPlayer(room.hostId)
+        const cards = host?.authedName ? (getProfile(host.authedName)?.cards ?? 0) : 0
+        if (cards < required) {
+          return sendTo(sess.socket, { type: 'error', message: `房主房卡不足：需 ${required} 張，目前 ${cards} 張` })
+        }
+      } else {
+        const per = required / 4
+        for (const p of room.players) {
+          if (p.isBot) continue
+          if (!p.authedName) {
+            return sendTo(sess.socket, { type: 'error', message: `${p.name} 未登入，無法使用房卡` })
+          }
+          const cards = getProfile(p.authedName)?.cards ?? 0
+          if (cards < per) {
+            return sendTo(sess.socket, { type: 'error', message: `${p.name} 房卡不足：需 ${per} 張，目前 ${cards} 張` })
+          }
+        }
+      }
       console.log(`[Server] Starting game in room ${room.code}`)
       room.broadcast({ type: 'room_update', room: { ...room.toState(), phase: 'playing' } })
       room.startGame()
