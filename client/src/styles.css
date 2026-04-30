@@ -496,8 +496,12 @@ input:focus { border-color: var(--accent); }
 }
 
 /* ===== Lobby ===== */
-/* 大廳的 room-header 與 lobby-seats 只縮寬度（×0.8），文字不變形 */
-.room.lobby .room-header,
+/* room-header 寬度 = 80% × 1.1 = 88%；lobby-seats 維持 80% 寬，再縮高度 0.8 */
+.room.lobby .room-header {
+  width: 88%;
+  margin-left: auto;
+  margin-right: auto;
+}
 .room.lobby .lobby-seats {
   width: 80%;
   margin-left: auto;
@@ -506,11 +510,11 @@ input:focus { border-color: var(--accent); }
 .lobby-seats {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 0.75rem;
+  gap: 0.6rem; /* 0.75 × 0.8 */
 }
 .lobby-seat {
   background: rgba(0, 0, 0, 0.25);
-  padding: 1rem;
+  padding: 0.8rem 1rem; /* 上下 padding 從 1rem 縮成 0.8rem */
   border-radius: 12px;
   display: flex;
   align-items: center;
