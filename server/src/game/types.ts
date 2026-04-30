@@ -10,6 +10,7 @@ export interface PlayerInfo {
   seat: SeatIndex
   isBot: boolean
   isConnected: boolean
+  accountScore?: number
 }
 
 export interface RoomState {

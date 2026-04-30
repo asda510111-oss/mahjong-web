@@ -196,10 +196,14 @@ export class Room {
   getPlayerBySeat(s: SeatIndex) { return this.players.find(p => p.seat === s) }
 
   toState(): RoomState {
-    const players: PlayerInfo[] = this.players.map(p => ({
-      id: p.id, name: p.name, seat: p.seat, isBot: p.isBot,
-      isConnected: p.isBot ? true : p.socket !== null,
-    }))
+    const players: PlayerInfo[] = this.players.map(p => {
+      const u = p.authedName ? authGetProfile(p.authedName) : null
+      return {
+        id: p.id, name: p.name, seat: p.seat, isBot: p.isBot,
+        isConnected: p.isBot ? true : p.socket !== null,
+        accountScore: p.isBot ? (this.botScores.get(p.id) ?? 10000) : u?.score,
+      }
+    })
     return { code: this.code, players, phase: this.phase, hostId: this.hostId, base: this.base, taiPt: this.taiPt, jiang: this.jiang }
   }
 

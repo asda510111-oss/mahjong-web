@@ -273,10 +273,13 @@ export default function GameRoom({
             return (
               <div key={seat} className={`lobby-seat ${!p ? 'empty' : ''}`}>
                 <div className="avatar big">{p ? <img src={SEAT_AVATARS[seat]} alt="" /> : '❓'}</div>
-                <div>
+                <div className="lobby-seat-info">
                   <div className="seat-name">{p ? p.name : '等待加入...'}</div>
                   <div className="seat-sub">{SEAT_LABELS[seat]}{p?.isBot && ' 🤖'}</div>
                 </div>
+                {p && p.accountScore !== undefined && (
+                  <div className="lobby-seat-score">{p.accountScore} 點</div>
+                )}
               </div>
             )
           })}
