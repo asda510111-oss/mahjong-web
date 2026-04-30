@@ -516,12 +516,23 @@ input:focus { border-color: var(--accent); }
 }
 
 /* ===== Lobby ===== */
+.room.lobby { position: relative; }
 /* room-header 寬度 = 80% × 1.1 = 88%；lobby-seats 維持 80% 寬，再縮高度 0.8 */
 .room.lobby .room-header {
   width: 88%;
   margin-left: auto;
   margin-right: auto;
   transform: translateY(-12px); /* 累計上移 0.2 張棄牌 */
+}
+/* 離開按鈕：絕對定位在右上角，位置同原本 .room-header 內右側（88% 寬範圍的右邊 = 視窗 6% 邊距） */
+.lobby-leave-btn {
+  position: absolute;
+  top: 0;
+  right: 6%;
+  background: #777 !important;
+  color: white !important;
+  transform: translateY(-12px); /* 跟 .room-header 同步上移 */
+  z-index: 5;
 }
 .room.lobby .lobby-seats {
   width: 80%;
