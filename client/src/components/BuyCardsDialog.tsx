@@ -6,11 +6,12 @@ interface Plan {
   priceTwd: number
 }
 
+// 每張 $4
 const PLANS: Plan[] = [
-  { id: 'small',  name: '小包', cards: 60,   bonus: 0,   priceTwd: 60 },
-  { id: 'medium', name: '中包', cards: 300,  bonus: 60,  priceTwd: 300 },
-  { id: 'large',  name: '大包', cards: 900,  bonus: 300, priceTwd: 900 },
-  { id: 'xl',     name: '超大包', cards: 3000, bonus: 1500, priceTwd: 3000 },
+  { id: 'small',  name: '小包',   cards: 50,   bonus: 0, priceTwd: 200 },
+  { id: 'medium', name: '中包',   cards: 100,  bonus: 0, priceTwd: 400 },
+  { id: 'large',  name: '大包',   cards: 300,  bonus: 0, priceTwd: 1200 },
+  { id: 'xl',     name: '超大包', cards: 1500, bonus: 0, priceTwd: 6000 },
 ]
 
 interface Props {
