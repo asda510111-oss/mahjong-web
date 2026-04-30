@@ -526,8 +526,9 @@ input:focus { border-color: var(--accent); }
   margin-left: auto;
   margin-right: auto;
 }
-/* 設定按鈕：padding 縮 0.8（從預設 0.75/1.5 → 0.6/1.2），文字大小不變 */
-.lobby-settings-btn {
+/* 設定 / 加 AI / 開始遊戲 按鈕：padding 縮 0.8（從 0.75/1.5 → 0.6/1.2），文字大小不變 */
+.lobby-settings-btn,
+.lobby-action-btn {
   padding: 0.6rem 1.2rem !important;
 }
 .lobby-seat.empty { opacity: 0.5; }

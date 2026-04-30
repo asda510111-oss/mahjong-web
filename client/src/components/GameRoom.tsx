@@ -294,8 +294,8 @@ export default function GameRoom({
             </div>
           </div>
           <div style={{ flex: 1 }} />
-          {isHost && playerCount < 4 && <button onClick={onAddBot}>加入 AI 🤖</button>}
-          {isHost && playerCount === 4 && <button onClick={onStart}>開始遊戲</button>}
+          {isHost && playerCount < 4 && <button className="lobby-action-btn" onClick={onAddBot}>加入 AI 🤖</button>}
+          {isHost && playerCount === 4 && <button className="lobby-action-btn" onClick={onStart}>開始遊戲</button>}
           {!isHost && <span className="muted">等待房主開始...</span>}
         </div>
 
