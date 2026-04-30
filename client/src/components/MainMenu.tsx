@@ -35,6 +35,7 @@ export default function MainMenu({
   const [createBase, setCreateBase] = useState<200 | 300>(200)
   const createTai = createBase === 300 ? 100 : 50  // 底/台連動鎖定
   const createJiang: 1 | 2 = 1  // 將數固定 1 將（4 圈），未來支援 2 將時改回 useState
+  const [createCardsCharge, setCreateCardsCharge] = useState<'split' | 'host'>('split')  // 房卡扣法
 
   const saveName = (v: string) => {
     setName(v)
@@ -142,9 +143,21 @@ export default function MainMenu({
                 <label>將數</label>
                 <button className="create-rounds-btn active" disabled>1 將 (4 圈)</button>
               </div>
-              {/* 第四行：預設保留 */}
+              {/* 第四行：房卡扣法（四家平分 / 房主獨扣） */}
               <div className="create-row">
-                <label className="muted">（保留）</label>
+                <label>房卡</label>
+                <button
+                  className={`create-rounds-btn ${createCardsCharge === 'split' ? 'active' : ''}`}
+                  onClick={() => setCreateCardsCharge('split')}
+                >
+                  四家平分
+                </button>
+                <button
+                  className={`create-rounds-btn ${createCardsCharge === 'host' ? 'active' : ''}`}
+                  onClick={() => setCreateCardsCharge('host')}
+                >
+                  房主獨扣
+                </button>
               </div>
             </div>
             <div className="room-create-footer">
