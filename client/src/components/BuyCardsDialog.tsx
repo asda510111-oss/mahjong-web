@@ -55,8 +55,8 @@ export default function BuyCardsDialog({ open, currentCards, firstPurchasedPlans
               >
                 <div className="buy-cards-plan-name">{p.name}</div>
                 <div className="buy-cards-plan-cards">
-                  {p.cards} 張
-                  {showBonus && <span className="buy-cards-plan-bonus"> +{p.bonus} 贈送</span>}
+                  {showBonus ? p.cards + p.bonus : p.cards} 張
+                  {showBonus && <span className="buy-cards-plan-bonus"> (+{p.bonus} 張贈送)</span>}
                 </div>
                 <div className="buy-cards-plan-price">NT$ {p.priceTwd}</div>
               </button>
