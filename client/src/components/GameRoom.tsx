@@ -257,15 +257,11 @@ export default function GameRoom({
   if (!inGame) {
     return (
       <div className="room lobby">
-        <div className="room-header">
-          {/* 左側空白佔位（與右邊離開按鈕等寬，讓中間房號真的置中） */}
-          <button aria-hidden="true" tabIndex={-1} style={{ visibility: 'hidden', background: '#777', color: 'white' }}>離開</button>
-          <div style={{ textAlign: 'center' }}>
-            <div className="small">房號</div>
-            <div className="code">{room.code}</div>
-          </div>
-          <button onClick={onLeave} style={{ background: '#777', color: 'white' }}>離開</button>
+        <div className="lobby-room-code">
+          <div className="small">房號</div>
+          <div className="code">{room.code}</div>
         </div>
+        <button className="lobby-leave-btn" onClick={onLeave}>離開</button>
 
         <div className="lobby-seats">
           {[0, 1, 2, 3].map((i) => {

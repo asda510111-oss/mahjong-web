@@ -516,13 +516,26 @@ input:focus { border-color: var(--accent); }
 }
 
 /* ===== Lobby ===== */
-/* room-header 寬度 = 80% × 1.1 = 88%；lobby-seats 維持 80% 寬，再縮高度 0.8 */
-.room.lobby .room-header {
-  width: 88%;
-  margin-left: auto;
-  margin-right: auto;
-  transform: translateY(-12px); /* 累計上移 0.2 張棄牌 */
+.room.lobby { position: relative; }
+/* 房號區塊：絕對定位在頂部中央 */
+.lobby-room-code {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  z-index: 5;
 }
+/* 離開按鈕：絕對定位在右上角（對齊 88% 寬度範圍的右側 = 視窗 6% 邊距） */
+.lobby-leave-btn {
+  position: absolute;
+  top: 0;
+  right: 6%;
+  background: #777 !important;
+  color: white !important;
+  z-index: 5;
+}
+/* lobby-seats 維持 80% 寬，再縮高度 0.8 */
 .room.lobby .lobby-seats {
   width: 80%;
   margin-left: auto;
