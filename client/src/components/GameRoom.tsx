@@ -282,16 +282,14 @@ export default function GameRoom({
           })}
         </div>
 
-        <div className="lobby-actions" style={{ display: 'flex', gap: '0.5rem', alignItems: 'flex-start' }}>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
-            <button className="lobby-settings-btn" onClick={() => setSettingsOpen(true)} style={{ background: '#8a5930', color: 'white' }}>
-              設定
-            </button>
-            <div className="settings-current">
-              <div>底：{room.base}</div>
-              <div>台：{room.taiPt}</div>
-              <div>{room.jiang} 將 ({room.jiang * 4} 圈)</div>
-            </div>
+        <div className="lobby-actions" style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+          <button className="lobby-settings-btn" onClick={() => setSettingsOpen(true)} style={{ background: '#8a5930', color: 'white' }}>
+            設定
+          </button>
+          <div className="settings-current">
+            <div>底：{room.base}</div>
+            <div>台：{room.taiPt}</div>
+            <div>{room.jiang} 將 ({room.jiang * 4} 圈)</div>
           </div>
           <div style={{ flex: 1 }} />
           {isHost && playerCount < 4 && <button className="lobby-action-btn" onClick={onAddBot}>加入 AI 🤖</button>}
