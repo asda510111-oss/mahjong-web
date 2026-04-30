@@ -362,7 +362,7 @@ input:focus { border-color: var(--accent); }
 }
 .menu-cards-icon { font-size: 1.2rem; }
 .menu-cards-label { font-size: 0.9rem; opacity: 0.9; }
-.menu-cards-num { font-size: 1.2rem; min-width: 1.5em; text-align: right; }
+.menu-cards-num { font-size: 1.2rem; min-width: 6ch; text-align: right; font-variant-numeric: tabular-nums; }
 
 /* ===== Main Menu ===== */
 .menu {
