@@ -517,6 +517,10 @@ input:focus { border-color: var(--accent); }
 
 /* ===== Lobby ===== */
 .room.lobby { position: relative; }
+/* 大廳房卡框：跟「設定」按鈕（lobby-actions 88% 寬範圍的左邊 = 視窗 6%）垂直對齊 */
+.room.lobby .menu-cards-badge {
+  left: 6%;
+}
 /* room-header 寬度縮成「房號區塊」自然寬度，水平置中 */
 .room.lobby .room-header {
   width: fit-content;
