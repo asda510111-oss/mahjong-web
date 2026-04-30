@@ -355,12 +355,16 @@ input:focus { border-color: var(--accent); }
   padding: 2rem;
   box-sizing: border-box;
 }
-/* 登入畫面：自適應填滿視窗 + 標題/副標題/卡片整體水平置中 */
+/* 登入畫面：自適應填滿視窗 + 標題/卡片整體水平置中 */
 .menu.auth-menu {
   width: 100%;
   height: 100%;
   align-items: center;
   text-align: center;
+}
+/* menu-card 往上移動 2 張棄牌大小（120px） */
+.menu.auth-menu .menu-card {
+  transform: translateY(-120px);
 }
 .menu-header {
   display: flex;

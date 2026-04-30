@@ -15,7 +15,6 @@ export default function AuthScreen({ status, error, onLogin }: Props) {
   return (
     <div className="menu auth-menu">
       <h1><span className="emoji">🀄</span>台灣麻將</h1>
-      <div className="subtitle">登入帳號</div>
 
       <div className="menu-card">
         <label className="muted" style={{ fontSize: '0.9rem' }}>暱稱</label>
