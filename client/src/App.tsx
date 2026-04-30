@@ -63,6 +63,7 @@ export default function App() {
   }>(null)
   const [error, setError] = useState<string>('')
   const [notice, setNotice] = useState<string>('')
+  const [noticeBig, setNoticeBig] = useState<boolean>(false)
   // 帳號
   const [profile, setProfile] = useState<{ name: string; avatar: 0|1|2|3; score: number; cards: number; firstPurchasedPlans: string[] } | null>(null)
   const [authError, setAuthError] = useState<string>('')
@@ -169,9 +170,10 @@ export default function App() {
             const wind = ROUND_WINDS[Math.floor(msg.gameIndex / 4) % 4]
             const inRound = (msg.gameIndex % 4) + 1
             const lian = msg.consecutiveDealer > 0 ? ` 連${msg.consecutiveDealer}` : ''
-            setNotice(`${wind}${inRound}局${lian} 開始`)
+            setNotice(`${wind}${inRound}局${lian}`)
+            setNoticeBig(true)
           }
-          setTimeout(() => setNotice(''), 2000)
+          setTimeout(() => { setNotice(''); setNoticeBig(false) }, 2000)
           break
         case 'round_end':
           setRoundScores(msg.scores)
@@ -439,8 +441,10 @@ export default function App() {
         <div style={{
           position: 'fixed', top: '40%', left: '50%', transform: 'translate(-50%, -50%)',
           background: 'rgba(0, 0, 0, 0.85)', padding: '1rem 2rem',
-          borderRadius: 12, fontSize: '1.5rem', fontWeight: 600, zIndex: 100,
-          textAlign: 'center', maxWidth: '90vw',
+          borderRadius: 12,
+          fontSize: noticeBig ? '3rem' : '1.5rem',
+          fontWeight: noticeBig ? 800 : 600,
+          zIndex: 100, textAlign: 'center', maxWidth: '90vw',
         }}>
           {notice}
         </div>
