@@ -362,9 +362,9 @@ input:focus { border-color: var(--accent); }
   align-items: center;
   text-align: center;
 }
-/* menu-card 上移 -60px；只縮高度（padding/gap/input/button 各 ×0.8），文字不變形 */
+/* menu-card 上移 -30px；只縮高度（padding/gap/input/button 各 ×0.8），文字不變形 */
 .menu.auth-menu .menu-card {
-  transform: translateY(-60px);
+  transform: translateY(-30px);
   padding: 1.6rem;
   gap: 0.8rem;
 }
