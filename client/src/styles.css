@@ -522,12 +522,13 @@ input:focus { border-color: var(--accent); }
   width: 88%;
   margin-left: auto;
   margin-right: auto;
+  justify-content: center; /* 單一房號區塊水平置中（不撐滿） */
   transform: translateY(-12px); /* 累計上移 0.2 張棄牌 */
 }
-/* 離開按鈕：絕對定位在右上角，位置同原本 .room-header 內右側（88% 寬範圍的右邊 = 視窗 6% 邊距） */
+/* 離開按鈕：絕對定位在右上角；top 對齊 .room-header 視覺中心線 */
 .lobby-leave-btn {
   position: absolute;
-  top: 0;
+  top: 1.25rem;          /* 對齊 .room-header 中心：room.lobby 0.5rem padding + header 自身內距 */
   right: 6%;
   background: #777 !important;
   color: white !important;

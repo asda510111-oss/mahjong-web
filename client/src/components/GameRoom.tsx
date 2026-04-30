@@ -258,7 +258,7 @@ export default function GameRoom({
     return (
       <div className="room lobby">
         <div className="room-header">
-          <div style={{ textAlign: 'center', flex: 1 }}>
+          <div style={{ textAlign: 'center' }}>
             <div className="small">房號</div>
             <div className="code">{room.code}</div>
           </div>
