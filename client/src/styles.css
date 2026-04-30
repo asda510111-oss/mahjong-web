@@ -528,7 +528,7 @@ input:focus { border-color: var(--accent); }
 /* 離開按鈕：絕對定位在右上角；下移 6px、左移 12px */
 .lobby-leave-btn {
   position: absolute;
-  top: calc(1.25rem + 6px);     /* 原 1.25rem 再下移 6px */
+  top: calc(1.25rem + 12px);    /* 原 1.25rem 再下移 12px */
   right: calc(6% + 12px);       /* 原 6% 再左移 12px */
   background: #777 !important;
   color: white !important;
