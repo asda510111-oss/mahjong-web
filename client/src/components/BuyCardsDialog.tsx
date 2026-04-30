@@ -6,12 +6,12 @@ interface Plan {
   priceTwd: number
 }
 
-// 每張 $4
+// 每張基本價 $4，階梯式贈送讓大包單價更便宜
 const PLANS: Plan[] = [
-  { id: 'small',  name: '小包',   cards: 50,   bonus: 0, priceTwd: 200 },
-  { id: 'medium', name: '中包',   cards: 100,  bonus: 0, priceTwd: 400 },
-  { id: 'large',  name: '大包',   cards: 300,  bonus: 0, priceTwd: 1200 },
-  { id: 'xl',     name: '超大包', cards: 1500, bonus: 0, priceTwd: 6000 },
+  { id: 'small',  name: '小包',   cards: 50,   bonus: 0,   priceTwd: 200 },  // $4.00/張
+  { id: 'medium', name: '中包',   cards: 100,  bonus: 10,  priceTwd: 400 },  // $3.64/張
+  { id: 'large',  name: '大包',   cards: 300,  bonus: 60,  priceTwd: 1200 }, // $3.33/張
+  { id: 'xl',     name: '超大包', cards: 1500, bonus: 500, priceTwd: 6000 }, // $3.00/張
 ]
 
 interface Props {
