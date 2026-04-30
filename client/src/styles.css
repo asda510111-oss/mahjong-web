@@ -517,19 +517,19 @@ input:focus { border-color: var(--accent); }
 
 /* ===== Lobby ===== */
 .room.lobby { position: relative; }
-/* room-header 寬度 = 80% × 1.1 = 88%；lobby-seats 維持 80% 寬，再縮高度 0.8 */
+/* room-header 寬度縮成「房號區塊」自然寬度，水平置中 */
 .room.lobby .room-header {
-  width: 88%;
+  width: fit-content;
   margin-left: auto;
   margin-right: auto;
-  justify-content: center; /* 單一房號區塊水平置中（不撐滿） */
+  justify-content: center;
   transform: translateY(-12px); /* 累計上移 0.2 張棄牌 */
 }
-/* 離開按鈕：絕對定位在右上角；top 對齊 .room-header 視覺中心線 */
+/* 離開按鈕：絕對定位在右上角；下移 6px、左移 12px */
 .lobby-leave-btn {
   position: absolute;
-  top: 1.25rem;          /* 對齊 .room-header 中心：room.lobby 0.5rem padding + header 自身內距 */
-  right: 6%;
+  top: calc(1.25rem + 6px);     /* 原 1.25rem 再下移 6px */
+  right: calc(6% + 12px);       /* 原 6% 再左移 12px */
   background: #777 !important;
   color: white !important;
   transform: translateY(-12px); /* 跟 .room-header 同步上移 */
