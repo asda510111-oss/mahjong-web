@@ -501,6 +501,7 @@ input:focus { border-color: var(--accent); }
   width: 88%;
   margin-left: auto;
   margin-right: auto;
+  transform: translateY(-6px); /* 上移 0.1 張棄牌 */
 }
 .room.lobby .lobby-seats {
   width: 80%;
