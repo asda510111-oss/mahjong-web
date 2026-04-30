@@ -17,7 +17,6 @@ export default function AuthScreen({ status, error, onLogin }: Props) {
       <h1><span className="emoji">🀄</span>台灣麻將</h1>
 
       <div className="menu-card">
-        <label className="muted" style={{ fontSize: '0.9rem' }}>暱稱</label>
         <input
           value={name}
           onChange={(e) => setName(e.target.value.trim())}
@@ -26,7 +25,6 @@ export default function AuthScreen({ status, error, onLogin }: Props) {
           style={{ letterSpacing: 'normal', textTransform: 'none' }}
         />
 
-        <label className="muted" style={{ fontSize: '0.9rem' }}>密碼</label>
         <input
           type="password"
           value={pw}
