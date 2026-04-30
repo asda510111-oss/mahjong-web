@@ -496,6 +496,13 @@ input:focus { border-color: var(--accent); }
 }
 
 /* ===== Lobby ===== */
+/* 大廳的 room-header 與 lobby-seats 只縮寬度（×0.8），文字不變形 */
+.room.lobby .room-header,
+.room.lobby .lobby-seats {
+  width: 80%;
+  margin-left: auto;
+  margin-right: auto;
+}
 .lobby-seats {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
