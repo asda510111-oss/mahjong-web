@@ -4,6 +4,7 @@ import TableSeat from './TableSeat'
 import CenterArea from './CenterArea'
 import ActionBar from './ActionBar'
 import TimerDisplay from './TimerDisplay'
+import HuResult from './HuResult'
 import { gameClient } from '../net/ws'
 import type { RoomState, SeatIndex, PublicPlayerState, ActionOptions } from '../game/types'
 import { SEAT_LABELS } from '../game/types'
@@ -57,6 +58,8 @@ export default function GameRoom({
   // 用索引追蹤（同張牌可能有多張，不能只用 id）
   // key: "sorted-<idx>" 或 "drawn"
   const [selectedKey, setSelectedKey] = useState<string | null>(null)
+  // 開發測試用：預覽 HuResult 結算畫面（不影響真實胡牌流程）
+  const [mockHuOpen, setMockHuOpen] = useState(false)
   // 設定（底/台）由 server 同步；只有房主且 lobby 時可改。打開彈窗時會先取得目前值作為草稿。
   const [settingsOpen, setSettingsOpen] = useState(false)
   const [draftBase, setDraftBase] = useState<300 | 200>(room.base)
@@ -575,6 +578,40 @@ export default function GameRoom({
           {sortedHand.length === 0 && !drawnTile && <span className="muted">（尚未發牌）</span>}
         </div>
       </div>
+
+      {/* 開發測試：HuResult 預覽 */}
+      <button
+        onClick={() => setMockHuOpen(v => !v)}
+        style={{
+          position: 'fixed', top: 4, right: 4, zIndex: 100000,
+          padding: '0.3rem 0.6rem', fontSize: '0.75rem',
+          background: '#444', color: '#fff', border: '1px solid #888',
+        }}
+      >
+        {mockHuOpen ? '關閉預覽' : '預覽結算'}
+      </button>
+      {mockHuOpen && (
+        <HuResult
+          winnerSeat={0}
+          winnerName="預覽玩家"
+          winTile={'m5' as TileId}
+          tai={{
+            items: [
+              { name: '自摸', tai: 1 },
+              { name: '門清', tai: 1 },
+              { name: '門清自摸', tai: 1 },
+              { name: '平胡', tai: 1 },
+            ],
+            total: 4,
+          }}
+          hand={['m1','m1','m1','m2','m3','m4','m5','m6','m7','p2','p3','p4','s5','s5','s5','m5'] as TileId[]}
+          melds={[]}
+          base={room.base}
+          taiPt={room.taiPt}
+          zimoRake={100}
+          onClose={() => setMockHuOpen(false)}
+        />
+      )}
     </div>
   )
 }
