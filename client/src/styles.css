@@ -362,10 +362,14 @@ input:focus { border-color: var(--accent); }
   align-items: center;
   text-align: center;
 }
-/* menu-card 上移 -60px + 上下方向縮 0.8（scaleY） */
+/* menu-card 上移 -60px；只縮高度（padding/gap/input/button 各 ×0.8），文字不變形 */
 .menu.auth-menu .menu-card {
-  transform: translateY(-60px) scaleY(0.8);
+  transform: translateY(-60px);
+  padding: 1.6rem;
+  gap: 0.8rem;
 }
+.menu.auth-menu .menu-card input { padding: 0.48rem 0.9rem; }
+.menu.auth-menu .menu-card button { padding: 0.6rem 1.5rem; }
 .menu-header {
   display: flex;
   flex-direction: column;
