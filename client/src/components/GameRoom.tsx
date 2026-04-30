@@ -5,6 +5,7 @@ import CenterArea from './CenterArea'
 import ActionBar from './ActionBar'
 import TimerDisplay from './TimerDisplay'
 import HuResult from './HuResult'
+import BuyCardsDialog from './BuyCardsDialog'
 import { gameClient } from '../net/ws'
 import type { RoomState, SeatIndex, PublicPlayerState, ActionOptions } from '../game/types'
 import { SEAT_LABELS } from '../game/types'
@@ -60,6 +61,7 @@ export default function GameRoom({
   const [selectedKey, setSelectedKey] = useState<string | null>(null)
   // 開發測試用：預覽 HuResult 結算畫面（不影響真實胡牌流程）
   const [mockHuOpen, setMockHuOpen] = useState(false)
+  const [buyCardsOpen, setBuyCardsOpen] = useState(false)
   // 設定（底/台）由 server 同步；只有房主且 lobby 時可改。打開彈窗時會先取得目前值作為草稿。
   const [settingsOpen, setSettingsOpen] = useState(false)
   const [draftBase, setDraftBase] = useState<300 | 200>(room.base)
@@ -260,11 +262,22 @@ export default function GameRoom({
         {(() => {
           const me = room.players.find(p => p.id === myPlayerId)
           return me && me.cards !== undefined ? (
-            <div className="menu-cards-badge">
-              <span className="menu-cards-icon">🎴</span>
-              <span className="menu-cards-label">房卡</span>
-              <span className="menu-cards-num">{me.cards}</span>
-            </div>
+            <>
+              <button
+                className="menu-cards-badge"
+                onClick={() => setBuyCardsOpen(true)}
+                title="點擊購買房卡"
+              >
+                <span className="menu-cards-icon">🎴</span>
+                <span className="menu-cards-label">房卡</span>
+                <span className="menu-cards-num">{me.cards}</span>
+              </button>
+              <BuyCardsDialog
+                open={buyCardsOpen}
+                currentCards={me.cards}
+                onClose={() => setBuyCardsOpen(false)}
+              />
+            </>
           ) : null
         })()}
         <div className="room-header">

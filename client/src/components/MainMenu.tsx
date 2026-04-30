@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import type { ConnectionStatus } from '../net/ws'
+import BuyCardsDialog from './BuyCardsDialog'
 import catAvatar from '../assets/avatars/cat.svg'
 import pandaAvatar from '../assets/avatars/panda.svg'
 import foxAvatar from '../assets/avatars/fox.svg'
@@ -29,6 +30,7 @@ export default function MainMenu({
   })
   const [code, setCode] = useState('')
   const [createOpen, setCreateOpen] = useState(false)
+  const [buyCardsOpen, setBuyCardsOpen] = useState(false)
   // 開房設定
   const [createBase, setCreateBase] = useState<200 | 300>(200)
   const createTai = createBase === 300 ? 100 : 50  // 底/台連動鎖定
@@ -44,12 +46,21 @@ export default function MainMenu({
   return (
     <div className="menu">
       {profile && (
-        <div className="menu-cards-badge">
+        <button
+          className="menu-cards-badge"
+          onClick={() => setBuyCardsOpen(true)}
+          title="點擊購買房卡"
+        >
           <span className="menu-cards-icon">🎴</span>
           <span className="menu-cards-label">房卡</span>
           <span className="menu-cards-num">{profile.cards}</span>
-        </div>
+        </button>
       )}
+      <BuyCardsDialog
+        open={buyCardsOpen}
+        currentCards={profile?.cards ?? 0}
+        onClose={() => setBuyCardsOpen(false)}
+      />
       <div className="menu-header">
         <h1><span className="emoji">🀄</span>台灣麻將</h1>
         <div className="subtitle">

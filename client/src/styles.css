@@ -359,10 +359,67 @@ input:focus { border-color: var(--accent); }
   color: var(--accent);
   font-weight: 700;
   z-index: 10;
+  cursor: pointer;
+  font-family: inherit;
+  box-shadow: none;
 }
+.menu-cards-badge:hover { background: rgba(0, 0, 0, 0.6); }
+.menu-cards-badge:active { transform: translateY(1px); }
 .menu-cards-icon { font-size: 1.2rem; }
 .menu-cards-label { font-size: 0.9rem; opacity: 0.9; }
 .menu-cards-num { font-size: 1.2rem; min-width: 6ch; text-align: right; font-variant-numeric: tabular-nums; }
+
+/* ===== 購買房卡彈窗 ===== */
+.buy-cards-overlay {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.75);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 250;
+}
+.buy-cards-panel {
+  background: linear-gradient(180deg, #2a1608, #1a0d04);
+  border: 2px solid var(--accent);
+  border-radius: 16px;
+  padding: 1.2rem 1.4rem;
+  width: min(92vw, 520px);
+  max-height: 88vh;
+  overflow-y: auto;
+  color: var(--text);
+  box-shadow: 0 10px 40px rgba(245, 197, 66, 0.3);
+}
+.buy-cards-header {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 0.5rem;
+}
+.buy-cards-header h3 { margin: 0; color: var(--accent); }
+.buy-cards-close { background: transparent; border: none; color: var(--text); font-size: 1.2rem; box-shadow: none; padding: 0.25rem 0.5rem; }
+.buy-cards-current { text-align: center; opacity: 0.85; margin-bottom: 0.75rem; padding-bottom: 0.5rem; border-bottom: 1px solid rgba(255,255,255,0.15); }
+.buy-cards-current strong { color: var(--accent); font-size: 1.2rem; margin: 0 0.25rem; }
+.buy-cards-plans {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.75rem;
+}
+.buy-cards-plan {
+  display: flex; flex-direction: column; gap: 0.4rem;
+  padding: 1rem 0.8rem;
+  background: rgba(0,0,0,0.4);
+  border: 2px solid var(--accent-dark);
+  border-radius: 12px;
+  color: var(--text);
+  font-family: inherit;
+  cursor: pointer;
+  transition: transform 0.1s, border-color 0.1s, background 0.1s;
+}
+.buy-cards-plan:hover { transform: translateY(-2px); border-color: var(--accent); background: rgba(0,0,0,0.6); }
+.buy-cards-plan-name { font-size: 1rem; font-weight: 700; color: var(--accent); }
+.buy-cards-plan-cards { font-size: 1.3rem; font-weight: 800; }
+.buy-cards-plan-bonus { font-size: 0.85rem; color: #f5c542; opacity: 0.9; margin-left: 0.3rem; }
+.buy-cards-plan-price { font-size: 1.05rem; font-weight: 700; opacity: 0.95; }
+.buy-cards-note { margin-top: 0.75rem; font-size: 0.8rem; opacity: 0.6; text-align: center; }
+@media (max-width: 480px) {
+  .buy-cards-plans { grid-template-columns: 1fr; }
+}
 
 /* ===== Main Menu ===== */
 .menu {
