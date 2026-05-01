@@ -110,6 +110,42 @@ export function playSound(action: MahjongSound) {
   }
 }
 
+// ===== 牌名 TTS =====
+const NUM_CHARS = ['一','二','三','四','五','六','七','八','九']
+const ZI_CHARS  = ['東','南','西','北','中','發','白']
+const FLOWER_CHARS = ['春','夏','秋','冬','梅','蘭','竹','菊']
+
+function tileToText(id: string): string {
+  if (!id || id.length < 2) return ''
+  const suit = id[0]
+  const rank = parseInt(id.slice(1), 10)
+  if (Number.isNaN(rank)) return ''
+  if (suit === 'm' && rank >= 1 && rank <= 9) return `${NUM_CHARS[rank-1]}萬`
+  if (suit === 'p' && rank >= 1 && rank <= 9) return `${NUM_CHARS[rank-1]}筒`
+  if (suit === 's' && rank >= 1 && rank <= 9) return `${NUM_CHARS[rank-1]}條`
+  if (suit === 'z' && rank >= 1 && rank <= 7) return ZI_CHARS[rank-1]
+  if (suit === 'f' && rank >= 1 && rank <= 8) return FLOWER_CHARS[rank-1]
+  return ''
+}
+
+/** 播報剛打出的那張牌（中文 TTS）。多次呼叫會 cancel 前一次避免堆疊 */
+export function speakTile(id: string) {
+  if (typeof window === 'undefined') return
+  if (!('speechSynthesis' in window)) return
+  const text = tileToText(id)
+  if (!text) return
+  try {
+    const u = new SpeechSynthesisUtterance(text)
+    u.lang = 'zh-TW'
+    u.rate = 1.15
+    u.volume = 1
+    window.speechSynthesis.cancel()
+    window.speechSynthesis.speak(u)
+  } catch (e) {
+    console.warn('[speak] fail', e)
+  }
+}
+
 /** iOS Safari 首次互動時呼叫以解鎖音訊 */
 export function unlockAudio() {
   const ac = getCtx()

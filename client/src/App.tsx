@@ -8,7 +8,7 @@ import { gameClient, resolveServerUrl, type ConnectionStatus } from './net/ws'
 import type { RoomState, SeatIndex, ServerMessage, PublicPlayerState, ActionOptions } from './game/types'
 import type { TileId } from './game/tiles'
 import type { Meld, TaiResult } from './game/rules'
-import { playSound, unlockAudio } from './utils/sounds'
+import { playSound, unlockAudio, speakTile } from './utils/sounds'
 
 export type DiscardMap = Record<number, TileId[]>
 const EMPTY_DISCARDS: DiscardMap = { 0: [], 1: [], 2: [], 3: [] }
@@ -215,6 +215,7 @@ export default function App() {
         case 'tile_discarded':
           setDiscards((d) => ({ ...d, [msg.seat]: [...(d[msg.seat] ?? []), msg.tile] }))
           setLastDiscardSeat(msg.seat)
+          speakTile(msg.tile)
           // 如果是我自己打的，從手牌移掉
           {
             const r = roomRef.current
