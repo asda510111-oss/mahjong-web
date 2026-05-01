@@ -892,8 +892,8 @@ input:focus { border-color: var(--accent); }
 .table-seat .seat-card .seat-sub { display: none; } /* 副資訊隱藏，只留 ID */
 /* 每家頭像移到該家棄牌區位置 + 自訂偏移（4 張棄牌） */
 .table-seat.pos-bottom .seat-card {
-  left: calc(50% + var(--cd-bot-x, -110px) - 440px);  /* 再左移 2×44，累計 10×44 */
-  top: calc(50% - var(--cd-bot-y, 115px));
+  left: calc(50% + var(--cd-bot-x, -110px) - 462px);  /* 再左移 0.5 張棄牌（22px），累計 -462 */
+  top: calc(50% - var(--cd-bot-y, 115px) - 6px);      /* 再上移 0.1 張棄牌（6px） */
   transform: rotateX(-42deg) scale(1.5);              /* 自家放大 1.5 */
 }
 .table-seat.pos-top .seat-card {
@@ -902,7 +902,7 @@ input:focus { border-color: var(--accent); }
   transform: rotateX(-42deg) scale(1.8);              /* 對家放大 1.8 */
 }
 .table-seat.pos-left .seat-card {
-  left: calc(50% + var(--cd-left-x, -118px) - 330px); /* 再往右 22px（0.5 張棄牌） */
+  left: calc(50% + var(--cd-left-x, -118px) - 321px); /* 再往右 0.2 張棄牌（9px），累計 -321 */
   top: calc(50% - var(--cd-left-y, 355px) + 270px);
   transform: rotateX(-42deg) scale(1.5);
 }
