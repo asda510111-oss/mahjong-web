@@ -215,7 +215,7 @@ export default function App() {
         case 'tile_discarded':
           setDiscards((d) => ({ ...d, [msg.seat]: [...(d[msg.seat] ?? []), msg.tile] }))
           setLastDiscardSeat(msg.seat)
-          speakTile(msg.tile)
+          speakTile(msg.tile, msg.seat)
           // 如果是我自己打的，從手牌移掉
           {
             const r = roomRef.current
@@ -265,7 +265,7 @@ export default function App() {
             setTimeout(() => setNotice(''), 1500)
             // 播放對應音效
             if (msg.action === 'chi' || msg.action === 'peng' || msg.action === 'gang' || msg.action === 'hu') {
-              playSound(msg.action)
+              playSound(msg.action, msg.seat)
             }
           }
           break

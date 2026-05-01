@@ -8,27 +8,40 @@
 
 export type MahjongSound = 'chi' | 'peng' | 'gang' | 'hu'
 
-// Vite 編譯時靜態掃描 sounds 資料夾，取得所有音檔 URL
-const soundFiles = import.meta.glob(
+// Vite 編譯時靜態掃描 sounds 資料夾。同時支援：
+//   1. 根目錄共用：sounds/chi.mp3 等（fallback）
+//   2. 每位玩家專屬：sounds/{cat,panda,fox,bear}/chi.mp3
+const rootSoundFiles = import.meta.glob(
   '../assets/sounds/*.{mp3,wav,ogg,m4a}',
   { eager: true, query: '?url', import: 'default' },
 ) as Record<string, string>
+const packSoundFiles = import.meta.glob(
+  '../assets/sounds/{cat,panda,fox,bear}/{chi,peng,gang,hu}.{mp3,wav,ogg,m4a}',
+  { eager: true, query: '?url', import: 'default' },
+) as Record<string, string>
 
-// 建立 "chi" -> "/assets/sounds/chi-xxx.mp3" 的對應表
-const soundMap: Partial<Record<MahjongSound, string>> = {}
-for (const [path, url] of Object.entries(soundFiles)) {
+// 根目錄 fallback 對應表（沒找到該 pack 音檔時使用）
+const rootAudioCache: Partial<Record<MahjongSound, HTMLAudioElement>> = {}
+for (const [path, url] of Object.entries(rootSoundFiles)) {
   const match = path.match(/\/(chi|peng|gang|hu)\.[^/]+$/i)
-  if (match) soundMap[match[1].toLowerCase() as MahjongSound] = url
-}
-
-// 預先建立 Audio 元素（省去每次重建）
-const audioCache: Partial<Record<MahjongSound, HTMLAudioElement>> = {}
-for (const action of Object.keys(soundMap) as MahjongSound[]) {
-  const url = soundMap[action]
-  if (!url) continue
+  if (!match) continue
+  const action = match[1].toLowerCase() as MahjongSound
   const a = new Audio(url)
   a.preload = 'auto'
-  audioCache[action] = a
+  rootAudioCache[action] = a
+}
+
+// 每包專屬對應表
+const packAudioCache: Record<string, Partial<Record<MahjongSound, HTMLAudioElement>>> = {
+  cat: {}, panda: {}, fox: {}, bear: {},
+}
+for (const [path, url] of Object.entries(packSoundFiles)) {
+  const m = path.match(/sounds\/(cat|panda|fox|bear)\/(chi|peng|gang|hu)\.[^/]+$/i)
+  if (!m) continue
+  const [, pack, action] = m
+  const a = new Audio(url)
+  a.preload = 'auto'
+  packAudioCache[pack][action.toLowerCase() as MahjongSound] = a
 }
 
 // ===== Web Audio 合成備援 =====
@@ -94,26 +107,47 @@ const synthesize: Record<MahjongSound, () => void> = {
 }
 
 // ===== 公開 API =====
-export function playSound(action: MahjongSound) {
+/**
+ * 播放動作音效（吃/碰/槓/胡）
+ * @param action 動作名稱
+ * @param seat   執行該動作的玩家座位 0-3；省略則直接用根目錄共用音
+ */
+export function playSound(action: MahjongSound, seat?: number) {
   try {
-    const a = audioCache[action]
-    if (a) {
-      // 從頭播放（若前一次還沒結束也重新開始）
-      a.currentTime = 0
-      void a.play().catch(() => synthesize[action]())
-      return
+    // 若有 seat → 先找對應 pack（cat/panda/fox/bear）
+    if (seat !== undefined && seat !== null) {
+      const pack = SEAT_PACK[(seat % 4 + 4) % 4]
+      const a = packAudioCache[pack]?.[action]
+      if (a) {
+        a.currentTime = 0
+        const p = a.play()
+        if (p && typeof p.catch === 'function') p.catch(() => playRootOrSynth(action))
+        return
+      }
     }
-    // 沒檔案 → 走合成音
-    synthesize[action]()
+    playRootOrSynth(action)
   } catch (e) {
     console.warn('[sound] play failed', e)
   }
 }
 
-// ===== 牌名 TTS =====
+function playRootOrSynth(action: MahjongSound) {
+  const a = rootAudioCache[action]
+  if (a) {
+    a.currentTime = 0
+    const p = a.play()
+    if (p && typeof p.catch === 'function') p.catch(() => synthesize[action]())
+    return
+  }
+  synthesize[action]()
+}
+
+// ===== 牌名語音（依座位/頭像對應四套：cat/panda/fox/bear） =====
 const NUM_CHARS = ['一','二','三','四','五','六','七','八','九']
 const ZI_CHARS  = ['東','南','西','北','中','發','白']
 const FLOWER_CHARS = ['春','夏','秋','冬','梅','蘭','竹','菊']
+// seat 0 / 1 / 2 / 3 對應的音檔資料夾（與 SEAT_AVATARS 順序一致）
+const SEAT_PACK = ['cat', 'panda', 'fox', 'bear'] as const
 
 function tileToText(id: string): string {
   if (!id || id.length < 2) return ''
@@ -128,8 +162,26 @@ function tileToText(id: string): string {
   return ''
 }
 
-/** 播報剛打出的那張牌（中文 TTS）。多次呼叫會 cancel 前一次避免堆疊 */
-export function speakTile(id: string) {
+// 掃描 cat/panda/fox/bear 子資料夾下所有 m1.mp3 / p2.wav 等檔案
+const tileVoiceFiles = import.meta.glob(
+  '../assets/sounds/{cat,panda,fox,bear}/*.{mp3,wav,ogg,m4a}',
+  { eager: true, query: '?url', import: 'default' },
+) as Record<string, string>
+
+// pack -> tileId -> Audio（預先建好）
+const tileVoiceCache: Record<string, Record<string, HTMLAudioElement>> = {
+  cat: {}, panda: {}, fox: {}, bear: {},
+}
+for (const [path, url] of Object.entries(tileVoiceFiles)) {
+  const m = path.match(/sounds\/(cat|panda|fox|bear)\/([a-z]\d+)\.[^.]+$/i)
+  if (!m) continue
+  const [, pack, tileId] = m
+  const a = new Audio(url)
+  a.preload = 'auto'
+  tileVoiceCache[pack][tileId.toLowerCase()] = a
+}
+
+function fallbackTTS(id: string) {
   if (typeof window === 'undefined') return
   if (!('speechSynthesis' in window)) return
   const text = tileToText(id)
@@ -146,13 +198,45 @@ export function speakTile(id: string) {
   }
 }
 
+/**
+ * 播報剛打出的那張牌
+ * @param id    牌 id（如 'm5'、'z3'）
+ * @param seat  打牌者座位 0-3，用來決定播哪套音檔；省略時走 TTS
+ */
+export function speakTile(id: string, seat?: number) {
+  if (seat === undefined || seat === null) {
+    fallbackTTS(id)
+    return
+  }
+  const pack = SEAT_PACK[(seat % 4 + 4) % 4]
+  const a = tileVoiceCache[pack]?.[id.toLowerCase()]
+  if (a) {
+    try {
+      a.currentTime = 0
+      const p = a.play()
+      if (p && typeof p.catch === 'function') p.catch(() => fallbackTTS(id))
+      return
+    } catch {
+      // ignore，落到 TTS
+    }
+  }
+  fallbackTTS(id)
+}
+
 /** iOS Safari 首次互動時呼叫以解鎖音訊 */
 export function unlockAudio() {
   const ac = getCtx()
   if (ac && ac.state === 'suspended') ac.resume().catch(() => {})
-  // 同時解鎖 <audio> 元素（iOS 需要）
-  for (const a of Object.values(audioCache)) {
-    if (!a) continue
+  // 同時解鎖 <audio> 元素（iOS 需要）：根目錄 + 4 個 pack + 每張牌音檔
+  const allAudios: HTMLAudioElement[] = []
+  for (const a of Object.values(rootAudioCache)) if (a) allAudios.push(a)
+  for (const map of Object.values(packAudioCache)) {
+    for (const a of Object.values(map)) if (a) allAudios.push(a)
+  }
+  for (const map of Object.values(tileVoiceCache)) {
+    for (const a of Object.values(map)) if (a) allAudios.push(a)
+  }
+  for (const a of allAudios) {
     a.muted = true
     a.play().then(() => { a.pause(); a.currentTime = 0; a.muted = false }).catch(() => {})
   }
