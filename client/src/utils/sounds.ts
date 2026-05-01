@@ -204,6 +204,8 @@ function fallbackTTS(id: string) {
  * @param seat  打牌者座位 0-3，用來決定播哪套音檔；省略時走 TTS
  */
 export function speakTile(id: string, seat?: number) {
+  // 花牌（f1-f8）屬補花動作，不發聲
+  if (id && id[0] === 'f') return
   if (seat === undefined || seat === null) {
     fallbackTTS(id)
     return
