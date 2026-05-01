@@ -983,6 +983,8 @@ export class Room {
     this.stopTurnTimer()
     for (const pid of this.responseTimerIds.keys()) this.clearResponseTimer(pid)
     this.responseStartAt.clear()
+    // 廣播「胡」動作（給 client 端 playSound('hu', seat) 觸發音效）
+    this.broadcast({ type: 'action_taken', seat: winnerSeat, action: 'hu' })
     const winner = this.getPlayerBySeat(winnerSeat)!
     const hand = [...(this.hands.get(winner.id) ?? [])]
     const isZimo = loserSeat === undefined
