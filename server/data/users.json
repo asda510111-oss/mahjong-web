@@ -2,8 +2,8 @@
   "users": {
     "文林": {
       "name": "文林",
-      "hash": "ccb0d6a2e08e4fbbc50d45eaa830cc3a743ab8118b934f75abe59187e1ec4a078b93cb33318152254acd33b3144516cd35e238793ec2e0222501725c53635013",
-      "salt": "7ce997b00332252353ead03351083f7b",
+      "hash": "0b706c1a9c4edf76d6ba73ae6a2e7fbfa7832c40aed748f3042a5d6e0da266cb125e8d3b9b40e5610337f13968f2a6621ac545c0961428508c1edae12e73e8c7",
+      "salt": "989190feff0954a0d9baad8db7f3bf95",
       "avatar": 0,
       "score": 10000,
       "cards": 999999,
@@ -156,8 +156,8 @@
     },
     "阿廣": {
       "name": "阿廣",
-      "hash": "82fa33c00709e8492417a4478d536a8e46053cc7a18bc237bb0a657ff5d30e4aed1136e05f5dae3129ba9809d68f422c2148187b9f6647f43ef44b722d545136",
-      "salt": "4cbdf2d5ee9c7e2d46ae427b827ecf7e",
+      "hash": "c5db0b3d1a9a31e3a4f1fe3a5a8713682af4747011d696bc49435d851e3613eca0b2bdbfbcee613d5c86015a5f6087d116441f1d8c20571e190a4f491cb438c2",
+      "salt": "525a34ea37191c10fe5ffbac49e80a44",
       "avatar": 1,
       "score": 10000,
       "cards": 999999,

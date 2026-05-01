@@ -197,6 +197,9 @@ export default function App() {
         case 'cards_update':
           setProfile((p) => p ? { ...p, cards: msg.cards } : p)
           break
+        case 'avatar_update':
+          setProfile((p) => p ? { ...p, avatar: msg.avatar } : p)
+          break
         case 'result_closed_all':
           // 四家都關了 HuResult（或倒數完）→ 開始播放分數動畫
           if (pendingDeltasRef.current) {
@@ -215,7 +218,10 @@ export default function App() {
         case 'tile_discarded':
           setDiscards((d) => ({ ...d, [msg.seat]: [...(d[msg.seat] ?? []), msg.tile] }))
           setLastDiscardSeat(msg.seat)
-          speakTile(msg.tile, msg.seat)
+          {
+            const av = roomRef.current?.players.find(pp => pp.seat === msg.seat)?.avatar
+            speakTile(msg.tile, av ?? msg.seat)
+          }
           // 如果是我自己打的，從手牌移掉
           {
             const r = roomRef.current
@@ -263,9 +269,10 @@ export default function App() {
             const actionLabel: Record<string, string> = { hu: '胡', peng: '碰', gang: '槓', chi: '吃' }
             setNotice(`${['東','南','西','北'][msg.seat]}家 ${actionLabel[msg.action]}！`)
             setTimeout(() => setNotice(''), 1500)
-            // 播放對應音效
+            // 播放對應音效（依該玩家頭像決定音色）
             if (msg.action === 'chi' || msg.action === 'peng' || msg.action === 'gang' || msg.action === 'hu') {
-              playSound(msg.action, msg.seat)
+              const av = roomRef.current?.players.find(pp => pp.seat === msg.seat)?.avatar
+              playSound(msg.action, av ?? msg.seat)
             }
           }
           break

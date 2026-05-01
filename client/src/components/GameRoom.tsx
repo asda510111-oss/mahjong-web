@@ -4,8 +4,8 @@ import TableSeat from './TableSeat'
 import CenterArea from './CenterArea'
 import ActionBar from './ActionBar'
 import TimerDisplay from './TimerDisplay'
-import HuResult from './HuResult'
 import BuyCardsDialog from './BuyCardsDialog'
+import AvatarPicker from './AvatarPicker'
 import { gameClient } from '../net/ws'
 import type { RoomState, SeatIndex, PublicPlayerState, ActionOptions } from '../game/types'
 import { SEAT_LABELS } from '../game/types'
@@ -59,9 +59,8 @@ export default function GameRoom({
   // 用索引追蹤（同張牌可能有多張，不能只用 id）
   // key: "sorted-<idx>" 或 "drawn"
   const [selectedKey, setSelectedKey] = useState<string | null>(null)
-  // 開發測試用：預覽 HuResult 結算畫面（不影響真實胡牌流程）
-  const [mockHuOpen, setMockHuOpen] = useState(false)
   const [buyCardsOpen, setBuyCardsOpen] = useState(false)
+  const [avatarPickerOpen, setAvatarPickerOpen] = useState(false)
   // 設定（底/台）由 server 同步；只有房主且 lobby 時可改。打開彈窗時會先取得目前值作為草稿。
   const [settingsOpen, setSettingsOpen] = useState(false)
   const [draftBase, setDraftBase] = useState<300 | 200>(room.base)
@@ -297,7 +296,13 @@ export default function GameRoom({
             const p = getPlayer(seat)
             return (
               <div key={seat} className={`lobby-seat ${!p ? 'empty' : ''}`}>
-                <div className="avatar big">{p ? <img src={SEAT_AVATARS[seat]} alt="" /> : '❓'}</div>
+                <div
+                  className={`avatar big ${p && seat === mySeat ? 'clickable' : ''}`}
+                  onClick={p && seat === mySeat ? () => setAvatarPickerOpen(true) : undefined}
+                  title={p && seat === mySeat ? '點擊更換頭像' : undefined}
+                >
+                  {p ? <img src={SEAT_AVATARS[p.avatar ?? seat]} alt="" /> : '❓'}
+                </div>
                 <div className="lobby-seat-info">
                   <div className="seat-name">{p ? p.name : '等待加入...'}</div>
                   <div className="seat-sub">{SEAT_LABELS[seat]}{p?.isBot && ' 🤖'}</div>
@@ -388,6 +393,13 @@ export default function GameRoom({
             </div>
           </div>
         )}
+
+        <AvatarPicker
+          open={avatarPickerOpen}
+          current={(room.players.find(pp => pp.id === myPlayerId)?.avatar ?? 0) as 0|1|2|3}
+          onPick={(av) => gameClient.send({ type: 'set_avatar', avatar: av })}
+          onClose={() => setAvatarPickerOpen(false)}
+        />
       </div>
     )
   }
@@ -618,39 +630,6 @@ export default function GameRoom({
         </div>
       </div>
 
-      {/* 開發測試：HuResult 預覽 */}
-      <button
-        onClick={() => setMockHuOpen(v => !v)}
-        style={{
-          position: 'fixed', top: 184, right: 4, zIndex: 100000,
-          padding: '0.9rem 1.8rem', fontSize: '2.25rem',
-          background: '#444', color: '#fff', border: '1px solid #888',
-        }}
-      >
-        {mockHuOpen ? '關閉預覽' : '預覽結算'}
-      </button>
-      {mockHuOpen && (
-        <HuResult
-          winnerSeat={0}
-          winnerName="預覽玩家"
-          winTile={'m5' as TileId}
-          tai={{
-            items: [
-              { name: '自摸', tai: 1 },
-              { name: '門清', tai: 1 },
-              { name: '門清自摸', tai: 1 },
-              { name: '平胡', tai: 1 },
-            ],
-            total: 4,
-          }}
-          hand={['m1','m1','m1','m2','m3','m4','m5','m6','m7','p2','p3','p4','s5','s5','s5','m5'] as TileId[]}
-          melds={[]}
-          base={room.base}
-          taiPt={room.taiPt}
-          zimoRake={100}
-          onClose={() => setMockHuOpen(false)}
-        />
-      )}
     </div>
   )
 }

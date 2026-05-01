@@ -13,6 +13,7 @@ export interface PlayerInfo {
   accountScore?: number
   cards?: number
   firstPurchasedPlans?: string[]
+  avatar?: 0 | 1 | 2 | 3
 }
 
 export interface RoomState {
@@ -63,6 +64,7 @@ export type ClientMessage =
   | { type: 'discard'; tile: TileId }
   | { type: 'action'; action: 'pass' | 'hu' | 'peng' | 'gang' | 'chi'; chiIndex?: number; gangTile?: TileId }
   | { type: 'result_close' }
+  | { type: 'set_avatar'; avatar: 0 | 1 | 2 | 3 }
 
 // ========== 伺服器 → 客戶端 ==========
 export type ServerMessage =
@@ -86,4 +88,5 @@ export type ServerMessage =
   | { type: 'turn_timer'; seat: SeatIndex; thinkMs: number; baseMs: number; startAt: number }
   | { type: 'score_update'; score: number }
   | { type: 'cards_update'; cards: number }
+  | { type: 'avatar_update'; avatar: 0 | 1 | 2 | 3 }
   | { type: 'result_closed_all' }

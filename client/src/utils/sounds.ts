@@ -209,10 +209,11 @@ function fallbackTTS(id: string) {
 // ===== 公開 API =====
 /**
  * 播放動作音效（吃/碰/槓/胡）
- * @param action 動作名稱
- * @param seat   執行該動作的玩家座位 0-3；省略則只用根目錄共用音
+ * @param action  動作名稱
+ * @param packIdx 0-3 對應 cat/panda/fox/bear；通常傳玩家 avatar；省略則用根目錄共用音
  */
-export function playSound(action: MahjongSound, seat?: number) {
+export function playSound(action: MahjongSound, packIdx?: number) {
+  const seat = packIdx
   ;(async () => {
     try {
       // 1. 找對應 pack 的音檔
@@ -232,13 +233,14 @@ export function playSound(action: MahjongSound, seat?: number) {
 
 /**
  * 播報剛打出的那張牌
- * @param id    牌 id（如 'm5'、'z3'）
- * @param seat  打牌者座位 0-3，用來決定播哪套音檔；省略時走 TTS
+ * @param id      牌 id（如 'm5'、'z3'）
+ * @param packIdx 0-3 對應 cat/panda/fox/bear；通常傳該玩家 avatar；省略走 TTS
  */
-export function speakTile(id: string, seat?: number) {
+export function speakTile(id: string, packIdx?: number) {
   // 花牌（f1-f8）屬補花動作，不發聲
   if (id && id[0] === 'f') return
   ;(async () => {
+    const seat = packIdx
     if (seat !== undefined && seat !== null) {
       const pack = SEAT_PACK[(seat % 4 + 4) % 4]
       if (await tryPlayUrl(tileVoiceUrls[pack][id.toLowerCase()])) return

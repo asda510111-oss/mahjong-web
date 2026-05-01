@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import type { ConnectionStatus } from '../net/ws'
 import BuyCardsDialog from './BuyCardsDialog'
+import AvatarPicker from './AvatarPicker'
+import { gameClient } from '../net/ws'
 import catAvatar from '../assets/avatars/cat.svg'
 import pandaAvatar from '../assets/avatars/panda.svg'
 import foxAvatar from '../assets/avatars/fox.svg'
@@ -31,6 +33,7 @@ export default function MainMenu({
   const [code, setCode] = useState('')
   const [createOpen, setCreateOpen] = useState(false)
   const [buyCardsOpen, setBuyCardsOpen] = useState(false)
+  const [avatarPickerOpen, setAvatarPickerOpen] = useState(false)
   // 開房設定
   const [createBase, setCreateBase] = useState<200 | 300>(200)
   const createTai = createBase === 300 ? 100 : 50  // 底/台連動鎖定
@@ -63,6 +66,12 @@ export default function MainMenu({
         firstPurchasedPlans={profile?.firstPurchasedPlans ?? []}
         onClose={() => setBuyCardsOpen(false)}
       />
+      <AvatarPicker
+        open={avatarPickerOpen}
+        current={profile?.avatar ?? 0}
+        onPick={(av) => gameClient.send({ type: 'set_avatar', avatar: av })}
+        onClose={() => setAvatarPickerOpen(false)}
+      />
       <div className="menu-header">
         <h1><span className="emoji">🀄</span>台灣麻將</h1>
         <div className="subtitle">
@@ -75,7 +84,13 @@ export default function MainMenu({
       <div className="menu-cols">
         {profile && (
           <aside className="menu-profile-side">
-            <img className="profile-avatar big" src={AVATARS[profile.avatar]} alt="" />
+            <img
+              className="profile-avatar big clickable"
+              src={AVATARS[profile.avatar]}
+              alt=""
+              onClick={() => setAvatarPickerOpen(true)}
+              title="點擊更換頭像"
+            />
             <div className="profile-name">{profile.name}</div>
             <div className="profile-score">現有點數：{profile.score}</div>
             <button className="profile-logout" onClick={onLogout}>登出</button>

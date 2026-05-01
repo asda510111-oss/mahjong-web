@@ -27,7 +27,8 @@ export default function TableSeat({
   position, player, seat, publicState, isDealer, isTurn, isMe, score, delta = null,
 }: Props) {
   const handCount = publicState?.handCount ?? 0
-  const avatar = SEAT_AVATARS[seat]
+  const avatarIdx = (player.avatar ?? seat) as 0|1|2|3
+  const avatar = SEAT_AVATARS[avatarIdx]
   // delta 飄字動畫：當 delta 變化時顯示一段時間後消失
   const [showDelta, setShowDelta] = useState<number | null>(null)
   useEffect(() => {

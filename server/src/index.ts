@@ -2,7 +2,7 @@ import { WebSocketServer, type WebSocket } from 'ws'
 import { randomUUID } from 'node:crypto'
 import type { ClientMessage, ServerMessage, SeatIndex } from './game/types.js'
 import { RoomManager, type ServerPlayer } from './room.js'
-import { login as authLogin, verifyToken, makeToken, getProfile } from './auth.js'
+import { login as authLogin, verifyToken, makeToken, getProfile, setAvatar as authSetAvatar } from './auth.js'
 
 const PORT = parseInt(process.env.PORT ?? '8080', 10)
 const wss = new WebSocketServer({ port: PORT })
@@ -287,6 +287,25 @@ function handleMessage(sess: Session, msg: ClientMessage) {
       const room = rooms.getPlayerRoom(sess.id)
       if (!room) return
       room.markResultClosed(sess.id)
+      break
+    }
+
+    case 'set_avatar': {
+      if (!sess.authedName) {
+        return sendTo(sess.socket, { type: 'error', message: '未登入' })
+      }
+      const av = msg.avatar
+      if (![0, 1, 2, 3].includes(av)) return
+      try {
+        authSetAvatar(sess.authedName, av)
+      } catch (e: any) {
+        return sendTo(sess.socket, { type: 'error', message: e.message })
+      }
+      sess.avatar = av
+      sendTo(sess.socket, { type: 'avatar_update', avatar: av })
+      // 在房間內 → 廣播 room_update 讓其他人看到新頭像
+      const room = rooms.getPlayerRoom(sess.id)
+      if (room) room.broadcast({ type: 'room_update', room: room.toState() })
       break
     }
 

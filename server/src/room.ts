@@ -205,6 +205,7 @@ export class Room {
         accountScore: p.isBot ? (this.botScores.get(p.id) ?? 10000) : u?.score,
         cards: p.isBot ? 0 : (u?.cards ?? 0),
         firstPurchasedPlans: p.isBot ? [] : (u?.firstPurchasedPlans ?? []),
+        avatar: p.isBot ? (p.seat as 0|1|2|3) : ((u?.avatar ?? 0) as 0|1|2|3),
       }
     })
     return { code: this.code, players, phase: this.phase, hostId: this.hostId, base: this.base, taiPt: this.taiPt, jiang: this.jiang, cardsCharge: this.cardsCharge }
