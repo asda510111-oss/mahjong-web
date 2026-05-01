@@ -207,19 +207,26 @@ export function speakTile(id: string, seat?: number) {
   // 花牌（f1-f8）屬補花動作，不發聲
   if (id && id[0] === 'f') return
   if (seat === undefined || seat === null) {
+    console.log('[speakTile] no seat → TTS', id)
     fallbackTTS(id)
     return
   }
   const pack = SEAT_PACK[(seat % 4 + 4) % 4]
   const a = tileVoiceCache[pack]?.[id.toLowerCase()]
+  console.log('[speakTile]', { id, seat, pack, found: !!a, totalInPack: Object.keys(tileVoiceCache[pack] ?? {}).length })
   if (a) {
     try {
       a.currentTime = 0
       const p = a.play()
-      if (p && typeof p.catch === 'function') p.catch(() => fallbackTTS(id))
+      if (p && typeof p.catch === 'function') {
+        p.catch((err) => {
+          console.warn('[speakTile] play() rejected →', err, 'fallback to TTS')
+          fallbackTTS(id)
+        })
+      }
       return
-    } catch {
-      // ignore，落到 TTS
+    } catch (e) {
+      console.warn('[speakTile] play threw →', e, 'fallback to TTS')
     }
   }
   fallbackTTS(id)
