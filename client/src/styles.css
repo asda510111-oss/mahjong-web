@@ -903,10 +903,12 @@ input:focus { border-color: var(--accent); }
 .table-seat.pos-left .seat-card {
   left: calc(50% + var(--cd-left-x, -118px) - 352px); /* 再左移 1×44，累計 8×44 */
   top: calc(50% - var(--cd-left-y, 355px) + 270px);   /* 再下移 0.5×60，累計 4.5×60 */
+  transform: rotateX(-42deg) scale(1.5);
 }
 .table-seat.pos-right .seat-card {
   left: calc(50% + var(--cd-right-x, 116px) + 176px);
   top: calc(50% - var(--cd-right-y, 105px) + 12px);   /* 下移 0.2×60 */
+  transform: rotateX(-42deg) scale(1.5);
 }
 
 /* ===== 各家牌牆：直立牌橫向並排後旋轉成對角線 =====
